@@ -1,0 +1,38 @@
+{
+  "name": "@shallowred/form-entreprise-innovation",
+  "version": "1.0.2",
+  "description": "Formulaire declaratif des aides a l'innovation pour les entreprises (format survey-schema), extrait d'aides-simplifiees",
+  "keywords": [
+    "survey",
+    "form",
+    "innovation",
+    "cir",
+    "cii",
+    "jei",
+    "betagouv"
+  ],
+  "license": "MIT",
+  "author": "Lucas Poulain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShallowRed/survey-kit.git",
+    "directory": "packages/form-entreprise-innovation"
+  },
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    },
+    "./entreprise-innovation.json": "./src/entreprise-innovation.json"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "dependencies": {
+    "@shallowred/survey-schema": "workspace:*"
+  }
+}

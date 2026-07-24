@@ -11,6 +11,12 @@ importers:
 
   .: {}
 
+  packages/form-entreprise-innovation:
+    dependencies:
+      '@shallowred/survey-schema':
+        specifier: workspace:*
+        version: link:../survey-schema
+
   packages/survey-publicodes:
     dependencies:
       '@shallowred/survey-schema':
