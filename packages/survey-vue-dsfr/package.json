@@ -1,0 +1,47 @@
+{
+  "name": "@shallowred/survey-vue-dsfr",
+  "version": "0.1.0",
+  "description": "Vue 3 + DSFR renderer for survey-schema forms, extracted from aides-simplifiees",
+  "keywords": [
+    "survey",
+    "form",
+    "vue",
+    "dsfr",
+    "betagouv"
+  ],
+  "license": "MIT",
+  "author": "Lucas Poulain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShallowRed/survey-kit.git",
+    "directory": "packages/survey-vue-dsfr"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "@shallowred/survey-schema": "workspace:*"
+  },
+  "peerDependencies": {
+    "@gouvminint/vue-dsfr": ">=8",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@gouvminint/vue-dsfr": "8.11.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4",
+    "vue": "^3.5.18",
+    "@shallowred/form-entreprise-innovation": "workspace:*"
+  }
+}
