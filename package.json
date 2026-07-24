@@ -1,0 +1,15 @@
+{
+  "name": "survey-kit",
+  "private": true,
+  "description": "Monorepo des briques formulaire extraites d'aides-simplifiees : schema declaratif, rendu Vue + DSFR, adaptateur publicodes, et site de demonstration",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r --if-present test:run",
+    "typecheck": "pnpm -r --if-present typecheck"
+  },
+  "packageManager": "pnpm@10.10.0"
+}
