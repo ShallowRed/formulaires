@@ -54,6 +54,43 @@ importers:
         specifier: ^5.4.0
         version: 5.4.21(@types/node@20.19.43)
 
+  examples/integration-vue:
+    dependencies:
+      '@gouvfr/dsfr':
+        specifier: ~1.14.2
+        version: 1.14.4
+      '@gouvminint/vue-dsfr':
+        specifier: 8.11.0
+        version: 8.11.0(@iconify/vue@4.3.0(vue@3.5.40(typescript@5.9.3)))(vue-router@4.6.4(vue@3.5.40(typescript@5.9.3)))(vue@3.5.40(typescript@5.9.3))
+      '@shallowred/form-entreprise-innovation':
+        specifier: workspace:*
+        version: link:../../packages/form-entreprise-innovation
+      '@shallowred/publicodes-entreprise-innovation':
+        specifier: ^1.0.0
+        version: 1.0.0(publicodes@1.10.1)
+      '@shallowred/survey-publicodes':
+        specifier: workspace:*
+        version: link:../../packages/survey-publicodes
+      '@shallowred/survey-vue-dsfr':
+        specifier: workspace:*
+        version: link:../../packages/survey-vue-dsfr
+      publicodes:
+        specifier: ^1.9.1
+        version: 1.10.1
+      vue:
+        specifier: ^3.5.18
+        version: 3.5.40(typescript@5.9.3)
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.0
+        version: 5.2.4(vite@5.4.21(@types/node@20.19.43))(vue@3.5.40(typescript@5.9.3))
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.0
+        version: 5.4.21(@types/node@20.19.43)
+
   packages/form-entreprise-innovation:
     dependencies:
       '@shallowred/survey-schema':
