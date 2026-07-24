@@ -18,78 +18,51 @@ const results = computed(() =>
       </h1>
 
       <p>
-        La page « Simulateur complet » de ce site tient en quelques lignes : chaque
-        responsabilité vit dans une brique séparée, remplaçable indépendamment des autres.
+        La page « Simulateur complet » de ce site tient en quelques lignes : le formulaire
+        déclaratif, le modèle de calcul et le kit de rendu sont des briques séparées,
+        remplaçables indépendamment les unes des autres.
       </p>
       <pre class="demo-code">{{ assemblageCode }}</pre>
 
-      <h2 class="fr-h5 fr-mt-4w">
-        Qui maintient quoi
-      </h2>
-      <ul>
-        <li>
-          <strong>Le modèle publicodes</strong> encode le droit (barèmes, plafonds,
-          conditions). C'est la seule brique qui bouge quand la réglementation change.
-          Elle se maintient dans un dépôt dédié, avec ses cas de tests, par les personnes
-          qui connaissent les dispositifs.
-        </li>
-        <li>
-          <strong>Le formulaire JSON</strong> encode le parcours de saisie (ordre,
-          formulations, conditions d'affichage). Il se modifie sans compétence de
-          développement particulière.
-        </li>
-        <li>
-          <strong>Le kit de rendu</strong> (schéma, composants DSFR, projection vers le
-          moteur) est générique : il ne contient rien de spécifique aux aides à
-          l'innovation, comme le montre
-          <RouterLink to="/exemple-minimal">
-            l'exemple minimal
-          </RouterLink>.
-        </li>
-      </ul>
-
-      <h2 class="fr-h5 fr-mt-4w">
-        Provenance
-      </h2>
-      <p>
+      <p class="fr-mt-3w">
         Ces briques ne sont pas une réécriture : ce sont les composants de production
         d'<a
           href="https://github.com/betagouv/aides-simplifiees-app"
           target="_blank"
           rel="noopener"
         >aides-simplifiées</a>, extraits de l'application et débarrassés de leurs
-        adhérences (store, framework serveur, analytics). Le comportement du formulaire —
-        conditions de visibilité comprises — est vérifié par des tests automatisés
-        rejoués sur le formulaire réel de 78 questions.
+        adhérences. Le comportement du formulaire, conditions de visibilité comprises,
+        est verrouillé par des tests rejoués sur le formulaire réel de 78 questions.
       </p>
 
-      <h2 class="fr-h5 fr-mt-4w">
-        Ce que ça change pour une reprise
-      </h2>
-      <ul>
-        <li>
-          <strong>Pas de dépendance à un service tiers</strong> : tout est open source
-          (MIT), installable depuis npm ou copiable dans un dépôt interne, et le calcul
-          s'exécute entièrement dans le navigateur de l'usager.
-        </li>
-        <li>
-          <strong>Hébergement trivial</strong> : le site est un build statique. Ce
-          site-ci est servi par GitHub Pages ; n'importe quel serveur de fichiers fait
-          l'affaire.
-        </li>
-        <li>
-          <strong>Intégration en iframe inchangée</strong> : le simulateur peut être
-          embarqué comme aujourd'hui sur entreprise.service-public.fr
-          (<RouterLink to="/simulateur?embed">
-            version sans habillage
-          </RouterLink>).
-        </li>
-        <li>
-          <strong>Auditabilité</strong> : les règles publicodes se lisent comme de la
-          documentation, et chaque montant affiché peut être retracé jusqu'à la règle
-          qui le produit.
-        </li>
-      </ul>
+      <div class="fr-callout fr-mt-3w">
+        <h2 class="fr-callout__title fr-h6">
+          Installer le simulateur chez vous
+        </h2>
+        <p class="fr-text--sm">
+          Le guide d'intégration couvre les trois voies (iframe, hébergement du build
+          statique, intégration native Vue), et un exemple exécutable montre l'intégration
+          dans une application existante.
+        </p>
+        <ul class="fr-btns-group fr-btns-group--inline-md fr-mb-0">
+          <li>
+            <a
+              class="fr-btn fr-btn--secondary"
+              href="https://github.com/ShallowRed/survey-kit/blob/main/docs/integration.md"
+              target="_blank"
+              rel="noopener"
+            >Lire le guide d'intégration</a>
+          </li>
+          <li>
+            <a
+              class="fr-btn fr-btn--secondary"
+              href="https://github.com/ShallowRed/survey-kit/tree/main/examples/integration-vue"
+              target="_blank"
+              rel="noopener"
+            >Voir l'exemple d'intégration</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

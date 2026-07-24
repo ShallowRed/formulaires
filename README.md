@@ -31,7 +31,13 @@ aucun serveur de calcul — tout s'exécute dans le navigateur.
 | [`@shallowred/survey-vue-dsfr`](packages/survey-vue-dsfr) | Composable headless `useSurvey` + composants DSFR | runtime de production d'aides-simplifiées, découplé de l'application |
 | [`@shallowred/survey-publicodes`](packages/survey-publicodes) | Projection réponses → situation publicodes, calcul d'éligibilité et de montants | service de production d'aides-simplifiées |
 | [`@shallowred/form-entreprise-innovation`](packages/form-entreprise-innovation) | Le formulaire déclaratif (78 questions, 65 conditions), copie conforme de la production | `public/forms/entreprise-innovation.json` |
-| [`apps/demo`](apps/demo) | Site de démonstration (Vite + Vue), déployé sur GitHub Pages | — |
+| [`apps/demo`](apps/demo) | Site de démonstration (vitrine), déployé sur GitHub Pages | — |
+| [`examples/integration-vue`](examples/integration-vue) | Exemple d'intégration du simulateur dans une application Vue existante | — |
+
+Deux lectures selon le besoin : la **vitrine** (le site de démo, pour voir le simulateur
+fonctionner) et le **[guide d'intégration](docs/integration.md)** (pour installer le
+simulateur sur un site existant — iframe, hébergement du build statique, ou intégration
+native Vue).
 
 Le comportement du formulaire est vérifié par des tests automatisés, rejoués sur le
 formulaire réel et sur le modèle publicodes publié.

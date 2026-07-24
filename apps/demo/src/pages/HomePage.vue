@@ -108,30 +108,16 @@
         </li>
       </ul>
 
-      <div class="fr-callout fr-mt-4w">
-        <h2 class="fr-callout__title fr-h6">
-          Reprendre ce site en local
-        </h2>
-        <pre class="demo-code">git clone https://github.com/ShallowRed/survey-kit
-cd survey-kit
-pnpm install
-pnpm --filter demo dev</pre>
-        <p class="fr-text--sm fr-mb-0">
-          Tout est statique : le site se déploie sur n'importe quel hébergement de
-          fichiers. Aucun serveur de calcul, aucune base de données.
-        </p>
-      </div>
+      <p class="fr-text--sm fr-mt-4w">
+        Ce site est une vitrine : tout est statique, sans serveur de calcul ni base de
+        données. Pour installer le simulateur sur votre propre site (iframe, hébergement
+        du build, ou intégration native Vue), suivre
+        <a
+          href="https://github.com/ShallowRed/survey-kit/blob/main/docs/integration.md"
+          target="_blank"
+          rel="noopener"
+        >le guide d'intégration</a>.
+      </p>
     </div>
   </div>
 </template>
-
-<style scoped>
-.demo-code {
-  background-color: var(--background-alt-grey);
-  border-radius: 8px;
-  padding: 1rem;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  overflow-x: auto;
-}
-</style>
