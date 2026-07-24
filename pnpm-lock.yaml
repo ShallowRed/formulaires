@@ -4,9 +4,37 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@publicodes/tools': npm:empty-npm-package@^1.0.0
+
 importers:
 
   .: {}
+
+  packages/survey-publicodes:
+    dependencies:
+      '@shallowred/survey-schema':
+        specifier: workspace:*
+        version: link:../survey-schema
+    devDependencies:
+      '@shallowred/publicodes-entreprise-innovation':
+        specifier: ^1.0.0
+        version: 1.0.0(publicodes@1.10.1)
+      '@types/node':
+        specifier: ^20.10.0
+        version: 20.19.43
+      publicodes:
+        specifier: ^1.9.1
+        version: 1.10.1
+      tsup:
+        specifier: ^8.0.1
+        version: 8.5.1(postcss@8.5.22)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+      vitest:
+        specifier: ^1.0.4
+        version: 1.6.1(@types/node@20.19.43)
 
   packages/survey-schema:
     dependencies:
@@ -548,6 +576,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@shallowred/publicodes-entreprise-innovation@1.0.0':
+    resolution: {integrity: sha512-bkdfWsFca23OnaHk5y2poy5su30UCBJEr7AeVQCzCyyyBaDGoB70FSWcwqUULAcc9HSxvqXT4kPM5lO03jN8bw==}
+    peerDependencies:
+      publicodes: ^1.9.0
+
   '@sinclair/typebox@0.27.12':
     resolution: {integrity: sha512-hhyNJ+nbR6ZR7pToHvllEFun9TL0sbL+tk/ON75lo+Xas054uez98qRbsuNt7MBCyZKK4+8Yli/OAGZhmfBZ/g==}
 
@@ -724,6 +757,9 @@ packages:
   doctrine@3.0.0:
     resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
     engines: {node: '>=6.0.0'}
+
+  empty-npm-package@1.0.0:
+    resolution: {integrity: sha512-q4Mq/+XO7UNDdMiPpR/LIBIW1Zl4V0Z6UT9aKGqIAnBCtCb3lvZJM1KbDbdzdC8fKflwflModfjR29Nt0EpcwA==}
 
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
@@ -1139,6 +1175,9 @@ packages:
   pretty-format@29.7.0:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  publicodes@1.10.1:
+    resolution: {integrity: sha512-NCEZgB5YfNyw5km71mYtpNdedeyt0EmB73X1h2k7bewwTLAlM/C6dsgRbw2R/si/nuob3Oh1wTswjM3A8Qjfrw==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -1725,6 +1764,11 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.62.2':
     optional: true
 
+  '@shallowred/publicodes-entreprise-innovation@1.0.0(publicodes@1.10.1)':
+    dependencies:
+      '@publicodes/tools': empty-npm-package@1.0.0
+      publicodes: 1.10.1
+
   '@sinclair/typebox@0.27.12': {}
 
   '@types/estree@1.0.9': {}
@@ -1913,6 +1957,8 @@ snapshots:
   doctrine@3.0.0:
     dependencies:
       esutils: 2.0.3
+
+  empty-npm-package@1.0.0: {}
 
   esbuild@0.21.5:
     optionalDependencies:
@@ -2369,6 +2415,8 @@ snapshots:
       '@jest/schemas': 29.6.3
       ansi-styles: 5.2.0
       react-is: 18.3.1
+
+  publicodes@1.10.1: {}
 
   punycode@2.3.1: {}
 

@@ -1,0 +1,53 @@
+{
+  "name": "@shallowred/survey-publicodes",
+  "version": "0.1.0",
+  "description": "Publicodes eligibility runner for survey-schema forms, extracted from aides-simplifiees",
+  "keywords": [
+    "publicodes",
+    "survey",
+    "eligibility",
+    "betagouv"
+  ],
+  "license": "MIT",
+  "author": "Lucas Poulain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShallowRed/survey-kit.git",
+    "directory": "packages/survey-publicodes"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@shallowred/survey-schema": "workspace:*"
+  },
+  "peerDependencies": {
+    "publicodes": "^1.9.0"
+  },
+  "devDependencies": {
+    "@shallowred/publicodes-entreprise-innovation": "^1.0.0",
+    "@types/node": "^20.10.0",
+    "publicodes": "^1.9.1",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4"
+  }
+}

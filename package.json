@@ -11,5 +11,10 @@
     "test": "pnpm -r --if-present test:run",
     "typecheck": "pnpm -r --if-present typecheck"
   },
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.10.0",
+  "pnpm": {
+    "overrides": {
+      "@publicodes/tools": "npm:empty-npm-package@^1.0.0"
+    }
+  }
 }
