@@ -4,7 +4,9 @@ Les briques ouvertes du simulateur d'aides à l'innovation
 (entreprise.service-public.fr), extraites d'[aides-simplifiées](https://github.com/betagouv/aides-simplifiees-app)
 et réassemblées en un site de démonstration autonome.
 
-**Démo en ligne : <https://shallowred.github.io/survey-kit/>**
+**Démo** : en local pour l'instant (`pnpm --filter demo dev`) — dépôt privé, hébergement
+public de la démo à décider (le build statique se déploie sur n'importe quel serveur de
+fichiers, voir [docs/integration.md](docs/integration.md)).
 
 ## Pourquoi
 
