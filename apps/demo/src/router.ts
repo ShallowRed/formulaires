@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import AssemblagePage from './pages/AssemblagePage.vue'
 import ExempleMinimalPage from './pages/ExempleMinimalPage.vue'
 import HomePage from './pages/HomePage.vue'
+import QuestionnaireV3Page from './pages/QuestionnaireV3Page.vue'
 import SimulateurPage from './pages/SimulateurPage.vue'
 
 export const router = createRouter({
@@ -12,6 +13,7 @@ export const router = createRouter({
     { path: '/simulateur', component: SimulateurPage },
     { path: '/exemple-minimal', component: ExempleMinimalPage },
     { path: '/assemblage', component: AssemblagePage },
+    { path: '/questionnaire-v3', component: QuestionnaireV3Page },
   ],
   scrollBehavior() {
     return { top: 0 }
