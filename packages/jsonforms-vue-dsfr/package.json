@@ -21,10 +21,26 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./styles": "./dist/style.css"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.json",
     "typecheck": "vue-tsc -p tsconfig.json --noEmit",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "pack:dist": "pnpm run build && pnpm pack --pack-destination ../../dist"
   },
   "dependencies": {
     "ajv": "^8.17.1",
