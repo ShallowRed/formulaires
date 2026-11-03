@@ -82,6 +82,16 @@ describe('a choice', () => {
     expect((await choice(6)).find('select').exists()).toBe(true)
   })
 
+  it('answers with the value of the radio button chosen', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { isole: { type: 'boolean', title: 'Parent isolé' } } }
+    const wrapper = await render(schema)
+    await wrapper.findAll('input[type="radio"]')[1].setValue(true)
+    await flushPromises()
+    const changes = wrapper.emitted('change') as [{ data: Record<string, unknown> }][]
+    expect(changes.at(-1)![0].data).toEqual({ isole: false })
+    expect((wrapper.findAll('input[type="radio"]')[1].element as HTMLInputElement).checked).toBe(true)
+  })
+
   it('follows the format option of the uischema', async () => {
     expect((await choice(2, 'select')).find('select').exists()).toBe(true)
     expect((await choice(8, 'radio')).findAll('input[type="radio"]')).toHaveLength(8)
@@ -96,6 +106,24 @@ describe('the label of a field', () => {
 
     const required = { type: 'Control', scope: '#/properties/nom', options: { required: true } } as UISchemaElement
     expect((await render(schema, {}, required)).find('label').text()).not.toContain('(optionnel)')
+  })
+
+  it('marks each required field with the required attribute, without an asterisk', async () => {
+    const fields: Record<string, JsonSchema> = {
+      nom: { type: 'string', title: 'Nom' },
+      personnes: { type: 'integer', title: 'Personnes' },
+      secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b', 'c', 'd', 'e', 'f'] },
+      statut: { type: 'string', title: 'Statut', enum: ['salarie', 'independant'] },
+      isole: { type: 'boolean', title: 'Parent isolé' },
+    }
+    const required = await render({ type: 'object', required: Object.keys(fields), properties: fields })
+    const fieldsOf = (wrapper: typeof required) => wrapper.findAll('input, select')
+    expect(fieldsOf(required).map(field => field.attributes('required'))).toEqual(Array.from({ length: 7 }, () => ''))
+    expect(required.text()).not.toContain('*')
+    expect(required.findAll('[required]').every(field => ['INPUT', 'SELECT'].includes(field.element.tagName))).toBe(true)
+
+    const optional = await render({ type: 'object', properties: fields })
+    expect(fieldsOf(optional).every(field => field.attributes('required') === undefined)).toBe(true)
   })
 
   it('ties the error message to the field', async () => {

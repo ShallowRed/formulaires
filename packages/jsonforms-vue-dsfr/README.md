@@ -61,3 +61,5 @@ Les composants n'affichent pas les options `notion`, `additionalNotions` et `aut
 Le composant d'un uischema `Categorization` affiche ses catégories en étapes. Au clic sur « Terminer », sur la dernière page, il émet l'événement DOM `categorization-complete`, avec `bubbles: true` et les réponses dans `detail` : l'application l'écoute sur un élément parent du formulaire. Le composant d'un élément `IntermediaryResults` liste les résultats qu'un moteur calculera : pour afficher les valeurs, l'application déclare son propre composant avec un rang supérieur.
 
 Dès l'affichage, un objet obligatoire et absent des données prend la valeur `{}` quand l'objet qui le contient existe, pour que chacun de ses champs signale sa réponse manquante : l'application reçoit cette valeur par l'événement `change`, avant toute saisie. Un objet qui ne contient aucune réponse quitte les données dès qu'il est masqué ou facultatif.
+
+Chaque champ obligatoire a l'attribut `required`, sans astérisque, et le libellé d'un champ facultatif se termine par « (optionnel) ». L'application pose l'attribut `novalidate` sur son formulaire, pour que le navigateur n'affiche pas ses propres messages.

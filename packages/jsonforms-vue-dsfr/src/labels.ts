@@ -1,3 +1,18 @@
+import type { JsonSchema } from '@jsonforms/core'
+
+// The props of a JSON Forms control that a field of this package reads
+export interface FieldControl {
+  id: string
+  label: string
+  required?: boolean
+  description?: string
+  data: unknown
+  errors: string
+  enabled: boolean
+  schema: JsonSchema
+  uischema: { options?: Record<string, unknown> }
+}
+
 interface LabelledControl {
   label: string
   required?: boolean

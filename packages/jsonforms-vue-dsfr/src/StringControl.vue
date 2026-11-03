@@ -3,7 +3,7 @@ import type { ControlElement } from '@jsonforms/core'
 import { DsfrInput, DsfrInputGroup } from '@gouvminint/vue-dsfr'
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue'
 import FieldHint from './FieldHint.vue'
-import { fieldLabel } from './labels'
+import { fieldLabel, isRequired } from './labels'
 
 const props = defineProps(rendererProps<ControlElement>())
 const { control, handleChange } = useJsonFormsControl(props)
@@ -22,6 +22,7 @@ const { control, handleChange } = useJsonFormsControl(props)
         :disabled="!control.enabled"
         :is-invalid="!!control.errors"
         :description-id="descriptionId"
+        :required="isRequired(control) || undefined"
         :placeholder="control.uischema.options?.placeholder"
         :type="control.schema.format === 'date' ? 'date' : 'text'"
         label-visible

@@ -3,7 +3,7 @@ import type { ControlElement } from '@jsonforms/core'
 import { DsfrInput, DsfrInputGroup } from '@gouvminint/vue-dsfr'
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue'
 import FieldHint from './FieldHint.vue'
-import { fieldLabel } from './labels'
+import { fieldLabel, isRequired } from './labels'
 
 const props = defineProps(rendererProps<ControlElement>())
 const { control, handleChange } = useJsonFormsControl(props)
@@ -26,6 +26,7 @@ function update(value: string | number | undefined) {
         :disabled="!control.enabled"
         :is-invalid="!!control.errors"
         :description-id="descriptionId"
+        :required="isRequired(control) || undefined"
         :placeholder="control.uischema.options?.placeholder"
         :step="control.schema.type === 'integer' ? 1 : 'any'"
         :min="control.schema.minimum"
