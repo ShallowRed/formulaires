@@ -47,7 +47,8 @@
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "validate-schemas": "ajv compile -s 'src/validation/schemas/*.json'",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "pack:dist": "pnpm run build && pnpm pack --pack-destination ../../dist"
   },
   "dependencies": {
     "ajv": "^8.12.0",

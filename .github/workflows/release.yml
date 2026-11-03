@@ -1,0 +1,36 @@
+name: Release
+
+# A tag <package folder>-v<version>, for example jsonforms-vue-dsfr-v0.1.0, attaches the archive of that package to a release
+on:
+  push:
+    tags: ['*-v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Check that the tag names a package at its version
+        id: package
+        run: |
+          folder="${GITHUB_REF_NAME%-v*}"
+          version="${GITHUB_REF_NAME##*-v}"
+          [[ -f "packages/$folder/package.json" ]] || { echo "::error::packages/$folder does not exist"; exit 1; }
+          declared="$(node -p "require('./packages/$folder/package.json').version")"
+          [[ "$declared" == "$version" ]] || { echo "::error::packages/$folder is at version $declared, not $version"; exit 1; }
+          echo "folder=$folder" >> "$GITHUB_OUTPUT"
+      - run: pnpm -r --filter './packages/*' --if-present build
+      - run: pnpm -r --if-present test:run
+      - run: pnpm --dir "packages/${{ steps.package.outputs.folder }}" run pack:dist
+      - run: gh release create "$GITHUB_REF_NAME" dist/*.tgz --title "$GITHUB_REF_NAME" --notes ""
+        env:
+          GH_TOKEN: ${{ github.token }}
