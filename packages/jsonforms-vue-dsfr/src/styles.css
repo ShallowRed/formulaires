@@ -16,3 +16,13 @@
 .jsonforms-dsfr-fieldset > .fr-fieldset__element > :last-child > .fr-fieldset {
   margin-bottom: 0;
 }
+
+/* The tooltip button of a choice follows its label, and the tooltip keeps the line breaks of its text */
+.jsonforms-dsfr-choice {
+  display: flex;
+  align-items: flex-start;
+}
+
+.jsonforms-dsfr-choice .fr-tooltip {
+  white-space: pre-line;
+}

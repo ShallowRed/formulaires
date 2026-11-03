@@ -92,6 +92,29 @@ describe('a choice', () => {
     expect((wrapper.findAll('input[type="radio"]')[1].element as HTMLInputElement).checked).toBe(true)
   })
 
+  it('shows the tooltip of a choice in a button after its label', async () => {
+    const choices = { a: { tooltip: 'Une activité industrielle transforme des matières.' } }
+    const radio: JsonSchema = { type: 'object', properties: { secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b'] } } }
+    const checkbox: JsonSchema = { type: 'object', properties: { secteur: { type: 'array', title: 'Secteur', uniqueItems: true, items: { type: 'string', enum: ['a', 'b'] } } } }
+    for (const schema of [radio, checkbox]) {
+      const uischema = { type: 'Control', scope: '#/properties/secteur', options: { choices } } as UISchemaElement
+      const wrapper = await render(schema, {}, uischema)
+      const tooltips = wrapper.findAll('button[aria-label]')
+      expect(tooltips.map(tooltip => tooltip.attributes('aria-label'))).toEqual(['Information sur « a »'])
+      expect(wrapper.find('[role="tooltip"]').text()).toBe('Une activité industrielle transforme des matières.')
+    }
+  })
+
+  it('keeps radio buttons for choices with tooltips, and names the button by its buttonLabel', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b', 'c', 'd', 'e', 'f'] } } }
+    const choices = { a: { tooltip: { buttonLabel: 'Définition de a', content: 'Une définition.' } } }
+    const withTooltips = await render(schema, {}, { type: 'Control', scope: '#/properties/secteur', options: { choices } } as UISchemaElement)
+    expect(withTooltips.findAll('input[type="radio"]')).toHaveLength(6)
+    expect(withTooltips.find('button[aria-label]').attributes('aria-label')).toBe('Définition de a')
+    const asSelect = await render(schema, {}, { type: 'Control', scope: '#/properties/secteur', options: { choices, format: 'select' } } as UISchemaElement)
+    expect(asSelect.find('select').exists()).toBe(true)
+  })
+
   it('follows the format option of the uischema', async () => {
     expect((await choice(2, 'select')).find('select').exists()).toBe(true)
     expect((await choice(8, 'radio')).findAll('input[type="radio"]')).toHaveLength(8)
