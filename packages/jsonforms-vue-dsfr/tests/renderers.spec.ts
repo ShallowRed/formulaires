@@ -218,3 +218,68 @@ describe('an error message', () => {
     expect((await render(schema, { pas: 3 })).text()).toContain('Cette réponse n\'est pas valide.')
   })
 })
+
+describe('a required group of fields', () => {
+  it('asks for each missing answer of the group in a blank form', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      required: ['menage'],
+      properties: {
+        menage: { type: 'object', title: 'Ménage', required: ['isole'], properties: { isole: { type: 'boolean', title: 'Parent isolé' } } },
+      },
+    }
+    const wrapper = await render(schema)
+    expect(wrapper.find('fieldset').text()).toContain('Répondez à cette question.')
+    const changes = wrapper.emitted('change') as [{ data: Record<string, unknown> }][]
+    expect(changes.at(-1)![0].data).toEqual({ menage: {} })
+  })
+
+  it('starts a required group only inside a group that holds an answer', async () => {
+    const adresse = { type: 'object', title: 'Adresse', required: ['ville'], properties: { ville: { type: 'string', title: 'Ville' } } }
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: { menage: { type: 'object', title: 'Ménage', required: ['adresse'], properties: { nom: { type: 'string', title: 'Nom' }, adresse } } },
+    }
+    const dataOf = async (data: Record<string, unknown>) => {
+      const changes = (await render(schema, data)).emitted('change') as [{ data: Record<string, unknown> }][]
+      return changes.at(-1)![0].data
+    }
+    expect(await dataOf({})).toEqual({})
+    expect(await dataOf({ menage: {} })).toEqual({})
+    expect(await dataOf({ menage: { nom: 'Dupont' } })).toEqual({ menage: { nom: 'Dupont', adresse: {} } })
+  })
+
+  it('removes an empty group once it is hidden', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: {
+        isole: { type: 'boolean', title: 'Parent isolé' },
+        enfants: { type: 'object', title: 'Enfants', required: ['nombre'], properties: { nombre: { type: 'integer', title: 'Nombre' } } },
+      },
+    }
+    const uischema = {
+      type: 'VerticalLayout',
+      elements: [
+        { type: 'Control', scope: '#/properties/isole' },
+        { type: 'Control', scope: '#/properties/enfants', options: { required: true }, rule: { effect: 'SHOW', condition: { scope: '#/properties/isole', schema: { const: true } } } },
+      ],
+    } as UISchemaElement
+    const wrapper = await render(schema, { isole: true }, uischema)
+    const lastData = () => (wrapper.emitted('change') as [{ data: Record<string, unknown> }][]).at(-1)![0].data
+    expect(lastData()).toEqual({ isole: true, enfants: {} })
+    await wrapper.setProps({ data: { isole: false, enfants: {} } })
+    await flushPromises()
+    expect(lastData()).toEqual({ isole: false })
+  })
+
+  it('leaves an optional group absent', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: {
+        menage: { type: 'object', title: 'Ménage', required: ['isole'], properties: { isole: { type: 'boolean', title: 'Parent isolé' } } },
+      },
+    }
+    const changes = (await render(schema)).emitted('change') as [{ data: Record<string, unknown> }][]
+    expect(changes.at(-1)![0].data).toEqual({})
+  })
+})
