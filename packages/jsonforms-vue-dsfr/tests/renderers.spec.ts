@@ -327,3 +327,17 @@ describe('a required group of fields', () => {
     expect(changes.at(-1)![0].data).toEqual({})
   })
 })
+
+describe('a schema with conditions', () => {
+  it('renders its fields when no uischema comes with it', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      required: ['statut'],
+      properties: { statut: { type: 'string', title: 'Statut', enum: ['salarie', 'independant'] }, revenus: { type: 'string', title: 'Revenus' } },
+      allOf: [{ if: { required: ['statut'], properties: { statut: { const: 'independant' } } }, then: { required: ['revenus'] } }],
+    }
+    const text = (await render(schema, { statut: 'independant' })).text()
+    expect(text).toContain('Statut')
+    expect(text).toContain('Revenus')
+  })
+})

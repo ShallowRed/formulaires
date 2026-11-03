@@ -50,7 +50,11 @@ const detailUiSchema = computed<UISchemaElement>(() => findUISchema(
   control.value.uischema.scope,
   control.value.path,
   () => {
-    const generated = Generate.uiSchema(control.value.schema, 'Group', undefined, control.value.rootSchema)
+    // For a schema with combinators, JSON Forms generates one control of the whole object, which would render this
+    // object again: the fields come from its properties only, so that a field declared in a branch of anyOf or oneOf
+    // is left out, and allOf keeps constraining the properties
+    const { allOf, anyOf, oneOf, ...fields } = control.value.schema
+    const generated = Generate.uiSchema(fields, 'Group', undefined, control.value.rootSchema)
     if (control.value.path) {
       (generated as GroupLayout).label = control.value.label
     }
@@ -67,7 +71,6 @@ const detailUiSchema = computed<UISchemaElement>(() => findUISchema(
 <template>
   <DispatchRenderer
     v-if="control.visible"
-    :visible="control.visible"
     :enabled="control.enabled"
     :schema="control.schema"
     :uischema="detailUiSchema"
