@@ -1,0 +1,18 @@
+/* A group or a list is spaced like a DSFR input group, whatever it contains: the DSFR gives a
+   fieldset the bottom margin of a form block, and nested fieldsets would add theirs */
+.fr-fieldset.jsonforms-dsfr-fieldset {
+  margin-bottom: 0;
+}
+
+.fr-fieldset.jsonforms-dsfr-fieldset:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
+.jsonforms-dsfr-fieldset > .fr-fieldset__element:last-of-type {
+  margin-bottom: 0;
+}
+
+/* The fieldset of the last radio or checkbox question ends the group */
+.jsonforms-dsfr-fieldset > .fr-fieldset__element > :last-child > .fr-fieldset {
+  margin-bottom: 0;
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@shallowred/jsonforms-vue-dsfr",
+  "version": "0.1.0",
+  "description": "DSFR renderers for JSON Forms in Vue 3, with repeatable lists, certifiable data and legal basis annotations",
+  "keywords": [
+    "jsonforms",
+    "json-schema",
+    "form",
+    "vue",
+    "dsfr",
+    "betagouv"
+  ],
+  "license": "MIT",
+  "author": "Lucas Poulain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShallowRed/survey-kit.git",
+    "directory": "packages/jsonforms-vue-dsfr"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "peerDependencies": {
+    "@gouvminint/vue-dsfr": "^8.11.0",
+    "@jsonforms/core": "^3.8.0",
+    "@jsonforms/vue": "^3.8.0",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@gouvminint/vue-dsfr": "8.11.0",
+    "@jsonforms/core": "3.8.0",
+    "@jsonforms/vue": "3.8.0",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vue/test-utils": "^2.5.1",
+    "happy-dom": "^20.14.6",
+    "typescript": "^5.3.3",
+    "vite": "^5.4.21",
+    "vitest": "^1.6.1",
+    "vue": "^3.5.18",
+    "vue-tsc": "^3.3.14"
+  }
+}
