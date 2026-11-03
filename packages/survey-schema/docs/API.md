@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API documentation for @betagouv/survey-schema.
+Complete API documentation for @shallowred/survey-schema.
 
 ## Table of Contents
 
@@ -411,7 +411,7 @@ isDeepStep(step: SurveyStepUnion): step is SurveyDeepStep
 ### Version Comparison
 
 ```typescript
-import { compareVersions } from '@betagouv/survey-schema'
+import { compareVersions } from '@shallowred/survey-schema'
 
 compareVersions('2.0.0', '1.9.0') // 1 (greater)
 compareVersions('1.0.0', '1.0.0') // 0 (equal)

@@ -12,7 +12,7 @@ import {
   RadioQuestionBuilder,
   StepBuilder,
   SurveySchemaBuilder,
-} from '@betagouv/survey-schema'
+} from '@shallowred/survey-schema'
 
 // Build questions using specialized builders
 const ageQuestion = new NumberQuestionBuilder('age')

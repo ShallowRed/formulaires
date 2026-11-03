@@ -1,6 +1,6 @@
 # Survey Schema Package Examples
 
-This directory contains example schemas demonstrating various features of the `@betagouv/survey-schema` package.
+This directory contains example schemas demonstrating various features of the `@shallowred/survey-schema` package.
 
 ## Examples
 
@@ -62,7 +62,7 @@ A simple survey with basic question types and conditional logic.
 You can use these examples with the survey-schema package:
 
 ```typescript
-import { SchemaNormalizer, ConditionEvaluator, AnswerValidator } from '@betagouv/survey-schema'
+import { SchemaNormalizer, ConditionEvaluator, AnswerValidator } from '@shallowred/survey-schema'
 import basicSchema from './basic-survey.json'
 
 // Normalize the schema

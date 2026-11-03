@@ -237,6 +237,5 @@ MIT © BetaGouv
 
 ## Support
 
-- [Documentation](https://github.com/betagouv/aides-simplifiees-app/tree/main/packages/survey-schema)
-- [Issues](https://github.com/betagouv/aides-simplifiees-app/issues)
-- [Discussions](https://github.com/betagouv/aides-simplifiees-app/discussions)
+- [Documentation](https://github.com/ShallowRed/survey-kit/tree/main/packages/survey-schema)
+- [Issues](https://github.com/ShallowRed/survey-kit/issues)
