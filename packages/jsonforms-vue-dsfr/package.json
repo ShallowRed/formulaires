@@ -56,6 +56,7 @@
     "@gouvminint/vue-dsfr": "8.11.0",
     "@jsonforms/core": "3.8.0",
     "@jsonforms/vue": "3.8.0",
+    "@shallowred/survey-schema": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.5.1",
     "happy-dom": "^20.14.6",

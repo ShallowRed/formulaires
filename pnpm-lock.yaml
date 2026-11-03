@@ -124,6 +124,9 @@ importers:
       '@jsonforms/vue':
         specifier: 3.8.0
         version: 3.8.0(@jsonforms/core@3.8.0)(vue@3.5.40(typescript@5.9.3))
+      '@shallowred/survey-schema':
+        specifier: workspace:*
+        version: link:../survey-schema
       '@vitejs/plugin-vue':
         specifier: ^5.2.4
         version: 5.2.4(vite@5.4.21(@types/node@20.19.43))(vue@3.5.40(typescript@5.9.3))

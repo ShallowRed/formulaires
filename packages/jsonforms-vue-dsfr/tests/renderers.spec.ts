@@ -1,11 +1,12 @@
 import type { JsonSchema, UISchemaElement } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
 import { flushPromises, mount } from '@vue/test-utils'
+import { compileV3ToJsonForms, migrateV2ToV3 } from '@shallowred/survey-schema'
 import { describe, expect, it } from 'vitest'
-import { createAjv2020, dsfrRenderers } from '../src/index'
+import { createAjv2020, dsfrI18n, dsfrRenderers } from '../src/index'
 
 async function render(schema: JsonSchema, data: Record<string, unknown> = {}, uischema?: UISchemaElement) {
-  const wrapper = mount(JsonForms, { props: { schema, uischema, data, renderers: dsfrRenderers, ajv: createAjv2020() } })
+  const wrapper = mount(JsonForms, { props: { schema, uischema, data, renderers: dsfrRenderers, ajv: createAjv2020(), i18n: dsfrI18n } })
   await flushPromises()
   return wrapper
 }
@@ -170,5 +171,50 @@ describe('a questionnaire in steps', () => {
     await flushPromises()
     await button(wrapper, 'Terminer').trigger('click')
     expect(completed).toEqual([{ nom: 'Camille', age: 30 }])
+  })
+})
+
+describe('an error message', () => {
+  it('asks for a missing answer, required or under a condition, and for one exclusive choice', async () => {
+    const { questionnaire, dataSchema } = migrateV2ToV3({
+      id: 'statut',
+      version: '1.0.0',
+      title: 'Statut',
+      description: '',
+      engine: 'publicodes',
+      forceRefresh: false,
+      dispositifs: [],
+      steps: [{ id: 'step', title: 'Étape', pages: [{ id: 'page', questions: [
+        { id: 'statut', title: 'Statut', type: 'radio', choices: [{ id: 'salarie', title: 'Salarié' }, { id: 'independant', title: 'Indépendant' }] },
+        { id: 'revenus', title: 'Revenus', type: 'radio', choices: [{ id: 'bic', title: 'BIC' }, { id: 'bnc', title: 'BNC' }], visibleWhen: 'statut.includes(\'independant\')' },
+        { id: 'aides', title: 'Aides', type: 'checkbox', choices: [{ id: 'cir', title: 'CIR' }, { id: 'aucune', title: 'Aucune', exclusive: true }] },
+      ] }] }],
+    })
+    const { schema, uischema } = compileV3ToJsonForms(questionnaire, dataSchema)
+    const messages = async (data: Record<string, unknown>) =>
+      (await render(schema as JsonSchema, data, uischema as UISchemaElement)).findAll('.fr-message--error, .fr-error-text').map(message => message.text())
+
+    expect(await messages({})).toEqual(['Répondez à cette question.', 'Répondez à cette question.'])
+    expect(await messages({ statut: 'independant', aides: ['cir', 'aucune'] })).toEqual(['Répondez à cette question.', 'Choisissez au plus 1 réponse.'])
+  })
+
+  it('gives the expected value of a number, a date or a list', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: {
+        personnes: { type: 'integer', title: 'Personnes', minimum: 1 },
+        naissance: { type: 'string', title: 'Naissance', format: 'date' },
+        foyers: { type: 'array', title: 'Foyers', minItems: 2, items: { type: 'object', properties: {} } },
+      },
+    }
+    const text = (await render(schema, { personnes: 0, naissance: 'demain', foyers: [{}] })).text()
+    expect(text).toContain('Saisissez un nombre supérieur ou égal à 1.')
+    expect(text).toContain('Saisissez une date valide, par exemple 14/07/2024.')
+    expect(text).toContain('Ajoutez au moins 2 éléments.')
+  })
+
+  it('stays in French for a keyword without its own message', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { pas: { type: 'number', title: 'Pas', multipleOf: 5 } } }
+    expect((await render(schema, { pas: 3 })).text()).toContain('Cette réponse n\'est pas valide.')
   })
 })

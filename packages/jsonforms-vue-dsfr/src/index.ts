@@ -30,6 +30,7 @@ import VerticalLayout from './VerticalLayout.vue'
 import './styles.css'
 
 export { createAjv2020 } from './ajv'
+export { dsfrI18n } from './i18n'
 
 // An array of enumerated values with unique items is a set of checkboxes, not a repeatable list
 const isMultiEnumControl = and(

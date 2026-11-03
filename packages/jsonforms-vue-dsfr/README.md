@@ -17,7 +17,7 @@ L'application installe aussi `vue`, `@jsonforms/core` et `@jsonforms/vue` en ver
 ```vue
 <script setup lang="ts">
 import { JsonForms } from '@jsonforms/vue'
-import { createAjv2020, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
+import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
 import '@shallowred/jsonforms-vue-dsfr/styles'
 
 const ajv = createAjv2020()
@@ -29,12 +29,15 @@ const ajv = createAjv2020()
     :data="data"
     :renderers="dsfrRenderers"
     :ajv="ajv"
+    :i18n="dsfrI18n"
     @change="onChange"
   />
 </template>
 ```
 
 JSON Forms crée par défaut une instance Ajv draft-07, qui refuse un schéma 2020-12 : `createAjv2020` crée l'instance qui le valide.
+
+`dsfrI18n` écrit les messages d'erreur en français. Comme le demande le DSFR, le message d'un nombre, d'une date ou d'une adresse électronique donne un exemple de la valeur attendue. JSON Forms demande d'abord à `translate` une clé propre au champ, par exemple `foyers.error.minItems` : pour remplacer un message, l'application répond à cette clé et passe les autres à `dsfrI18n.translate`.
 
 Pour ajouter ses propres composants, l'application gèle sa liste comme `dsfrRenderers`, ainsi que le [README de `@jsonforms/vue`](https://github.com/eclipsesource/jsonforms/blob/master/packages/vue/README.md) le recommande : `Object.freeze([...dsfrRenderers, { renderer, tester }])`.
 
