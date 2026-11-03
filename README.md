@@ -4,10 +4,6 @@ Les briques ouvertes du simulateur d'aides à l'innovation
 (entreprise.service-public.fr), extraites d'[aides-simplifiées](https://github.com/betagouv/aides-simplifiees-app)
 et réassemblées en un site de démonstration autonome.
 
-**Démo** : en local pour l'instant (`pnpm --filter demo dev`) — dépôt privé, hébergement
-public de la démo à décider (le build statique se déploie sur n'importe quel serveur de
-fichiers, voir [docs/integration.md](docs/integration.md)).
-
 ## Pourquoi
 
 Le simulateur d'aides à l'innovation repose sur une architecture en trois couches,
@@ -33,8 +29,9 @@ aucun serveur de calcul — tout s'exécute dans le navigateur.
 | [`@shallowred/survey-vue-dsfr`](packages/survey-vue-dsfr) | Composable headless `useSurvey` + composants DSFR | runtime de production d'aides-simplifiées, découplé de l'application |
 | [`@shallowred/survey-publicodes`](packages/survey-publicodes) | Projection réponses → situation publicodes, calcul d'éligibilité et de montants | service de production d'aides-simplifiées |
 | [`@shallowred/form-entreprise-innovation`](packages/form-entreprise-innovation) | Le formulaire déclaratif (78 questions, 65 conditions), copie conforme de la production | `public/forms/entreprise-innovation.json` |
-| [`apps/demo`](apps/demo) | Site de démonstration (vitrine), déployé sur GitHub Pages | — |
-| [`examples/integration-vue`](examples/integration-vue) | Exemple d'intégration du simulateur dans une application Vue existante | — |
+| [`@shallowred/jsonforms-vue-dsfr`](packages/jsonforms-vue-dsfr) | Composants DSFR pour JSON Forms : champs, listes répétables, étapes, base légale et donnée certifiable | écrit pour le format v3 de survey-schema, sur le cœur de JSON Forms |
+| [`apps/demo`](apps/demo) | Site de démonstration (vitrine) | ce dépôt |
+| [`examples/integration-vue`](examples/integration-vue) | Exemple d'intégration du simulateur dans une application Vue existante | ce dépôt |
 
 Deux lectures selon le besoin : la **vitrine** (le site de démo, pour voir le simulateur
 fonctionner) et le **[guide d'intégration](docs/integration.md)** (pour installer le
