@@ -204,7 +204,7 @@ describe('answerValidator', () => {
     })
 
     it('should reject invalid object', () => {
-      const result = validator.validateAnswer(question, { invalid: 'data' })
+      const result = validator.validateAnswer(question, { invalid: 'data' } as never)
       expect(result.valid).toBe(false)
       expect(result.errors?.[0].code).toBe('INVALID_TYPE')
     })

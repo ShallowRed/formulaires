@@ -2,7 +2,7 @@
  * Validation exports
  */
 
-export { SchemaValidator } from './schema-validator.js'
+export { SchemaValidator, validateSurveySchemaV3 } from './schema-validator.js'
 export type {
   SchemaValidationError,
   SchemaValidationResult,

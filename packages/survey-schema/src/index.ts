@@ -15,5 +15,8 @@ export * from './types/index.js'
 // Utils
 export * from './utils/index.js'
 
+// survey-schema v3
+export * from './v3/index.js'
+
 // Validation
 export * from './validation/index.js'

@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://betagouv.github.io/survey-schema/v3.0.0/schema.json",
+  "title": "BetaGouv Survey Schema",
+  "description": "JSON Schema for BetaGouv Survey Definition Format v3.0.0",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "version",
+    "title",
+    "data",
+    "steps"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "data": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "JSON Schema 2020-12 of the answers, which every scope points into."
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "pages"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "pages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/page"
+          }
+        }
+      }
+    },
+    "page": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "questions"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "questions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/question"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "type",
+            "outputs"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "const": "intermediary-results"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "title"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "question": {
+      "type": "object",
+      "required": [
+        "scope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scope": {
+          "$ref": "#/$defs/pointer"
+        },
+        "visibleWhen": {
+          "$ref": "#/$defs/condition"
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "tooltip": {
+          "$ref": "#/$defs/tooltip"
+        },
+        "notion": {
+          "$ref": "#/$defs/notion"
+        },
+        "additionalNotions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/notion"
+          }
+        },
+        "choices": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tooltip": {
+                "$ref": "#/$defs/tooltip"
+              },
+              "exclusive": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "autocomplete": {
+          "type": "object",
+          "required": [
+            "source"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "source": {
+              "type": "string",
+              "description": "Name of a suggestion source that the renderer provides."
+            }
+          }
+        }
+      }
+    },
+    "pointer": {
+      "type": "string",
+      "pattern": "^#(/properties/[^/]+)+$"
+    },
+    "tooltip": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "required": [
+            "content"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "buttonLabel": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "notion": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "buttonLabel": {
+          "type": "string"
+        }
+      }
+    },
+    "condition": {
+      "oneOf": [
+        {
+          "description": "Holds when the answer designated by scope exists and is valid against schema.",
+          "type": "object",
+          "required": [
+            "scope",
+            "schema"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "scope": {
+              "$ref": "#/$defs/pointer"
+            },
+            "schema": {
+              "$ref": "https://json-schema.org/draft/2020-12/schema"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "allOf"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "allOf": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/condition"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "anyOf"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "anyOf": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/condition"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "not"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/condition"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

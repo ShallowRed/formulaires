@@ -4,9 +4,11 @@
  */
 
 import Ajv, { type ErrorObject } from 'ajv'
+import Ajv2020 from 'ajv/dist/2020.js'
 import addFormats from 'ajv-formats'
 import type { SurveySchema } from '../types/schema.js'
 import schemaV2 from './schemas/v2.0.0.schema.json'
+import schemaV3 from './schemas/v3.0.0.schema.json'
 
 /**
  * Validation error with detailed context
@@ -77,7 +79,7 @@ export interface SchemaValidatorOptions {
  * ```
  */
 export class SchemaValidator {
-  private readonly ajv: Ajv
+  private readonly ajv: Ajv | Ajv2020
   private readonly schemaVersion: string
   private readonly validateFunction: any
 
@@ -85,14 +87,16 @@ export class SchemaValidator {
     this.schemaVersion = options.schemaVersion || '2.0.0'
 
     // Initialize Ajv with options
-    this.ajv = new Ajv({
+    const ajvOptions = {
       allErrors: true,
       verbose: true,
       removeAdditional: options.removeAdditional || false,
       coerceTypes: options.coerceTypes || false,
       useDefaults: options.useDefaults !== false,
       strict: false, // Allow additional JSON Schema features
-    })
+    }
+    // v3 declares JSON Schema 2020-12
+    this.ajv = this.schemaVersion === '3.0.0' ? new Ajv2020(ajvOptions) : new Ajv(ajvOptions)
 
     // Add format validators (email, date, etc.)
     addFormats(this.ajv)
@@ -210,6 +214,8 @@ export class SchemaValidator {
     switch (version) {
       case '2.0.0':
         return schemaV2
+      case '3.0.0':
+        return schemaV3
       default:
         throw new Error(`Unsupported schema version: ${version}`)
     }
@@ -246,4 +252,15 @@ export class SchemaValidator {
 
     return summary.join('\n')
   }
+}
+
+let validatorV3: SchemaValidator | undefined
+
+/**
+ * Validate a survey-schema v3 questionnaire against the v3 meta-schema, without
+ * writing defaults into it
+ */
+export function validateSurveySchemaV3(questionnaire: unknown): SchemaValidationResult {
+  validatorV3 ??= new SchemaValidator({ schemaVersion: '3.0.0', useDefaults: false })
+  return validatorV3.validate(questionnaire)
 }

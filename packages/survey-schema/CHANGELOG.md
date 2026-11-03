@@ -37,6 +37,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- survey-schema v3 format: meta-schema `src/validation/schemas/v3.0.0.schema.json`, `validateSurveySchemaV3`, `SchemaValidator` with `schemaVersion: '3.0.0'` and the `SurveySchemaV3` types
+- `migrateV2ToV3` converts a v2 form into a v3 questionnaire and the JSON Schema 2020-12 of its answers, and lists in `warnings` what the conversion drops
+- `isQuestionVisible`, `isPageVisible`, `visibleQuestions` and `missingRequiredAnswers` evaluate v3 conditions with Ajv2020
+- `compileV3ToJsonForms` produces the schema and uischema that `@jsonforms/core` renders
+
+### Changed
+- `typecheck` covers the tests
+
 ### Planned
 - React adapter package
 - Svelte adapter package
