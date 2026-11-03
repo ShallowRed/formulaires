@@ -65,3 +65,5 @@ Sans uischema, un objet affiche les champs de ses `properties`. Les conditions d
 Dès l'affichage, un objet obligatoire et absent des données prend la valeur `{}` quand l'objet qui le contient existe, pour que chacun de ses champs signale sa réponse manquante : l'application reçoit cette valeur par l'événement `change`, avant toute saisie. Un objet qui ne contient aucune réponse quitte les données dès qu'il est masqué ou facultatif.
 
 Chaque champ obligatoire a l'attribut `required`, sans astérisque, et le libellé d'un champ facultatif se termine par « (optionnel) ». L'application pose l'attribut `novalidate` sur son formulaire, pour que le navigateur n'affiche pas ses propres messages.
+
+Le formulaire, et chaque page d'un questionnaire en étapes, s'ouvre par la mention « Sauf mention contraire, tous les champs sont obligatoires. ». Pour un groupe de cases à cocher, HTML et ARIA n'ont pas d'attribut qui demande au moins une case cochée : cette mention et « (optionnel) » sont la seule indication.

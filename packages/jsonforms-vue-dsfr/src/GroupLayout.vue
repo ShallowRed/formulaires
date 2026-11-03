@@ -2,12 +2,16 @@
 import type { GroupLayout } from '@jsonforms/core'
 import { DispatchRenderer, rendererProps, useJsonFormsLayout } from '@jsonforms/vue'
 import FieldHint from './FieldHint.vue'
+import RequiredFieldsNotice from './RequiredFieldsNotice.vue'
+import { useRequiredNotice } from './notice'
 
 const props = defineProps(rendererProps<GroupLayout>())
 const { layout } = useJsonFormsLayout(props)
+const showsNotice = useRequiredNotice(props.uischema, () => layout.value.path)
 </script>
 
 <template>
+  <RequiredFieldsNotice v-if="layout.visible && showsNotice(layout.uischema)" />
   <fieldset
     v-if="layout.visible"
     class="fr-fieldset jsonforms-dsfr-fieldset"

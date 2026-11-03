@@ -201,6 +201,7 @@ describe('a questionnaire in steps', () => {
     const completed: unknown[] = []
     wrapper.element.addEventListener('categorization-complete', event => completed.push((event as CustomEvent).detail))
 
+    expect(wrapper.text()).toContain('Sauf mention contraire, tous les champs sont obligatoires.')
     await button(wrapper, 'Suivant').trigger('click')
     expect(wrapper.text()).toContain('Il manque des réponses sur cette page')
     expect(wrapper.find('h3').text()).toBe('Identité')
@@ -339,5 +340,49 @@ describe('a schema with conditions', () => {
     const text = (await render(schema, { statut: 'independant' })).text()
     expect(text).toContain('Statut')
     expect(text).toContain('Revenus')
+  })
+})
+
+describe('the notice of the required fields', () => {
+  const notice = 'Sauf mention contraire, tous les champs sont obligatoires.'
+
+  it('opens the form once, whatever layouts it nests', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { nom: { type: 'string', title: 'Nom' }, age: { type: 'integer', title: 'Âge' } } }
+    const uischema = {
+      type: 'VerticalLayout',
+      elements: [
+        { type: 'VerticalLayout', elements: [{ type: 'Control', scope: '#/properties/nom' }] },
+        { type: 'Control', scope: '#/properties/age' },
+      ],
+    } as UISchemaElement
+    const text = (await render(schema, {}, uischema)).text()
+    expect(text.startsWith(notice)).toBe(true)
+    expect(text.split(notice)).toHaveLength(2)
+  })
+
+  it('opens a form whose root is a group, or steps inside a layout, once', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { nom: { type: 'string', title: 'Nom' } } }
+    const control = { type: 'Control', scope: '#/properties/nom' }
+    const group = { type: 'Group', label: 'Identité', elements: [control] } as UISchemaElement
+    const steps = { type: 'VerticalLayout', elements: [{ type: 'Categorization', elements: [{ type: 'Category', label: 'Identité', elements: [control] }] }] } as UISchemaElement
+    for (const uischema of [group, steps]) {
+      expect((await render(schema, {}, uischema)).text().split(notice)).toHaveLength(2)
+    }
+  })
+
+  it('leaves out a page or a form without any visible field', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { nom: { type: 'string', title: 'Nom' } } }
+    const hidden = { type: 'Control', scope: '#/properties/nom', rule: { effect: 'SHOW', condition: { scope: '#/properties/nom', schema: { const: 'jamais' } } } }
+    const pages = [
+      [{ type: 'Label', text: 'Vos résultats' }],
+      [hidden],
+    ]
+    for (const elements of pages) {
+      const steps = { type: 'Categorization', elements: [{ type: 'Category', label: 'Page', elements }] } as UISchemaElement
+      const layout = { type: 'VerticalLayout', elements } as UISchemaElement
+      for (const uischema of [steps, layout]) {
+        expect((await render(schema, {}, uischema)).text()).not.toContain(notice)
+      }
+    }
   })
 })
