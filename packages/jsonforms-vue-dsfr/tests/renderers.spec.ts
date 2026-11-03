@@ -44,6 +44,22 @@ describe('a repeatable list', () => {
     expect(button(wrapper, 'Supprimer « Foyer 1 »').attributes('disabled')).toBeUndefined()
   })
 
+  it('moves the keyboard focus to the new item, then to the add button once an item is removed', async () => {
+    const wrapper = mount(JsonForms, {
+      props: { schema, data: { foyers: [{}] }, renderers: dsfrRenderers, ajv: createAjv2020(), i18n: dsfrI18n },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    await button(wrapper, 'Ajouter').trigger('click')
+    await flushPromises()
+    expect(document.activeElement).toBe(wrapper.findAll('.array-item')[1].find('input').element)
+
+    await button(wrapper, 'Supprimer « Foyer 2 »').trigger('click')
+    await flushPromises()
+    expect(document.activeElement).toBe(button(wrapper, 'Ajouter').element)
+    wrapper.unmount()
+  })
+
   it('shows the annotations of the list', async () => {
     const foyers = (schema as { properties: Record<string, object> }).properties.foyers
     const annotated = { ...schema, properties: { foyers: { ...foyers, 'x-legal-basis': { title: 'Note de service, page 8' } } } } as JsonSchema

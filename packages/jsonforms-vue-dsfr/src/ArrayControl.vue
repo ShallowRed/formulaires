@@ -3,7 +3,7 @@ import type { ControlElement, JsonSchema, UISchemaElement } from '@jsonforms/cor
 import { composePaths, createDefaultValue, findUISchema, Resolve } from '@jsonforms/core'
 import { DsfrButton } from '@gouvminint/vue-dsfr'
 import { DispatchRenderer, rendererProps, useJsonFormsArrayControl } from '@jsonforms/vue'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import FieldHint from './FieldHint.vue'
 import { fieldLabel } from './labels'
 
@@ -28,22 +28,31 @@ const itemUiSchema = computed<UISchemaElement>(() => findUISchema(
 
 // Screen readers hear each change of the list, which a sighted person sees at once
 const announcement = ref('')
+const listElement = ref<HTMLFieldSetElement | null>(null)
+const addButton = ref<InstanceType<typeof DsfrButton> | null>(null)
 
-function add() {
+// The keyboard focus goes on to the first field of a new item, and to the add button once an item is removed
+async function add() {
   const position = items.value.length + 1
   addItem(control.value.path, createDefaultValue(control.value.schema, control.value.rootSchema))()
   announcement.value = `${itemTitle.value} ${position} ajouté`
+  await nextTick()
+  const item = listElement.value?.querySelectorAll(':scope > .array-item')[position - 1]
+  item?.querySelector<HTMLElement>('input, select, textarea')?.focus()
 }
 
-function remove(index: number) {
+async function remove(index: number) {
   removeItems?.(control.value.path, [index])()
   announcement.value = `${itemTitle.value} ${index + 1} supprimé`
+  await nextTick()
+  addButton.value?.focus()
 }
 </script>
 
 <template>
   <fieldset
     v-if="control.visible"
+    ref="listElement"
     class="fr-fieldset jsonforms-dsfr-fieldset"
   >
     <legend class="fr-fieldset__legend">
@@ -85,6 +94,7 @@ function remove(index: number) {
         {{ control.errors }}
       </p>
       <DsfrButton
+        ref="addButton"
         :label="`Ajouter un élément pour « ${control.label} »`"
         :disabled="!control.enabled || maxItemsReached"
         icon="fr-icon-add-line"
