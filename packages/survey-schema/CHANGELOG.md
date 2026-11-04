@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0] - 2025-01-19
 
 ### Added
-- **Initial Release**: Standalone `@betagouv/survey-schema` package
+- **Initial Release**: Standalone `@shallowred/survey-schema` package
 - **Type System**: Complete TypeScript definitions with type guards
 - **JSON Schema Validation**: v2.0.0 schema with Ajv validator
 - **Core Business Logic**:

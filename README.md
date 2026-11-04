@@ -4,6 +4,8 @@ Les briques ouvertes du simulateur d'aides à l'innovation
 (entreprise.service-public.fr), extraites d'[aides-simplifiées](https://github.com/betagouv/aides-simplifiees-app)
 et réassemblées en un site de démonstration autonome.
 
+Démo en ligne : <https://shallowred.github.io/survey-kit/>
+
 ## Pourquoi
 
 Le simulateur d'aides à l'innovation repose sur une architecture en trois couches,

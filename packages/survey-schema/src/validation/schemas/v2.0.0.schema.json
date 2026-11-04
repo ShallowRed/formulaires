@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://betagouv.github.io/survey-schema/v2.0.0/schema.json",
+  "$id": "urn:survey-schema:v2.0.0",
   "title": "BetaGouv Survey Schema",
   "description": "JSON Schema for BetaGouv Survey Definition Format v2.0.0",
   "type": "object",
