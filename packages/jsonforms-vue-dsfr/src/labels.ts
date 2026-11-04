@@ -28,3 +28,29 @@ export function isRequired(control: Omit<LabelledControl, 'label'>): boolean {
 export function fieldLabel(control: LabelledControl): string {
   return isRequired(control) ? control.label : `${control.label} (optionnel)`
 }
+
+// survey-schema writes a tooltip as a string or as `{ buttonLabel, content }`
+export function tooltipText(tooltip: unknown): string | undefined {
+  return typeof tooltip === 'string' ? tooltip : (tooltip as { content?: string } | undefined)?.content
+}
+
+// The presentation of each choice, keyed by its value in the `choices` option of the uischema
+export interface ChoiceOptions {
+  tooltip?: string | { buttonLabel?: string, content?: string }
+  exclusive?: boolean
+}
+
+export function choicesOf(options: Record<string, unknown> | undefined): Record<string, ChoiceOptions> {
+  return (options?.choices ?? {}) as Record<string, ChoiceOptions>
+}
+
+// The button is named by `buttonLabel`, or else after the label of the option
+export function choiceTooltip(options: Record<string, unknown> | undefined, value: unknown, label: string): { content: string, buttonLabel: string } | undefined {
+  const tooltip = choicesOf(options)[String(value)]?.tooltip
+  const content = tooltipText(tooltip)
+  if (!content) {
+    return undefined
+  }
+  const buttonLabel = typeof tooltip === 'object' && tooltip.buttonLabel ? tooltip.buttonLabel : `Information sur « ${label} »`
+  return { content, buttonLabel }
+}

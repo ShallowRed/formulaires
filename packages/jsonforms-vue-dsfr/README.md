@@ -53,10 +53,11 @@ Dans les options du uischema :
 
 - `format`, `radio` ou `select` => forme d'un choix, qui vaut par défaut des boutons radio jusqu'à cinq options et une liste déroulante au-delà ;
 - `tooltip`, texte ou `{ content }` => aide sous le libellé ;
+- `choices`, objet indexé par la valeur de chaque option => `tooltip`, bouton d'infobulle du DSFR après le libellé de l'option, nommé par son `buttonLabel` ; `exclusive`, case qui décoche les autres. Un choix dont une option a une infobulle s'affiche en boutons radio, sauf avec `format: 'select'`, puisqu'une liste déroulante ne peut pas montrer d'infobulle ;
 - `placeholder` => texte indicatif d'un champ de saisie ;
 - `required` => champ requis sous condition. JSON Forms déduit le caractère requis du `required` statique du schéma.
 
-Les composants n'affichent pas les options `notion`, `additionalNotions` et `autocomplete`, ni le `tooltip` d'un choix, que le compilateur de survey-schema v3 écrit aussi.
+Les composants n'affichent pas les options `notion`, `additionalNotions` et `autocomplete`, que le compilateur de survey-schema v3 écrit aussi.
 
 Le composant d'un uischema `Categorization` affiche ses catégories en étapes. Au clic sur « Terminer », sur la dernière page, il émet l'événement DOM `categorization-complete`, avec `bubbles: true` et les réponses dans `detail` : l'application l'écoute sur un élément parent du formulaire. Le composant d'un élément `IntermediaryResults` liste les résultats qu'un moteur calculera : pour afficher les valeurs, l'application déclare son propre composant avec un rang supérieur.
 

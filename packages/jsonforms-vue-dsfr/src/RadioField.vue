@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { FieldControl } from './labels'
-import { DsfrRadioButtonSet } from '@gouvminint/vue-dsfr'
+import { DsfrRadioButtonSet, DsfrTooltip } from '@gouvminint/vue-dsfr'
 import FieldHint from './FieldHint.vue'
 import { fieldLabel, isRequired } from './labels'
 
 defineProps<{
   control: FieldControl
-  options: { label: string, value: string | number | boolean }[]
+  options: { label: string, value: string | number | boolean, tooltip?: { content: string, buttonLabel: string } }[]
   inline?: boolean
 }>()
 
@@ -31,7 +31,10 @@ const emit = defineEmits<{ (e: 'change', value: unknown): void }>()
       class="fr-fieldset__element"
       :class="{ 'fr-fieldset__element--inline': inline }"
     >
-      <div class="fr-radio-group">
+      <div
+        class="fr-radio-group"
+        :class="{ 'jsonforms-dsfr-choice': option.tooltip }"
+      >
         <input
           :id="`${control.id}-${index}`"
           type="radio"
@@ -46,6 +49,11 @@ const emit = defineEmits<{ (e: 'change', value: unknown): void }>()
           class="fr-label"
           :for="`${control.id}-${index}`"
         >{{ option.label }}</label>
+        <DsfrTooltip
+          v-if="option.tooltip"
+          :content="option.tooltip.content"
+          :aria-label="option.tooltip.buttonLabel"
+        />
       </div>
     </div>
   </DsfrRadioButtonSet>

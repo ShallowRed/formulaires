@@ -4,7 +4,7 @@ import { DsfrSelect } from '@gouvminint/vue-dsfr'
 import { computed } from 'vue'
 import FieldHint from './FieldHint.vue'
 import RadioField from './RadioField.vue'
-import { fieldLabel, isRequired } from './labels'
+import { choicesOf, choiceTooltip, fieldLabel, isRequired } from './labels'
 
 // Up to this number of choices, the DSFR recommends radio buttons over a select
 const RADIO_LIMIT = 5
@@ -15,9 +15,11 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'change', value: unknown): void }>()
 
+// A select cannot show the tooltip of an option: a choice whose options have tooltips stays radio buttons
 const asRadio = computed(() => {
   const format = props.control.uischema.options?.format
-  return format === 'radio' || (format !== 'select' && props.control.options.length <= RADIO_LIMIT)
+  const withTooltips = Object.values(choicesOf(props.control.uischema.options)).some(choice => choice.tooltip)
+  return format === 'radio' || (format !== 'select' && (props.control.options.length <= RADIO_LIMIT || withTooltips))
 })
 </script>
 
@@ -25,7 +27,7 @@ const asRadio = computed(() => {
   <RadioField
     v-if="asRadio"
     :control="control"
-    :options="control.options.map(option => ({ label: option.label, value: option.value as string }))"
+    :options="control.options.map(option => ({ label: option.label, value: option.value as string, tooltip: choiceTooltip(control.uischema.options, option.value, option.label) }))"
     @change="value => emit('change', value)"
   />
   <DsfrSelect

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { JsonSchema } from '@jsonforms/core'
 import { computed } from 'vue'
+import { tooltipText } from './labels'
 
 interface LegalBasis {
   title: string
@@ -21,11 +22,7 @@ const props = defineProps<{
   }
 }>()
 
-// survey-schema writes a tooltip as a string or as `{ buttonLabel, content }`
-const help = computed(() => {
-  const tooltip = props.control.uischema?.options?.tooltip as string | { content?: string } | undefined
-  return typeof tooltip === 'string' ? tooltip : tooltip?.content
-})
+const help = computed(() => tooltipText(props.control.uischema?.options?.tooltip))
 
 // JSON Forms types a schema without the annotations of an application, which are prefixed with `x-`
 const annotations = computed(() => props.control.schema as Record<string, unknown>)
