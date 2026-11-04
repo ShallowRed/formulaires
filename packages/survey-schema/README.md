@@ -14,16 +14,13 @@ A framework-agnostic library for defining and managing survey schemas with condi
 - ✅ **Schema versioning and migrations** for long-term maintenance
 - ✅ **Multi-engine support** (OpenFisca, Publicodes)
 - ✅ **Builder pattern** for programmatic schema creation
-- ✅ **CLI tools** for schema management
 
 ## Installation
 
+The archive of each version is attached to a survey-kit release, under the tag `survey-schema-v<version>`:
+
 ```bash
-npm install @shallowred/survey-schema
-# or
-pnpm add @shallowred/survey-schema
-# or
-yarn add @shallowred/survey-schema
+pnpm add https://github.com/ShallowRed/survey-kit/releases/download/survey-schema-v<version>/shallowred-survey-schema-<version>.tgz
 ```
 
 ## Quick Start
@@ -175,48 +172,6 @@ Supported operators:
 ### Types
 
 See [Type Definitions](./src/types/README.md) for complete type documentation.
-
-## Framework Integrations
-
-### Vue.js
-
-```bash
-npm install @shallowred/survey-schema-vue
-```
-
-See [@shallowred/survey-schema-vue](../survey-schema-vue/README.md) for usage.
-
-### React (Coming Soon)
-
-```bash
-npm install @shallowred/survey-schema-react
-```
-
-## CLI Tool
-
-Install the CLI globally:
-
-```bash
-npm install -g @shallowred/survey-schema-cli
-```
-
-Validate a schema:
-
-```bash
-survey-schema validate my-schema.json
-```
-
-Migrate a schema:
-
-```bash
-survey-schema migrate my-schema.json --to 2.0.0
-```
-
-Initialize a new schema:
-
-```bash
-survey-schema init --interactive
-```
 
 ## Examples
 
