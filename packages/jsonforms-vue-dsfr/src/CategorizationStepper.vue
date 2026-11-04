@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type { Categorization, Category, ControlElement, JsonSchema, Layout, UISchemaElement } from '@jsonforms/core'
-import { isVisible, toDataPathSegments } from '@jsonforms/core'
+import type { Categorization, Category, JsonSchema, Layout } from '@jsonforms/core'
+import { toDataPathSegments } from '@jsonforms/core'
 import { DsfrAlert, DsfrButton, DsfrStepper } from '@gouvminint/vue-dsfr'
 import { DispatchRenderer, rendererProps, useJsonForms, useJsonFormsLayout } from '@jsonforms/vue'
 import { computed, nextTick, ref } from 'vue'
+import RequiredFieldsNotice from './RequiredFieldsNotice.vue'
+import { useRequiredNotice } from './notice'
+import { controlsOf, useVisibility } from './uischema'
 
 interface Page {
   step: string
@@ -13,6 +16,7 @@ interface Page {
 const props = defineProps(rendererProps<Layout>())
 const { layout } = useJsonFormsLayout(props)
 const jsonforms = useJsonForms()
+const showsNotice = useRequiredNotice(props.uischema, () => layout.value.path)
 
 // Steps are the Categorization children of the root, pages the Category inside them;
 // a Category at the root is a step with a single page
@@ -22,10 +26,7 @@ const pages = computed<Page[]>(() => ((layout.value.uischema as Categorization).
     : [{ step: element.label as string, category: element as Category }],
 ))
 
-function visible(element: UISchemaElement): boolean {
-  const core = jsonforms.core!
-  return isVisible(element, core.data, layout.value.path, core.ajv!, jsonforms.config)
-}
+const visible = useVisibility(() => layout.value.path)
 
 const visiblePages = computed(() => pages.value.filter(page => visible(page.category)))
 const steps = computed(() => [...new Set(visiblePages.value.map(page => page.step))])
@@ -33,13 +34,6 @@ const steps = computed(() => [...new Set(visiblePages.value.map(page => page.ste
 const currentIndex = ref(0)
 const current = computed(() => visiblePages.value[Math.min(currentIndex.value, visiblePages.value.length - 1)])
 const isLast = computed(() => currentIndex.value >= visiblePages.value.length - 1)
-
-function controlsOf(element: UISchemaElement): ControlElement[] {
-  if (element.type === 'Control') {
-    return [element as ControlElement]
-  }
-  return ((element as Layout).elements ?? []).flatMap(controlsOf)
-}
 
 function propertyOf(scope: string): string {
   return toDataPathSegments(scope)[0]!
@@ -104,6 +98,7 @@ function next() {
       <h3 v-if="current.category.label">
         {{ current.category.label }}
       </h3>
+      <RequiredFieldsNotice v-if="showsNotice(current.category)" />
       <DispatchRenderer
         v-for="(element, index) in current.category.elements"
         :key="`${currentIndex}-${index}`"
