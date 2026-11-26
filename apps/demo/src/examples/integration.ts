@@ -22,7 +22,7 @@ export const integrationExamples: IntegrationExample[] = [
     slug: 'quotient-familial',
     title: 'Quotient familial de Prest\'Agri',
     description: [
-      'Le schéma des entrées de la règle de calcul du quotient familial des agents du ministère de l\'Agriculture, tel que datapi l\'expose.',
+      'Ce schéma décrit les entrées de la règle du quotient familial des agents du ministère de l\'Agriculture. Il est copié depuis datapi.',
     ],
     reads: [
       '`x-legal-basis` du groupe « Ménage de l\'agent » => lien « Base légale » vers la note de service',
@@ -36,7 +36,7 @@ export const integrationExamples: IntegrationExample[] = [
     slug: 'droit-de-vote',
     title: 'Droit de vote',
     description: [
-      'Le schéma des entrées de la règle du droit de vote, tel que datapi l\'expose. Chaque condition renvoie à l\'article du code électoral ou de la Constitution qui la fonde.',
+      'Ce schéma décrit les entrées de la règle du droit de vote. Il est copié depuis datapi, et chaque condition cite son article du code électoral ou de la Constitution.',
     ],
     reads: [
       '`x-legal-basis` de chaque champ => lien « Base légale » sous son libellé',
@@ -49,7 +49,7 @@ export const integrationExamples: IntegrationExample[] = [
     slug: 'listes',
     title: 'Listes répétables',
     description: [
-      'Un tableau d\'objets s\'affiche en groupes que la personne ajoute ou retire. Le focus clavier reste dans la liste après un ajout ou un retrait.',
+      'Chaque élément du tableau s\'affiche en groupe de champs, que la personne ajoute ou retire. Le focus clavier reste dans la liste.',
     ],
     reads: [
       '`items` => un groupe de champs par élément, titré par le `title` de `items`',
@@ -163,7 +163,7 @@ export const integrationExamples: IntegrationExample[] = [
     slug: 'conditions',
     title: 'Conditions d\'affichage',
     description: [
-      'Un champ s\'affiche selon les réponses précédentes, et n\'est obligatoire que lorsqu\'il est affiché.',
+      'Un champ s\'affiche selon une réponse précédente, et il est obligatoire seulement quand il est affiché.',
     ],
     reads: [
       '`rule` d\'un contrôle du uischema, d\'effet `SHOW` => champ affiché quand la réponse désignée par `scope` est valide contre `schema`',
@@ -204,7 +204,7 @@ export const integrationExamples: IntegrationExample[] = [
     slug: 'erreurs',
     title: 'Messages d\'erreur',
     description: [
-      'Les réponses de cet exemple sont fausses dès l\'ouverture, pour afficher les messages. Chaque message est en français, et celui d\'un nombre, d\'une date ou d\'une adresse électronique donne un exemple de la valeur attendue.',
+      'Les réponses de cet exemple sont fausses dès l\'ouverture. Les messages sont en français, et ceux d\'un nombre, d\'une date ou d\'une adresse électronique donnent un exemple de valeur attendue.',
     ],
     reads: [
       '`dsfrI18n` passé à JSON Forms => messages en français',

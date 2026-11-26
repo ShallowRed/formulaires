@@ -31,9 +31,9 @@ function formatMontant(dispositifId: string): string | null {
       v-if="hasEligible"
       class="fr-callout fr-callout--green-emeraude fr-p-3w fr-mb-2w"
     >
-      <h3 class="fr-text--md">
+      <h4 class="fr-text--md">
         Selon les informations fournies, vous semblez éligible aux aides suivantes :
-      </h3>
+      </h4>
       <ul>
         <li
           v-for="aide in results.eligibleDispositifs"
@@ -53,9 +53,9 @@ function formatMontant(dispositifId: string): string | null {
       v-if="hasPotential"
       class="fr-callout fr-callout--blue-cumulus fr-p-3w fr-mb-2w"
     >
-      <h3 class="fr-text--md">
+      <h4 class="fr-text--md">
         Ces aides nécessitent plus d'informations pour déterminer votre éligibilité :
-      </h3>
+      </h4>
       <ul>
         <li
           v-for="aide in results.potentialDispositifs"
@@ -72,10 +72,10 @@ function formatMontant(dispositifId: string): string | null {
       v-if="hasIneligible"
       class="fr-callout fr-callout--pink-tuile fr-p-3w fr-mb-2w"
     >
-      <h3 class="fr-text--md">
+      <h4 class="fr-text--md">
         Selon les informations fournies, vous ne remplissez pas les critères
         d'éligibilité des dispositifs suivants :
-      </h3>
+      </h4>
       <ul>
         <li
           v-for="aide in results.ineligibleDispositifs"

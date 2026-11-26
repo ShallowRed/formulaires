@@ -28,39 +28,39 @@ const ajv = createAjv2020()
 </script>
 
 <template>
-  <h1 class="fr-h3">
-    Intégrer un formulaire
-  </h1>
+  <h2 class="fr-h3">
+    Installation
+  </h2>
   <p>
-    <code>@shallowred/jsonforms-vue-dsfr</code> affiche avec les composants du DSFR le formulaire que
+    <code>@shallowred/jsonforms-vue-dsfr</code> affiche avec le DSFR le formulaire que
     <a
       href="https://jsonforms.io/"
       target="_blank"
       rel="noopener"
-    >JSON Forms</a> construit à partir d'un JSON Schema 2020-12. Les autres pages de cette rubrique montrent chacune un schéma et le formulaire qu'il produit.
+    >JSON Forms</a> tire d'un JSON Schema 2020-12.
   </p>
 
-  <h2 class="fr-h5">
-    Installer
-  </h2>
+  <h3 class="fr-h5">
+    Archive
+  </h3>
   <p>
-    L'archive de chaque version est attachée à une release de survey-kit :
+    Chaque version est publiée en archive dans une release de survey-kit :
   </p>
   <CodeBlock :code="installCode" language="shellscript" />
   <p class="fr-mt-2w">
-    L'application installe aussi <code>vue</code>, <code>@jsonforms/core</code> et <code>@jsonforms/vue</code> en version 3.8, <code>@gouvminint/vue-dsfr</code> 8 à partir de la 8.11, et charge les feuilles de style du DSFR.
+    On installe aussi <code>vue</code>, <code>@jsonforms/core</code> et <code>@jsonforms/vue</code> 3.8, <code>@gouvminint/vue-dsfr</code> 8.11 ou plus, et on charge les feuilles de style du DSFR.
   </p>
 
-  <h2 class="fr-h5 fr-mt-4w">
-    Afficher un formulaire
-  </h2>
+  <h3 class="fr-h5 fr-mt-4w">
+    Utilisation
+  </h3>
   <CodeBlock :code="usageCode" language="vue" />
   <p class="fr-mt-2w">
-    <code>createAjv2020</code> crée l'instance d'Ajv qui valide un schéma 2020-12, que l'instance draft-07 de JSON Forms refuse. <code>dsfrI18n</code> écrit les messages d'erreur en français. Le détail des mots-clés que lisent les composants est dans le
+    <code>createAjv2020</code> valide les schémas 2020-12, que l'instance d'Ajv par défaut de JSON Forms refuse. <code>dsfrI18n</code> traduit les messages d'erreur. Le
     <a
       href="https://github.com/ShallowRed/survey-kit/tree/main/packages/jsonforms-vue-dsfr#readme"
       target="_blank"
       rel="noopener"
-    >README du paquet</a>.
+    >README du paquet</a> décrit les mots-clés que lisent les composants.
   </p>
 </template>

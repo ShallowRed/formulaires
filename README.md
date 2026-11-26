@@ -1,16 +1,14 @@
 # survey-kit
 
-Un format de questionnaire, des composants [DSFR](https://www.systeme-de-design.gouv.fr/) pour [JSON Forms](https://jsonforms.io/) et un adaptateur vers le moteur de calcul [publicodes](https://publi.codes). On décrit en JSON le formulaire d'une démarche, et les composants l'affichent avec le DSFR, dans le navigateur. Les briques viennent d'[aides-simplifiées](https://github.com/betagouv/aides-simplifiees-app).
+Un format de formulaire, des composants [DSFR](https://www.systeme-de-design.gouv.fr/) pour [JSON Forms](https://jsonforms.io/) et un adaptateur pour le moteur de calcul [publicodes](https://publi.codes). Le format et l'adaptateur viennent d'[aides-simplifiées](https://github.com/betagouv/aides-simplifiees-app).
 
 Démo en ligne : <https://shallowred.github.io/survey-kit/>
 
-## Le site de démonstration
+## Site de démonstration
 
-Le site a une rubrique par usage :
-
-- intégrer un formulaire : `@shallowred/jsonforms-vue-dsfr` affiche le formulaire d'un JSON Schema 2020-12, avec la base légale et la source certifiable de chaque réponse ; chaque exemple montre le schéma à côté du formulaire ;
-- écrire un questionnaire : le format survey-schema v3 range les réponses en étapes et en pages et contient les conditions d'affichage ; un éditeur montre le formulaire que produisent les deux documents ;
-- assembler un simulateur : un questionnaire relié à un modèle publicodes, d'un exemple en deux fichiers au simulateur d'aides à l'innovation d'entreprise.service-public.fr.
+- Intégrer un formulaire : formulaire DSFR tiré d'un JSON Schema 2020-12, avec base légale et source certifiable de chaque réponse.
+- Écrire un formulaire : éditeur du schéma des réponses et des étapes, avec aperçu.
+- Assembler un simulateur : formulaire relié à un modèle publicodes, d'une aide fictive à l'achat d'un vélo au simulateur des aides à l'innovation.
 
 ## Contenu
 

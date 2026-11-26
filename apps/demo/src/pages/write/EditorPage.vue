@@ -4,7 +4,7 @@ import { createAjv2020 } from '@shallowred/jsonforms-vue-dsfr'
 import { compileV3ToJsonForms, validateSurveySchemaV3 } from '@shallowred/survey-schema'
 import { computed, ref, watchEffect } from 'vue'
 import SchemaPreview from '../../components/SchemaPreview.vue'
-import { bikeAidAnswers, bikeAidQuestionnaire } from '../../examples/questionnaire'
+import { bikeAidAnswers, bikeAidQuestionnaire } from '../../examples/bike-aid'
 
 const answersSource = ref(JSON.stringify(bikeAidAnswers, null, 2))
 const questionnaireSource = ref(JSON.stringify(bikeAidQuestionnaire, null, 2))
@@ -57,21 +57,18 @@ const previewKey = computed(() => JSON.stringify(compiled.value))
 </script>
 
 <template>
-  <h1 class="fr-h3">
-    Écrire un questionnaire
-  </h1>
-  <p>
-    Un questionnaire au format survey-schema v3 se compose de deux documents JSON. Le JSON Schema des réponses donne à chaque réponse son type, son libellé et ses choix, et peut indiquer sa base légale (<code>x-legal-basis</code>) et sa source (<code>x-source</code>). Le questionnaire range les réponses en étapes et en pages, désigne chacune par un pointeur <code>#/properties/&lt;id&gt;</code> et contient les conditions d'affichage, écrites elles aussi en JSON Schema.
-  </p>
   <p class="fr-mb-4w">
-    <code>compileV3ToJsonForms</code> traduit les deux documents pour JSON Forms. Modifiez-les : le formulaire suit. La
+    Un formulaire se compose de deux documents JSON : le schéma des réponses (type, libellé, choix, base légale <code>x-legal-basis</code>, source <code>x-source</code>) et les étapes, qui répartissent les champs en pages et contiennent les textes et les conditions d'affichage. La
     <a
       href="https://github.com/ShallowRed/survey-kit/blob/main/packages/survey-schema/docs/SPEC-v3.md"
       target="_blank"
       rel="noopener"
-    >spécification du format</a> décrit chaque champ.
+    >spécification du format</a> décrit chaque propriété de ces documents.
   </p>
 
+  <h2 class="fr-h4">
+    Aide fictive à l'achat d'un vélo
+  </h2>
   <SchemaPreview
     :key="previewKey"
     :schema="compiled.schema"
@@ -116,7 +113,7 @@ const previewKey = computed(() => JSON.stringify(compiled.value))
         <label
           class="fr-label"
           for="questionnaire-source"
-        >Questionnaire</label>
+        >Étapes</label>
         <textarea
           id="questionnaire-source"
           v-model="questionnaireSource"

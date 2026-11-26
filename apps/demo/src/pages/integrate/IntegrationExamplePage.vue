@@ -11,18 +11,18 @@ const example = computed(() => integrationExamples.find(item => item.slug === ro
 
 <template>
   <template v-if="example">
-    <h1 class="fr-h3">
+    <h2 class="fr-h3">
       {{ example.title }}
-    </h1>
+    </h2>
     <p
       v-for="(paragraph, index) in example.description"
       :key="index"
     >
       <InlineCode :text="paragraph" />
     </p>
-    <h2 class="fr-h6 fr-mb-1w">
+    <h3 class="fr-h6 fr-mb-1w">
       Ce que lisent les composants
-    </h2>
+    </h3>
     <ul class="fr-mb-4w">
       <li
         v-for="(item, index) in example.reads"

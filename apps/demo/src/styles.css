@@ -1,0 +1,15 @@
+/* The examples put a schema and a form side by side: the site uses a wider container than the DSFR default (78rem),
+   and paragraphs keep a readable line length */
+:root {
+  --demo-container-max-width: 100rem;
+  --demo-prose-max-width: 48rem;
+  --demo-form-max-width: 52rem;
+}
+
+.fr-container.demo-container {
+  max-width: var(--demo-container-max-width);
+}
+
+main p {
+  max-width: var(--demo-prose-max-width);
+}

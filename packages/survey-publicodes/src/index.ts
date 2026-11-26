@@ -5,6 +5,7 @@ export type {
 } from './eligibility.js'
 export {
   calculateEligibility,
+  calculateEligibilityV3,
   createEngine,
   mapAnswersToSituation,
 } from './eligibility.js'

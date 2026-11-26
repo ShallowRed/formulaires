@@ -54,3 +54,33 @@ export const bikeAidQuestionnaire: SurveySchemaV3 = {
     },
   ],
 }
+
+export const bikeAidDispositifs = [
+  { id: 'aideVelo', title: 'Aide à l\'achat d\'un vélo', description: 'Aide fictive, sans existence réglementaire.' },
+]
+
+export const bikeAidRules = {
+  'age': { titre: 'Âge' },
+  'boursier': { 'titre': 'Boursier', 'par défaut': 'non' },
+  'veloElectrique': { 'titre': 'Vélo électrique', 'par défaut': 'non' },
+  'aideVelo': { titre: 'Aide à l\'achat d\'un vélo' },
+  'aideVelo . eligibilite': {
+    'toutes ces conditions': ['age >= 18', 'age <= 25'],
+  },
+  'aideVelo . montant': {
+    'applicable si': 'aideVelo . eligibilite',
+    'somme': ['aideVelo . base', 'aideVelo . bonusBoursier'],
+  },
+  'aideVelo . base': {
+    variations: [
+      { si: 'veloElectrique', alors: '400 €' },
+      { sinon: '150 €' },
+    ],
+  },
+  'aideVelo . bonusBoursier': {
+    variations: [
+      { si: 'boursier', alors: '100 €' },
+      { sinon: '0 €' },
+    ],
+  },
+}
