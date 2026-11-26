@@ -2,8 +2,9 @@ import type { PublicodesNormalizedSchema } from '@shallowred/survey-schema'
 // The package entry uses `assert { type: 'json' }`, removed from Node >= 22:
 // import the compiled rules directly instead
 import rules from '@shallowred/publicodes-entreprise-innovation/publicodes-build/publicodes-entreprise-innovation.model.json'
+import { migrateV2ToV3 } from '@shallowred/survey-schema'
 import { describe, expect, it } from 'vitest'
-import { calculateEligibility, createEngine, mapAnswersToSituation } from '../src/index.js'
+import { calculateEligibility, calculateEligibilityV3, createEngine, mapAnswersToSituation } from '../src/index.js'
 
 /**
  * Minimal schema slice of the entreprise-innovation form: just enough
@@ -116,5 +117,30 @@ describe('calculateEligibility on the entreprise-innovation model', () => {
       + results.potentialDispositifs.length
       + results.ineligibleDispositifs.length
     expect(total).toBe(2)
+  })
+})
+
+describe('calculateEligibilityV3', () => {
+  const { dataSchema } = migrateV2ToV3(schema)
+
+  it.each([
+    { 'nature-activite': ['industrielle'] },
+    { 'nature-activite': ['commerciale', 'artisanale'], 'date-de-creation': '2024-03-10', 'activite-nouvelle': true },
+    {},
+  ])('gives the results of the v2 form for the answers %j', (answers) => {
+    expect(calculateEligibilityV3(rules as any, dataSchema, answers, schema.dispositifs))
+      .toEqual(calculateEligibility(rules as any, schema, answers))
+  })
+
+  it('reads the choices of a checkbox answer from `enum`', () => {
+    const enumSchema = {
+      type: 'object',
+      properties: {
+        'nature-activite': { type: 'array', uniqueItems: true, items: { enum: ['industrielle', 'commerciale', 'artisanale', 'agricole'] } },
+      },
+    }
+    const answers = { 'nature-activite': ['industrielle'] }
+    expect(calculateEligibilityV3(rules as any, enumSchema, answers, schema.dispositifs))
+      .toEqual(calculateEligibility(rules as any, schema, answers))
   })
 })

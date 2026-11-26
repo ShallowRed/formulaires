@@ -68,6 +68,12 @@ export function createEngine(rules: PublicodesRules): Engine {
 }
 
 /**
+ * Publicodes form of an answer that is not a plain value: a checkbox answer expands into one sub-rule per choice,
+ * a date is written DD/MM/YYYY
+ */
+type AnswerShape = { kind: 'checkbox', choices: string[] } | { kind: 'date' }
+
+/**
  * Map survey answers to a publicodes situation
  *
  * - question IDs are cast from kebab-case to camelCase rule names
@@ -79,6 +85,20 @@ export function mapAnswersToSituation(
   engine: Engine,
   schema: SurveyNormalizedSchema,
   answers: SurveyAnswers,
+): Record<string, string | number | boolean> {
+  return situationOf(engine, answers, (camelCaseId) => {
+    const question = schema ? findQuestionByCamelCaseId(schema, camelCaseId) : null
+    if (question?.type === 'checkbox') {
+      return { kind: 'checkbox', choices: (question.choices ?? []).map(choice => choice.id) }
+    }
+    return question?.type === 'date' ? { kind: 'date' } : null
+  })
+}
+
+function situationOf(
+  engine: Engine,
+  answers: SurveyAnswers,
+  shapeOf: (camelCaseId: string) => AnswerShape | null,
 ): Record<string, string | number | boolean> {
   const mapped: Record<string, SurveyAnswerValue> = {}
   for (const [key, value] of Object.entries(answers)) {
@@ -101,15 +121,13 @@ export function mapAnswersToSituation(
   const situation: Record<string, string | number | boolean> = {}
 
   Object.entries(validMappedAnswers).forEach(([key, value]) => {
-    const question = schema
-      ? findQuestionByCamelCaseId(schema, key)
-      : null
+    const shape = shapeOf(key)
 
-    if (question?.type === 'checkbox' && Array.isArray(value)) {
+    if (shape?.kind === 'checkbox' && Array.isArray(value)) {
       // For checkbox questions, create a new entry for each possible choice
-      question.choices?.forEach((choice) => {
-        const publicodesKey = `${key} . ${toCamelCase(choice.id)}`
-        situation[publicodesKey] = value.includes(choice.id) ? 'oui' : 'non'
+      shape.choices.forEach((choice) => {
+        const publicodesKey = `${key} . ${toCamelCase(choice)}`
+        situation[publicodesKey] = value.includes(choice) ? 'oui' : 'non'
       })
     }
     else {
@@ -121,7 +139,7 @@ export function mapAnswersToSituation(
         transformedValue = 'non'
       }
       else if (typeof value === 'string') {
-        if (question?.type === 'date') {
+        if (shape?.kind === 'date') {
           transformedValue = convertDateToFrenchFormat(value)
         }
         else {
@@ -173,10 +191,41 @@ export function calculateEligibility(
   const engine = createEngine(rules)
   const dispositifs = dispositifsToEvaluate
     ?? (schema.engine === 'publicodes' ? schema.dispositifs : [])
+  engine.setSituation(mapAnswersToSituation(engine, schema, answers) as any)
+  return evaluateDispositifs(engine, dispositifs)
+}
 
-  const situation = mapAnswersToSituation(engine, schema, answers)
-  engine.setSituation(situation as any)
+/**
+ * Calculate eligibility from the answers of a survey-schema v3 questionnaire
+ *
+ * The JSON Schema of the answers gives the checkbox answers (arrays of `oneOf` or `enum` choices) and the
+ * dates (`format: date`).
+ */
+export function calculateEligibilityV3(
+  rules: PublicodesRules,
+  dataSchema: Record<string, unknown>,
+  answers: SurveyAnswers,
+  dispositifs: PublicodesDispositif[],
+): EligibilityResults {
+  const engine = createEngine(rules)
+  const properties = (dataSchema.properties ?? {}) as Record<string, Record<string, any>>
+  const shapes = new Map<string, AnswerShape>()
+  for (const [id, property] of Object.entries(properties)) {
+    const choices: string[] = property.type !== 'array'
+      ? []
+      : property.items?.enum ?? (property.items?.oneOf ?? []).map((choice: { const: string }) => choice.const)
+    if (choices.length > 0) {
+      shapes.set(toCamelCase(id), { kind: 'checkbox', choices })
+    }
+    else if (property.format === 'date') {
+      shapes.set(toCamelCase(id), { kind: 'date' })
+    }
+  }
+  engine.setSituation(situationOf(engine, answers, camelCaseId => shapes.get(camelCaseId) ?? null) as any)
+  return evaluateDispositifs(engine, dispositifs)
+}
 
+function evaluateDispositifs(engine: Engine, dispositifs: PublicodesDispositif[]): EligibilityResults {
   const results: EligibilityResults = {
     eligibleDispositifs: [],
     potentialDispositifs: [],
