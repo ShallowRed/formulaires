@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import type { JsonFormsOutputV3, SurveySchemaV3 } from '@shallowred/survey-schema'
+import type { JsonFormsOutputV3, SchemaValidationResult, SurveySchemaV3 } from '@shallowred/survey-schema'
 import { createAjv2020 } from '@shallowred/jsonforms-vue-dsfr'
 import { compileV3ToJsonForms, validateSurveySchemaV3 } from '@shallowred/survey-schema'
+import localizeFr from 'ajv-i18n/localize/fr'
 import { computed, ref, watchEffect } from 'vue'
 import SchemaPreview from '../../components/SchemaPreview.vue'
 import { bikeAidAnswers, bikeAidQuestionnaire } from '../../examples/bike-aid'
@@ -11,13 +12,26 @@ const questionnaireSource = ref(JSON.stringify(bikeAidQuestionnaire, null, 2))
 
 type Parsed<T> = { value: T, errors: [] } | { value: undefined, errors: string[] }
 
+// Each browser writes its own JSON.parse message, in English; V8 and Firefox give the line and the column
 function parse<T>(source: string): Parsed<T> {
   try {
     return { value: JSON.parse(source) as T, errors: [] }
   }
   catch (error) {
-    return { value: undefined, errors: [`JSON invalide : ${(error as Error).message}`] }
+    const position = /line (\d+) column (\d+)/.exec((error as Error).message)
+    return { value: undefined, errors: [position ? `JSON invalide à la ligne ${position[1]}, colonne ${position[2]}.` : 'JSON invalide.'] }
   }
+}
+
+type ValidationError = NonNullable<SchemaValidationResult['rawErrors']>[number]
+
+// The branches of a oneOf report the same error several times
+function messagesOf(errors: ValidationError[]): string[] {
+  localizeFr(errors)
+  return [...new Set(errors.map((error) => {
+    const property = error.keyword === 'additionalProperties' ? ` (${error.params.additionalProperty})` : ''
+    return `${error.instancePath || '/'} : ${error.message}${property}`
+  }))]
 }
 
 // An answers schema that Ajv cannot compile would throw in the preview
@@ -26,6 +40,9 @@ const answers = computed<Parsed<Record<string, unknown>>>(() => {
   const parsed = parse<Record<string, unknown>>(answersSource.value)
   if (parsed.value === undefined) {
     return parsed
+  }
+  if (!ajv.validateSchema(parsed.value)) {
+    return { value: undefined, errors: messagesOf(ajv.errors ?? []) }
   }
   try {
     ajv.compile(parsed.value)
@@ -43,7 +60,7 @@ const questionnaire = computed<Parsed<SurveySchemaV3>>(() => {
   const result = validateSurveySchemaV3(parsed.value)
   return result.valid
     ? parsed
-    : { value: undefined, errors: (result.errors ?? []).map(error => `${error.path || '/'} : ${error.message}`) }
+    : { value: undefined, errors: messagesOf(result.rawErrors ?? []) }
 })
 
 // The preview keeps the last valid pair while the author types
