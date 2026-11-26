@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// Etape 4 du guide d'integration : l'affichage des resultats appartient au site hote
 import type { EligibilityResults } from '@shallowred/survey-publicodes'
 
 defineProps<{
@@ -10,7 +9,7 @@ function montant(results: EligibilityResults, id: string): string {
   const value = results.aidesResults[id]
   if (typeof value !== 'number' || value === 0)
     return ''
-  return ` — ${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value)}`
+  return ` : ${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value)}`
 }
 </script>
 

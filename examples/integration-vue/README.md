@@ -1,19 +1,13 @@
 # Exemple : intégrer le simulateur dans une application Vue existante
 
-Cette application d'une page joue le rôle du « site existant » : un habillage à elle
-(en-tête sombre, titre), et le simulateur d'aides à l'innovation monté au milieu, via
-les packages du kit. C'est la **voie C** du [guide d'intégration](../../docs/integration.md).
+Cette application d'une page joue le rôle du site existant : elle a son propre habillage (en-tête sombre, titre) et affiche le simulateur d'aides à l'innovation avec les paquets du kit. Elle illustre la section « Composants dans une application Vue » du [guide d'intégration](../../docs/integration.md).
 
-## Ce que montre l'exemple
+## Fichiers
 
-- [`src/main.ts`](src/main.ts) — étape 2 : charger les feuilles de style DSFR une fois
-- [`src/App.vue`](src/App.vue) — étape 3 : `useSurvey(formSchema)` + `<SurveyForm>` +
-  calcul d'éligibilité recalculé à chaque réponse
-- [`src/ResultatsSimulation.vue`](src/ResultatsSimulation.vue) — étape 4 : un affichage
-  de résultats maison (une trentaine de lignes), car cette partie appartient au site hôte
-
-Aucun store, aucun routeur, aucun serveur : la mécanique du formulaire vit dans les
-packages, le calcul dans le navigateur.
+- [`src/main.ts`](src/main.ts) charge les feuilles de style du DSFR.
+- [`src/App.vue`](src/App.vue) convertit le formulaire, l'affiche avec JSON Forms et calcule l'éligibilité à chaque réponse.
+- [`src/ResultatsIntermediaires.vue`](src/ResultatsIntermediaires.vue) affiche le calcul dans la page de résultats intermédiaires du formulaire.
+- [`src/ResultatsSimulation.vue`](src/ResultatsSimulation.vue) affiche les résultats, une partie qui appartient au site hôte.
 
 ## Lancer
 
@@ -23,6 +17,4 @@ pnpm install
 pnpm --filter integration-vue dev
 ```
 
-> Dans ce dépôt, les packages `@shallowred/survey-*` sont résolus par le workspace pnpm.
-> Depuis un projet extérieur, remplacez les `workspace:*` par les versions npm quand
-> elles seront publiées (voir le guide d'intégration pour le statut).
+Dans ce dépôt, le workspace pnpm résout les paquets `@shallowred/`. Le guide d'intégration indique comment les installer depuis un projet extérieur.
