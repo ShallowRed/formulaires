@@ -42,15 +42,15 @@ Un site hôte en Vue 3 avec Vite intègre le simulateur sous forme de composants
 
 ### Installer les paquets
 
-Depuis npm :
+Le modèle publicodes vient de npm :
 
 ```bash
-pnpm add @shallowred/publicodes-entreprise-innovation publicodes @jsonforms/core@3.8.0 @jsonforms/vue@3.8.0 @gouvminint/vue-dsfr @gouvfr/dsfr
+pnpm add @shallowred/publicodes-entreprise-innovation publicodes
 ```
 
 `@shallowred/publicodes-entreprise-innovation` demande deux contournements, décrits dans [`packages/survey-publicodes`](../packages/survey-publicodes#readme).
 
-On installe `@shallowred/jsonforms-vue-dsfr` depuis l'archive de sa release ; son [README](../packages/jsonforms-vue-dsfr#readme) donne la commande. On emploie les autres paquets `@shallowred/` (`survey-schema`, `survey-publicodes`, `form-entreprise-innovation`) depuis ce dépôt, en workspace pnpm comme l'exemple, ou depuis une copie du dépôt.
+On installe `@shallowred/jsonforms-vue-dsfr` depuis l'archive de sa release ; son [README](../packages/jsonforms-vue-dsfr#readme) donne la commande et les versions de ses dépendances pairs (Vue, JSON Forms, vue-dsfr, DSFR). On emploie les autres paquets `@shallowred/` (`survey-schema`, `survey-publicodes`, `form-entreprise-innovation`) depuis ce dépôt, en workspace pnpm comme l'exemple, ou depuis une copie du dépôt.
 
 ### Charger les feuilles de style du DSFR
 
@@ -113,7 +113,7 @@ const results = computed(() => eligibilityOf(answers.value))
 </template>
 ```
 
-`migrateV2ToV3` convertit le formulaire d'aides-simplifiées en deux documents : le schéma des réponses et les étapes. `compileV3ToJsonForms` les traduit pour JSON Forms. `calculateEligibilityV3` transmet au modèle publicodes les réponses des champs affichés.
+`migrateV2ToV3` convertit le formulaire d'aides-simplifiées en deux documents : le schéma des réponses et les étapes. `compileV3ToJsonForms` les traduit pour JSON Forms. `visibleAnswers` retire les réponses des champs masqués, et `calculateEligibilityV3` transmet les autres au modèle publicodes.
 
 ### Afficher les résultats
 
@@ -122,7 +122,7 @@ const results = computed(() => eligibilityOf(answers.value))
 Le formulaire contient une page de résultats intermédiaires. JSON Forms l'affiche par le composant déclaré pour `IntermediaryResults` avec un rang supérieur, ici `ResultatsIntermediaires.vue`, qui lit `eligibilityOf` par `inject`. Au clic sur « Terminer », le formulaire émet l'événement DOM `categorization-complete`, que le site hôte écoute sur un élément parent pour afficher les résultats finaux.
 
 - Avantage : le site hôte maîtrise l'habillage, les pages autour du simulateur et l'affichage des résultats, sans iframe.
-- Limite : le site hôte emploie Vue 3 et JSON Forms 3.8.
+- Limite : le site hôte emploie Vue 3, JSON Forms et vue-dsfr, aux versions que demande `@shallowred/jsonforms-vue-dsfr`.
 
 ## Qui maintient quoi
 

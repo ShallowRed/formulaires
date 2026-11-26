@@ -38,7 +38,6 @@ function restart() {
 </script>
 
 <template>
-  <!-- L'habillage du site hôte : tout ce qui entoure le simulateur vous appartient -->
   <header class="site-header">
     <div class="fr-container">
       <strong>Mon site existant</strong>, espace aides aux entreprises
