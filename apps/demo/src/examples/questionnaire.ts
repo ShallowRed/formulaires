@@ -1,0 +1,56 @@
+import type { SurveySchemaV3 } from '@shallowred/survey-schema'
+
+export const bikeAidAnswers = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  type: 'object',
+  properties: {
+    'age': { type: 'integer', title: 'Quel est votre âge ?', minimum: 0, maximum: 120 },
+    'boursier': { type: 'boolean', title: 'Êtes-vous boursier ?' },
+    'velo-electrique': { type: 'boolean', title: 'Le vélo est-il électrique ?' },
+    'prix': { type: 'number', title: 'Prix du vélo (en euros)', minimum: 0 },
+  },
+}
+
+export const bikeAidQuestionnaire: SurveySchemaV3 = {
+  schemaVersion: '3.0.0',
+  id: 'aide-velo',
+  version: '1.0.0',
+  title: 'Aide à l\'achat d\'un vélo',
+  data: './aide-velo.schema.json',
+  steps: [
+    {
+      id: 'profil',
+      title: 'Votre profil',
+      pages: [
+        {
+          id: 'profil-page',
+          questions: [
+            { scope: '#/properties/age' },
+            { scope: '#/properties/boursier' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'velo',
+      title: 'Votre vélo',
+      pages: [
+        {
+          id: 'velo-page',
+          questions: [
+            {
+              scope: '#/properties/velo-electrique',
+              visibleWhen: {
+                allOf: [
+                  { scope: '#/properties/age', schema: { minimum: 18 } },
+                  { scope: '#/properties/age', schema: { maximum: 25 } },
+                ],
+              },
+            },
+            { scope: '#/properties/prix' },
+          ],
+        },
+      ],
+    },
+  ],
+}

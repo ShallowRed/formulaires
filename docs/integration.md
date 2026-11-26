@@ -12,7 +12,7 @@ hébergement, voir voie B) et le site hôte l'embarque :
 
 ```html
 <iframe
-  src="https://shallowred.github.io/survey-kit/#/simulateur?embed"
+  src="https://shallowred.github.io/survey-kit/#/assembler/aides-innovation?embed"
   title="Simulateur d'aides à l'innovation"
   style="width: 100%; min-height: 900px; border: 0;"
 ></iframe>

@@ -1,7 +1,7 @@
 {
   "name": "demo",
   "private": true,
-  "description": "Site de demonstration : le simulateur d'aides a l'innovation reconstruit avec les briques du kit",
+  "description": "Site de demonstration des briques du kit : integrer un formulaire, ecrire un questionnaire, assembler un simulateur",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -20,6 +20,7 @@
     "@shallowred/survey-schema": "workspace:*",
     "@shallowred/survey-vue-dsfr": "workspace:*",
     "publicodes": "^1.9.1",
+    "shiki": "^4.6.0",
     "vue": "^3.5.18",
     "vue-router": "^4.4.0"
   },

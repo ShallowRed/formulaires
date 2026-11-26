@@ -3,7 +3,8 @@ import type { SurveySchema } from '@shallowred/survey-schema'
 import { calculateEligibility } from '@shallowred/survey-publicodes'
 import { SurveyForm, useSurvey } from '@shallowred/survey-vue-dsfr'
 import { computed } from 'vue'
-import EligibilityResults from '../components/EligibilityResults.vue'
+import CodeBlock from '../../components/CodeBlock.vue'
+import EligibilityResults from '../../components/EligibilityResults.vue'
 
 /**
  * A complete simulator in two literals: a declarative form (survey-schema)
@@ -109,11 +110,11 @@ const rulesJson = JSON.stringify(rules, null, 2)
       <h2 class="fr-h5">
         Le formulaire (survey-schema)
       </h2>
-      <pre class="demo-code">{{ formJson }}</pre>
+      <CodeBlock :code="formJson" language="json" />
       <h2 class="fr-h5 fr-mt-3w">
         Les règles (publicodes)
       </h2>
-      <pre class="demo-code">{{ rulesJson }}</pre>
+      <CodeBlock :code="rulesJson" language="json" />
     </div>
     <div class="fr-col-12 fr-col-lg-6">
       <h2 class="fr-h5">
@@ -130,15 +131,3 @@ const rulesJson = JSON.stringify(rules, null, 2)
   </div>
 </template>
 
-<style scoped>
-.demo-code {
-  background-color: var(--background-alt-grey);
-  border-radius: 8px;
-  padding: 1rem;
-  font-size: 0.75rem;
-  line-height: 1.5;
-  overflow-x: auto;
-  max-height: 30rem;
-  overflow-y: auto;
-}
-</style>

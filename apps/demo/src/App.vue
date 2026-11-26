@@ -1,16 +1,19 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { useEmbedded } from './embedded'
+import { sections } from './router'
 
 const route = useRoute()
-const isEmbedded = computed(() => route.query.embed !== undefined)
+const isEmbedded = useEmbedded()
 
 const navItems = [
   { to: '/', text: 'Accueil' },
-  { to: '/simulateur', text: 'Simulateur complet' },
-  { to: '/exemple-minimal', text: 'Exemple minimal' },
-  { to: '/assemblage', text: 'L\'assemblage' },
+  ...sections.map(section => ({ to: `/${section.id}`, text: section.title })),
 ]
+
+function isCurrent(to: string): boolean {
+  return to === '/' ? route.path === '/' : route.path === to || route.path.startsWith(`${to}/`)
+}
 </script>
 
 <template>
@@ -33,11 +36,11 @@ const navItems = [
             <div class="fr-header__service">
               <RouterLink to="/">
                 <p class="fr-header__service-title">
-                  Simulateur d'aides à l'innovation
+                  survey-kit
                 </p>
               </RouterLink>
               <p class="fr-header__service-tagline">
-                Démonstration : les briques ouvertes d'aides-simplifiées, réassemblées
+                Format de questionnaire et composants DSFR pour JSON Forms
               </p>
             </div>
           </div>
@@ -60,7 +63,7 @@ const navItems = [
               <RouterLink
                 class="fr-nav__link"
                 :to="item.to"
-                :aria-current="route.path === item.to ? 'page' : undefined"
+                :aria-current="isCurrent(item.to) ? 'page' : undefined"
               >
                 {{ item.text }}
               </RouterLink>
@@ -110,8 +113,8 @@ const navItems = [
         </ul>
         <div class="fr-footer__bottom-copy">
           <p>
-            Démonstration technique, sans valeur d'engagement : les montants affichés
-            sont calculés par le modèle publicodes ouvert, dans le navigateur.
+            Démonstration technique, sans valeur d'engagement. Les formulaires et les
+            calculs s'exécutent dans le navigateur.
           </p>
         </div>
       </div>
