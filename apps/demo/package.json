@@ -1,7 +1,7 @@
 {
   "name": "demo",
   "private": true,
-  "description": "Site de demonstration : le simulateur d'aides a l'innovation reconstruit avec les briques du kit",
+  "description": "Site de demonstration des briques du kit : integrer un formulaire, ecrire un questionnaire, assembler un simulateur",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "required": [
+    "menage"
+  ],
+  "properties": {
+    "menage": {
+      "type": "object",
+      "title": "Ménage de l'agent",
+      "required": [
+        "beneficiaire_porteur_handicap",
+        "garde_alternee",
+        "parent_isole",
+        "outre_mer",
+        "membres_du_foyer"
+      ],
+      "properties": {
+        "beneficiaire_porteur_handicap": {
+          "type": "boolean",
+          "title": "Un membre du foyer est porteur de handicap"
+        },
+        "garde_alternee": {
+          "type": "boolean",
+          "title": "Enfants en garde alternée"
+        },
+        "parent_isole": {
+          "type": "boolean",
+          "title": "Parent isolé"
+        },
+        "outre_mer": {
+          "type": "boolean",
+          "title": "Agent affecté en outre-mer"
+        },
+        "membres_du_foyer": {
+          "type": "array",
+          "title": "Foyers fiscaux du ménage",
+          "items": {
+            "type": "object",
+            "required": [
+              "revenu_fiscal_reference",
+              "nombre_personnes"
+            ],
+            "properties": {
+              "revenu_fiscal_reference": {
+                "type": "number",
+                "title": "Revenu fiscal de référence (en euros)",
+                "x-source": {
+                  "provider": "API Impôt particulier (DGFiP)",
+                  "data": "revenu fiscal de référence",
+                  "endpoint": "/situations/ir/assiettes/annrev/{annrev}",
+                  "correctable": true
+                },
+                "minimum": 0
+              },
+              "nombre_personnes": {
+                "type": "integer",
+                "title": "Nombre de personnes",
+                "minimum": 1
+              }
+            },
+            "additionalProperties": false,
+            "title": "Foyer fiscal"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "x-legal-basis": {
+        "title": "Note de service SG/SRH/SDDPRS/2025-303 du 14 mai 2025, page 5",
+        "url": "https://info.agriculture.gouv.fr/boagri/instruction-2025-303"
+      }
+    }
+  },
+  "additionalProperties": false
+}
