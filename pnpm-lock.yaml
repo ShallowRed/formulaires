@@ -71,18 +71,27 @@ importers:
       '@gouvminint/vue-dsfr':
         specifier: 8.11.0
         version: 8.11.0(@iconify/vue@4.3.0(vue@3.5.40(typescript@5.9.3)))(vue-router@4.6.4(vue@3.5.40(typescript@5.9.3)))(vue@3.5.40(typescript@5.9.3))
+      '@jsonforms/core':
+        specifier: 3.8.0
+        version: 3.8.0
+      '@jsonforms/vue':
+        specifier: 3.8.0
+        version: 3.8.0(@jsonforms/core@3.8.0)(vue@3.5.40(typescript@5.9.3))
       '@shallowred/form-entreprise-innovation':
         specifier: workspace:*
         version: link:../../packages/form-entreprise-innovation
+      '@shallowred/jsonforms-vue-dsfr':
+        specifier: workspace:*
+        version: link:../../packages/jsonforms-vue-dsfr
       '@shallowred/publicodes-entreprise-innovation':
         specifier: ^1.0.0
         version: 1.0.0(publicodes@1.10.1)
       '@shallowred/survey-publicodes':
         specifier: workspace:*
         version: link:../../packages/survey-publicodes
-      '@shallowred/survey-vue-dsfr':
+      '@shallowred/survey-schema':
         specifier: workspace:*
-        version: link:../../packages/survey-vue-dsfr
+        version: link:../../packages/survey-schema
       publicodes:
         specifier: ^1.9.1
         version: 1.10.1
