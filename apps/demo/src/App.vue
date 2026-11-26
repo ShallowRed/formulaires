@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import { useEmbedded } from './embedded'
-import { sections } from './router'
+import { sections } from './sections'
 
 const route = useRoute()
 const isEmbedded = useEmbedded()
 
 const navItems = [
   { to: '/', text: 'Accueil' },
-  ...sections.map(section => ({ to: `/${section.id}`, text: section.title })),
+  ...sections.map(section => ({ to: section.to, text: section.title })),
 ]
 
 function isCurrent(to: string): boolean {
@@ -23,7 +23,7 @@ function isCurrent(to: string): boolean {
     class="fr-header"
   >
     <div class="fr-header__body">
-      <div class="fr-container">
+      <div class="fr-container demo-container">
         <div class="fr-header__body-row">
           <div class="fr-header__brand fr-enlarge-link">
             <div class="fr-header__brand-top">
@@ -37,10 +37,11 @@ function isCurrent(to: string): boolean {
               <RouterLink to="/">
                 <p class="fr-header__service-title">
                   survey-kit
+                  <span class="fr-badge fr-badge--sm fr-badge--green-emeraude">Démo</span>
                 </p>
               </RouterLink>
               <p class="fr-header__service-tagline">
-                Format de questionnaire et composants DSFR pour JSON Forms
+                Format de formulaire et composants DSFR pour JSON Forms
               </p>
             </div>
           </div>
@@ -48,7 +49,7 @@ function isCurrent(to: string): boolean {
       </div>
     </div>
     <div class="fr-header__menu">
-      <div class="fr-container">
+      <div class="fr-container demo-container">
         <nav
           class="fr-nav"
           role="navigation"
@@ -74,7 +75,7 @@ function isCurrent(to: string): boolean {
     </div>
   </header>
 
-  <main class="fr-container fr-py-4w">
+  <main>
     <RouterView />
   </main>
 
@@ -83,7 +84,7 @@ function isCurrent(to: string): boolean {
     class="fr-footer fr-mt-8w"
     role="contentinfo"
   >
-    <div class="fr-container">
+    <div class="fr-container demo-container">
       <div class="fr-footer__bottom">
         <ul class="fr-footer__bottom-list">
           <li class="fr-footer__bottom-item">
@@ -113,8 +114,8 @@ function isCurrent(to: string): boolean {
         </ul>
         <div class="fr-footer__bottom-copy">
           <p>
-            Démonstration technique, sans valeur d'engagement. Les formulaires et les
-            calculs s'exécutent dans le navigateur.
+            Démonstration sans valeur d'engagement. Formulaires et calculs s'exécutent
+            dans le navigateur.
           </p>
         </div>
       </div>

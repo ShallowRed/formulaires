@@ -4,6 +4,7 @@ import { JsonForms } from '@jsonforms/vue'
 import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
 import { computed, ref } from 'vue'
 import CodeBlock from './CodeBlock.vue'
+import FormFrame from './FormFrame.vue'
 
 const props = withDefaults(defineProps<{
   schema: Record<string, unknown>
@@ -30,41 +31,48 @@ const answersJson = computed(() => JSON.stringify(answers.value, null, 2))
   <div class="fr-grid-row fr-grid-row--gutters">
     <div class="fr-col-12 fr-col-xl-6">
       <slot name="source">
-        <h2 class="fr-h6 fr-mb-1w">
+        <h3 class="fr-h6 fr-mb-1w">
           JSON Schema
-        </h2>
+        </h3>
         <CodeBlock :code="schemaJson" language="json" />
         <template v-if="uischemaJson">
-          <h2 class="fr-h6 fr-mt-3w fr-mb-1w">
+          <h3 class="fr-h6 fr-mt-3w fr-mb-1w">
             Uischema
-          </h2>
+          </h3>
           <CodeBlock :code="uischemaJson" language="json" />
         </template>
       </slot>
     </div>
     <div class="fr-col-12 fr-col-xl-6">
-      <h2 class="fr-h6 fr-mb-1w">
+      <h3 class="fr-h6 fr-mb-1w">
         Formulaire
-      </h2>
-      <form
-        novalidate
-        @submit.prevent
+      </h3>
+      <FormFrame>
+        <form
+          novalidate
+          @submit.prevent
+        >
+          <JsonForms
+            :data="answers"
+            :schema="schema"
+            :uischema="uischema"
+            :renderers="renderers"
+            :ajv="ajv"
+            :i18n="dsfrI18n"
+            :validation-mode="validationMode"
+            @change="event => answers = event.data"
+          />
+        </form>
+      </FormFrame>
+      <slot
+        name="result"
+        :answers="answers"
       >
-        <JsonForms
-          :data="answers"
-          :schema="schema"
-          :uischema="uischema"
-          :renderers="renderers"
-          :ajv="ajv"
-          :i18n="dsfrI18n"
-          :validation-mode="validationMode"
-          @change="event => answers = event.data"
-        />
-      </form>
-      <h2 class="fr-h6 fr-mt-3w fr-mb-1w">
-        Réponses
-      </h2>
-      <CodeBlock :code="answersJson" language="json" />
+        <h3 class="fr-h6 fr-mt-3w fr-mb-1w">
+          Réponses
+        </h3>
+        <CodeBlock :code="answersJson" language="json" />
+      </slot>
     </div>
   </div>
 </template>

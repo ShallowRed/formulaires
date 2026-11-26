@@ -40,9 +40,6 @@ importers:
       '@shallowred/survey-schema':
         specifier: workspace:*
         version: link:../../packages/survey-schema
-      '@shallowred/survey-vue-dsfr':
-        specifier: workspace:*
-        version: link:../../packages/survey-vue-dsfr
       publicodes:
         specifier: ^1.9.1
         version: 1.10.1
