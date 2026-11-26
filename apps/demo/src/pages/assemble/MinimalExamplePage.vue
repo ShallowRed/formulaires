@@ -110,11 +110,11 @@ const rulesJson = JSON.stringify(rules, null, 2)
       <h2 class="fr-h5">
         Le formulaire (survey-schema)
       </h2>
-      <CodeBlock :code="formJson" />
+      <CodeBlock :code="formJson" language="json" />
       <h2 class="fr-h5 fr-mt-3w">
         Les règles (publicodes)
       </h2>
-      <CodeBlock :code="rulesJson" />
+      <CodeBlock :code="rulesJson" language="json" />
     </div>
     <div class="fr-col-12 fr-col-lg-6">
       <h2 class="fr-h5">

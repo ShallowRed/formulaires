@@ -22,7 +22,7 @@ const results = computed(() =>
     déclaratif, le modèle de calcul et le kit de rendu sont des briques séparées,
     remplaçables indépendamment les unes des autres.
   </p>
-  <CodeBlock :code="assemblageCode" />
+  <CodeBlock :code="assemblageCode" language="typescript" />
 
   <p class="fr-mt-3w">
     Ces briques sont les composants de production

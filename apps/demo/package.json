@@ -20,6 +20,7 @@
     "@shallowred/survey-schema": "workspace:*",
     "@shallowred/survey-vue-dsfr": "workspace:*",
     "publicodes": "^1.9.1",
+    "shiki": "^4.6.0",
     "vue": "^3.5.18",
     "vue-router": "^4.4.0"
   },

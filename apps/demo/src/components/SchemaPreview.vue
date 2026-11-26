@@ -33,12 +33,12 @@ const answersJson = computed(() => JSON.stringify(answers.value, null, 2))
         <h2 class="fr-h6 fr-mb-1w">
           JSON Schema
         </h2>
-        <CodeBlock :code="schemaJson" />
+        <CodeBlock :code="schemaJson" language="json" />
         <template v-if="uischemaJson">
           <h2 class="fr-h6 fr-mt-3w fr-mb-1w">
             Uischema
           </h2>
-          <CodeBlock :code="uischemaJson" />
+          <CodeBlock :code="uischemaJson" language="json" />
         </template>
       </slot>
     </div>
@@ -64,7 +64,7 @@ const answersJson = computed(() => JSON.stringify(answers.value, null, 2))
       <h2 class="fr-h6 fr-mt-3w fr-mb-1w">
         Réponses
       </h2>
-      <CodeBlock :code="answersJson" />
+      <CodeBlock :code="answersJson" language="json" />
     </div>
   </div>
 </template>

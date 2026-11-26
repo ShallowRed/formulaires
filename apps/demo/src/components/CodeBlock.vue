@@ -1,11 +1,18 @@
 <script lang="ts" setup>
-defineProps<{
+import type { CodeLanguage } from '../highlighter'
+import { computed } from 'vue'
+import { highlight } from '../highlighter'
+
+const props = defineProps<{
   code: string
+  language: CodeLanguage
 }>()
+
+const html = computed(() => highlight(props.code, props.language))
 </script>
 
 <template>
-  <pre class="demo-code"><code>{{ code }}</code></pre>
+  <pre class="demo-code"><code v-html="html" /></pre>
 </template>
 
 <style scoped>

@@ -46,7 +46,7 @@ const ajv = createAjv2020()
   <p>
     L'archive de chaque version est attachée à une release de survey-kit :
   </p>
-  <CodeBlock :code="installCode" />
+  <CodeBlock :code="installCode" language="shellscript" />
   <p class="fr-mt-2w">
     L'application installe aussi <code>vue</code>, <code>@jsonforms/core</code> et <code>@jsonforms/vue</code> en version 3.8, <code>@gouvminint/vue-dsfr</code> 8 à partir de la 8.11, et charge les feuilles de style du DSFR.
   </p>
@@ -54,7 +54,7 @@ const ajv = createAjv2020()
   <h2 class="fr-h5 fr-mt-4w">
     Afficher un formulaire
   </h2>
-  <CodeBlock :code="usageCode" />
+  <CodeBlock :code="usageCode" language="vue" />
   <p class="fr-mt-2w">
     <code>createAjv2020</code> crée l'instance d'Ajv qui valide un schéma 2020-12, que l'instance draft-07 de JSON Forms refuse. <code>dsfrI18n</code> écrit les messages d'erreur en français. Le détail des mots-clés que lisent les composants est dans le
     <a
