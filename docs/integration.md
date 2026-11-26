@@ -1,14 +1,10 @@
 # Installer le simulateur d'aides à l'innovation sur un site existant
 
-Trois voies d'intégration, de la plus simple à la plus intégrée. Les trois s'appuient sur
-les mêmes briques ; choisir selon la pile technique du site hôte et le degré de contrôle
-souhaité.
+On intègre le simulateur de trois façons, de la plus simple à la plus intégrée. Les trois reposent sur les mêmes paquets ; on choisit selon la pile technique du site hôte et le contrôle voulu sur l'habillage.
 
-## Voie A — iframe (n'importe quelle pile, quelques lignes)
+## Iframe
 
-C'est le mode d'intégration actuel sur entreprise.service-public.fr. Le simulateur est
-hébergé quelque part (par exemple la démo GitHub Pages de ce dépôt, ou votre propre
-hébergement, voir voie B) et le site hôte l'embarque :
+aides-simplifiées propose d'intégrer ses simulateurs par une iframe. On intègre de la même façon la page du simulateur de ce dépôt, servie par la démo sur GitHub Pages ou par son propre hébergement (voir la section suivante) :
 
 ```html
 <iframe
@@ -18,112 +14,120 @@ hébergement, voir voie B) et le site hôte l'embarque :
 ></iframe>
 ```
 
-Le paramètre `?embed` retire l'habillage du site de démonstration (en-tête, navigation,
-pied de page) : il ne reste que le simulateur.
+Le paramètre `?embed` retire l'en-tête, les menus, la bande de titre et le pied de page du site de démonstration.
 
-- **Pour** : aucune dépendance technique, aucun déploiement, mise à jour côté hébergeur.
-- **Contre** : dépendance d'hébergement envers celui qui sert l'iframe ; hauteur fixe
-  (l'auto-redimensionnement, présent dans aides-simplifiées via son script d'intégration
-  versionné, n'est pas encore porté ici).
+- Avantage : le site hôte n'installe rien et ne déploie rien.
+- Limites : le site hôte dépend de l'hébergement qui sert l'iframe, et la hauteur de l'iframe est fixe. aides-simplifiées ajuste cette hauteur par un script d'intégration versionné, propre à son application.
 
-## Voie B — hébergement du build statique (n'importe quel serveur de fichiers)
+## Build statique
 
-Le simulateur est un build statique sans serveur applicatif : tout le calcul s'exécute
-dans le navigateur de l'usager.
+Le site de démonstration est un build statique : le calcul s'exécute dans le navigateur de l'usager, sans serveur applicatif.
 
 ```bash
 git clone https://github.com/ShallowRed/survey-kit
 cd survey-kit
 pnpm install
 pnpm --filter demo build
-# copier apps/demo/dist/ sur votre hébergement (racine ou sous-chemin, au choix)
+# copier apps/demo/dist/ sur l'hébergement, à la racine ou sous un sous-chemin
 ```
 
-Le build utilise une base relative et un routage par ancre : il fonctionne à la racine
-d'un domaine, sous un sous-chemin, ou dans une iframe, sans configuration serveur.
+Le build emploie une base relative et un routage par ancre : il fonctionne à la racine d'un domaine, sous un sous-chemin ou dans une iframe, sans configuration du serveur.
 
-- **Pour** : autonomie complète (vous servez, vous mettez à jour) ; combinable avec la
-  voie A (votre site embarque VOTRE hébergement).
-- **Contre** : l'habillage reste celui de la démo ; pour le personnaliser, voie C.
+- Avantage : l'équipe qui sert le build le met à jour quand elle veut, et peut l'intégrer par iframe sur son propre site.
+- Limite : l'habillage reste celui du site de démonstration. Pour le changer, on intègre les composants dans l'application.
 
-## Voie C — intégration native dans une application Vue
+## Composants dans une application Vue
 
-Pour un site hôte en Vue 3 (avec Vite), le simulateur s'installe comme des composants.
-L'exemple complet et fonctionnel est dans
-[`examples/integration-vue/`](../examples/integration-vue) — une application d'une page
-qui joue le rôle du « site existant ». Le cœur tient en quatre étapes :
+Un site hôte en Vue 3 avec Vite intègre le simulateur sous forme de composants. [`examples/integration-vue/`](../examples/integration-vue) contient une application d'une page qui joue le rôle du site existant.
 
-**1. Installer les briques**
+### Installer les paquets
+
+Depuis npm :
 
 ```bash
-pnpm add @shallowred/survey-schema @shallowred/survey-vue-dsfr \
-  @shallowred/survey-publicodes @shallowred/form-entreprise-innovation \
-  @shallowred/publicodes-entreprise-innovation publicodes @gouvminint/vue-dsfr @gouvfr/dsfr
+pnpm add @shallowred/publicodes-entreprise-innovation publicodes @jsonforms/core@3.8.0 @jsonforms/vue@3.8.0 @gouvminint/vue-dsfr @gouvfr/dsfr
 ```
 
-> Statut : les packages `@shallowred/survey-*` ne sont pas encore publiés sur npm — en
-> attendant, ce dépôt s'utilise en workspace (comme le fait l'exemple) ou en dépôt git
-> vendoré. `@shallowred/publicodes-entreprise-innovation` est publié mais demande deux
-> contournements documentés dans
-> [`packages/survey-publicodes`](../packages/survey-publicodes#readme).
+`@shallowred/publicodes-entreprise-innovation` demande deux contournements, décrits dans [`packages/survey-publicodes`](../packages/survey-publicodes#readme).
 
-**2. Charger les feuilles de style DSFR** (une fois, au point d'entrée)
+On installe `@shallowred/jsonforms-vue-dsfr` depuis l'archive de sa release ; son [README](../packages/jsonforms-vue-dsfr#readme) donne la commande. On emploie les autres paquets `@shallowred/` (`survey-schema`, `survey-publicodes`, `form-entreprise-innovation`) depuis ce dépôt, en workspace pnpm comme l'exemple, ou depuis une copie du dépôt.
+
+### Charger les feuilles de style du DSFR
+
+Au point d'entrée de l'application :
 
 ```ts
 import '@gouvfr/dsfr/dist/core/core.main.min.css'
 import '@gouvfr/dsfr/dist/component/component.main.min.css'
 import '@gouvfr/dsfr/dist/utility/utility.main.min.css'
 import '@gouvminint/vue-dsfr/styles'
+import '@shallowred/jsonforms-vue-dsfr/styles'
 ```
 
-**3. Monter le simulateur**
+Dans ce dépôt, le workspace résout `@shallowred/jsonforms-vue-dsfr` vers ses sources, qui importent déjà leur feuille de style : l'exemple se passe de la dernière ligne.
+
+### Afficher le formulaire et calculer l'éligibilité
 
 ```vue
-<script setup>
+<script setup lang="ts">
+import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core'
+import { rankWith, uiTypeIs } from '@jsonforms/core'
+import { JsonForms } from '@jsonforms/vue'
 import formSchema from '@shallowred/form-entreprise-innovation'
+import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
 import rules from '@shallowred/publicodes-entreprise-innovation/publicodes-build/publicodes-entreprise-innovation.model.json'
-import { calculateEligibility } from '@shallowred/survey-publicodes'
-import { SurveyForm, useSurvey } from '@shallowred/survey-vue-dsfr'
-import { computed } from 'vue'
+import { calculateEligibilityV3 } from '@shallowred/survey-publicodes'
+import { compileV3ToJsonForms, migrateV2ToV3, visibleAnswers } from '@shallowred/survey-schema'
+import { computed, provide, ref } from 'vue'
+import ResultatsIntermediaires from './ResultatsIntermediaires.vue'
 
-const survey = useSurvey(formSchema)
-const results = computed(() =>
-  calculateEligibility(rules, survey.schema, survey.getAnswersForCalculation()),
-)
+const { questionnaire, dataSchema } = migrateV2ToV3(formSchema)
+const { schema, uischema } = compileV3ToJsonForms(questionnaire, dataSchema)
+
+function eligibilityOf(answers: Record<string, unknown>) {
+  return calculateEligibilityV3(rules, dataSchema, visibleAnswers(questionnaire, answers), formSchema.dispositifs)
+}
+provide('eligibilityOf', eligibilityOf)
+
+const renderers = Object.freeze([
+  ...dsfrRenderers,
+  { renderer: ResultatsIntermediaires, tester: rankWith(5, uiTypeIs('IntermediaryResults')) },
+]) as JsonFormsRendererRegistryEntry[]
+const ajv = createAjv2020()
+
+const answers = ref<Record<string, unknown>>({})
+const results = computed(() => eligibilityOf(answers.value))
 </script>
 
 <template>
-  <SurveyForm :survey="survey" @complete="...">
-    <template #results-page>
-      <!-- votre affichage des résultats, alimenté par `results` -->
-    </template>
-  </SurveyForm>
+  <JsonForms
+    :data="answers"
+    :schema="schema"
+    :uischema="uischema"
+    :renderers="renderers"
+    :ajv="ajv"
+    :i18n="dsfrI18n"
+    validation-mode="ValidateAndHide"
+    @change="event => answers = event.data"
+  />
 </template>
 ```
 
-**4. Afficher les résultats** — `results` classe les dispositifs en
-`eligibleDispositifs` / `potentialDispositifs` / `ineligibleDispositifs` (avec raisons et
-variables manquantes) et porte les montants dans `aidesResults`. L'affichage vous
-appartient : l'exemple montre une version d'une trentaine de lignes.
+`migrateV2ToV3` convertit le formulaire d'aides-simplifiées en deux documents : le schéma des réponses et les étapes. `compileV3ToJsonForms` les traduit pour JSON Forms. `calculateEligibilityV3` transmet au modèle publicodes les réponses des champs affichés.
 
-- **Pour** : contrôle total de l'habillage, du parcours autour du simulateur, de la page
-  de résultats ; pas d'iframe.
-- **Contre** : suppose Vue 3 + Vite côté hôte (`@shallowred/survey-vue-dsfr` est
-  distribué en sources `.vue`).
+### Afficher les résultats
 
-## Qui maintient quoi (dans les trois voies)
+`results` classe les dispositifs en `eligibleDispositifs`, `potentialDispositifs` et `ineligibleDispositifs`, avec les raisons et les variables manquantes, et donne les montants dans `aidesResults`. Le site hôte écrit son propre affichage ; l'exemple en montre un, `ResultatsSimulation.vue`.
 
-- **Le modèle publicodes**
-  ([betagouv/publicodes-entreprise-innovation](https://github.com/betagouv/publicodes-entreprise-innovation))
-  encode le droit : barèmes, plafonds, conditions. C'est la seule brique qui bouge quand
-  la réglementation change ; elle se maintient dans son dépôt, avec ses cas de tests,
-  par les personnes qui connaissent les dispositifs.
-- **Le formulaire JSON** encode le parcours de saisie (ordre, formulations, conditions
-  d'affichage) ; il se modifie sans compétence de développement particulière.
-- **Le kit de rendu** est générique et ne contient rien de spécifique aux aides à
-  l'innovation ; son comportement (conditions de visibilité comprises) est verrouillé
-  par des tests rejoués sur le formulaire réel de 78 questions.
+Le formulaire contient une page de résultats intermédiaires. JSON Forms l'affiche par le composant déclaré pour `IntermediaryResults` avec un rang supérieur, ici `ResultatsIntermediaires.vue`, qui lit `eligibilityOf` par `inject`. Au clic sur « Terminer », le formulaire émet l'événement DOM `categorization-complete`, que le site hôte écoute sur un élément parent pour afficher les résultats finaux.
 
-Tout est open source (MIT) : installable, forkable, ou copiable dans un dépôt interne.
-Aucune de ces voies ne crée de dépendance à un service tiers au moment du calcul — il
-s'exécute entièrement dans le navigateur de l'usager.
+- Avantage : le site hôte maîtrise l'habillage, les pages autour du simulateur et l'affichage des résultats, sans iframe.
+- Limite : le site hôte emploie Vue 3 et JSON Forms 3.8.
+
+## Qui maintient quoi
+
+- Le [modèle publicodes](https://github.com/betagouv/publicodes-entreprise-innovation) écrit le droit : barèmes, plafonds, conditions. Quand la réglementation change, seul ce modèle change ; les personnes qui connaissent les dispositifs le maintiennent dans son dépôt, avec ses cas de tests.
+- Le formulaire JSON décrit la saisie : ordre des champs, formulations, conditions d'affichage. On le modifie sans compétence de développement particulière.
+- Les composants de rendu ne contiennent rien de propre aux aides à l'innovation. Des tests comparent, sur les 78 champs du formulaire réel, les champs, les pages et les réponses requises qu'affiche JSON Forms à ceux du formulaire d'aides-simplifiées (`packages/survey-schema/tests/v3-equivalence.spec.ts`).
+
+Tout le code est sous licence MIT. Le calcul s'exécute dans le navigateur de l'usager, quelle que soit la façon d'intégrer le simulateur.
