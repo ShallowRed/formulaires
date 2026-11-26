@@ -45,7 +45,7 @@ function restart() {
       Simulateur des aides à l'innovation
     </h2>
     <p class="fr-mb-3w">
-      Formulaire du simulateur d'entreprise.service-public.fr, converti depuis le format d'aides-simplifiées. Le
+      Ce formulaire est celui du simulateur d'entreprise.service-public.fr, converti depuis le format d'aides-simplifiées. Le
       <a
         href="https://github.com/betagouv/publicodes-entreprise-innovation"
         target="_blank"

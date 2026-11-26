@@ -22,7 +22,7 @@ const rulesJson = JSON.stringify(bikeAidRules, null, 2)
     Exemple minimal
   </h2>
   <p class="fr-mb-3w">
-    Aide fictive à l'achat d'un vélo, décrite par un schéma des réponses, les étapes du formulaire et un modèle publicodes.
+    Un schéma des réponses, les étapes du formulaire et un modèle publicodes décrivent une aide fictive à l'achat d'un vélo.
   </p>
   <SchemaPreview
     :schema="schema"
