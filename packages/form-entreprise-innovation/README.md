@@ -1,7 +1,7 @@
 # @shallowred/form-entreprise-innovation
 
 Formulaire déclaratif du simulateur d'aides à l'innovation pour les entreprises
-(CIR, CII, CICo, JEI, JEU, JEC), au format [survey-schema](../survey-schema).
+(CIR, CII, CICo, JEI, JEU, JEC), au format [formulaires-schema](../formulaires-schema).
 
 ## Provenance
 
@@ -23,13 +23,13 @@ ce package ne porte que la couche formulaire, volontairement découplée du mote
 
 ## Usage
 
-Pour JSON Forms, le paquet exporte le questionnaire et le schéma de ses réponses, que `compileV3ToJsonForms` de survey-schema traduit, ainsi que la liste des dispositifs à évaluer :
+Pour JSON Forms, le paquet exporte le questionnaire et le schéma de ses réponses, que `compileV3ToJsonForms` de formulaires-schema traduit, ainsi que la liste des dispositifs à évaluer :
 
 ```ts
 import { dataSchema, dispositifs, questionnaire } from '@shallowred/form-entreprise-innovation'
 ```
 
-`entreprise-innovation.questionnaire.json` et `entreprise-innovation.data.schema.json` sont produits par `migrateV2ToV3` à partir du formulaire d'aides-simplifiées. Après une mise à jour de ce formulaire, on les régénère par `pnpm --filter @shallowred/survey-schema exec vitest run -u tests/v3-equivalence.spec.ts`.
+`entreprise-innovation.questionnaire.json` et `entreprise-innovation.data.schema.json` sont produits par `migrateV2ToV3` à partir du formulaire d'aides-simplifiées. Après une mise à jour de ce formulaire, on les régénère par `pnpm --filter @shallowred/formulaires-schema exec vitest run -u tests/v3-equivalence.spec.ts`.
 
 Le formulaire d'aides-simplifiées est l'export par défaut :
 

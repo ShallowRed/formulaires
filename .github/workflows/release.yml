@@ -1,6 +1,6 @@
 name: Release
 
-# A tag <package folder>-v<version>, for example jsonforms-vue-dsfr-v0.1.0, attaches the archive of that package to a release
+# A tag <package folder>-v<version>, for example formulaires-vue-dsfr-v0.1.0, attaches the archive of that package to a release
 on:
   push:
     tags: ['*-v*']

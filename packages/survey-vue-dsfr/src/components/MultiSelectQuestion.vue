@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { DsfrCheckboxSetProps } from '@gouvminint/vue-dsfr'
-import type { SurveyChoice, SurveyQuestionData } from '@shallowred/survey-schema'
+import type { SurveyChoice, SurveyQuestionData } from '@shallowred/formulaires-schema'
 import { DsfrCheckboxSet, DsfrTooltip } from '@gouvminint/vue-dsfr'
 import { onMounted, ref, useTemplateRef } from 'vue'
 

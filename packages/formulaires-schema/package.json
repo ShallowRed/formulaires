@@ -1,0 +1,71 @@
+{
+  "name": "@shallowred/formulaires-schema",
+  "version": "2.0.0",
+  "description": "Framework-agnostic survey schema definition and management library, extracted from aides-simplifiees",
+  "keywords": [
+    "survey",
+    "form",
+    "schema",
+    "validation",
+    "conditional-logic",
+    "publicodes",
+    "openfisca",
+    "betagouv"
+  ],
+  "license": "MIT",
+  "author": "Lucas Poulain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShallowRed/survey-kit.git",
+    "directory": "packages/formulaires-schema"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./schemas/*": "./src/validation/schemas/*.json"
+  },
+  "files": [
+    "dist",
+    "src/validation/schemas",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "validate-schemas": "ajv compile --spec=draft7 -c ajv-formats -s src/validation/schemas/v2.0.0.schema.json && ajv compile --spec=draft2020 -c ajv-formats -s src/validation/schemas/v3.0.0.schema.json",
+    "test:run": "vitest run",
+    "pack:dist": "pnpm run build && pnpm pack --pack-destination ../../dist"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "ajv-cli": "^5.0.0",
+    "eslint": "^8.55.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4",
+    "@vitest/coverage-v8": "^1.0.4",
+    "@jsonforms/core": "3.8.0"
+  },
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

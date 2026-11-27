@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SurveyQuestionData } from '@shallowred/survey-schema'
+import type { SurveyQuestionData } from '@shallowred/formulaires-schema'
 import { customRef } from 'vue'
 import RadioButtonQuestion from './RadioButtonQuestion.vue'
 

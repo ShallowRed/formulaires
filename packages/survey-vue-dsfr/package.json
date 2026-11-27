@@ -1,7 +1,7 @@
 {
   "name": "@shallowred/survey-vue-dsfr",
   "version": "0.1.0",
-  "description": "Vue 3 + DSFR renderer for survey-schema forms, extracted from aides-simplifiees",
+  "description": "Vue 3 + DSFR renderer for formulaires-schema forms, extracted from aides-simplifiees",
   "keywords": [
     "survey",
     "form",
@@ -31,7 +31,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@shallowred/survey-schema": "workspace:*"
+    "@shallowred/formulaires-schema": "workspace:*"
   },
   "peerDependencies": {
     "@gouvminint/vue-dsfr": ">=8",

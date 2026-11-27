@@ -48,9 +48,9 @@ Le modèle publicodes vient de npm :
 pnpm add @shallowred/publicodes-entreprise-innovation publicodes
 ```
 
-`@shallowred/publicodes-entreprise-innovation` demande deux contournements, décrits dans [`packages/survey-publicodes`](../packages/survey-publicodes#readme).
+`@shallowred/publicodes-entreprise-innovation` demande deux contournements, décrits dans [`packages/formulaires-publicodes`](../packages/formulaires-publicodes#readme).
 
-On installe `@shallowred/jsonforms-vue-dsfr` depuis l'archive de sa release ; son [README](../packages/jsonforms-vue-dsfr#readme) donne la commande et les versions de ses dépendances pairs (Vue, JSON Forms, vue-dsfr, DSFR). On emploie les autres paquets `@shallowred/` (`survey-schema`, `survey-publicodes`, `form-entreprise-innovation`) depuis ce dépôt, en workspace pnpm comme l'exemple, ou depuis une copie du dépôt.
+On installe `@shallowred/formulaires-vue-dsfr` depuis l'archive de sa release ; son [README](../packages/formulaires-vue-dsfr#readme) donne la commande et les versions de ses dépendances pairs (Vue, JSON Forms, vue-dsfr, DSFR). On emploie les autres paquets `@shallowred/` (`formulaires-schema`, `formulaires-publicodes`, `form-entreprise-innovation`) depuis ce dépôt, en workspace pnpm comme l'exemple, ou depuis une copie du dépôt.
 
 ### Charger les feuilles de style du DSFR
 
@@ -61,10 +61,10 @@ import '@gouvfr/dsfr/dist/core/core.main.min.css'
 import '@gouvfr/dsfr/dist/component/component.main.min.css'
 import '@gouvfr/dsfr/dist/utility/utility.main.min.css'
 import '@gouvminint/vue-dsfr/styles'
-import '@shallowred/jsonforms-vue-dsfr/styles'
+import '@shallowred/formulaires-vue-dsfr/styles'
 ```
 
-Dans ce dépôt, le workspace résout `@shallowred/jsonforms-vue-dsfr` vers ses sources, qui importent déjà leur feuille de style : l'exemple se passe de la dernière ligne.
+Dans ce dépôt, le workspace résout `@shallowred/formulaires-vue-dsfr` vers ses sources, qui importent déjà leur feuille de style : l'exemple se passe de la dernière ligne.
 
 ### Afficher le formulaire et calculer l'éligibilité
 
@@ -74,10 +74,10 @@ import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core'
 import { rankWith, uiTypeIs } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
 import { dataSchema, dispositifs, questionnaire } from '@shallowred/form-entreprise-innovation'
-import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
+import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/formulaires-vue-dsfr'
 import rules from '@shallowred/publicodes-entreprise-innovation/publicodes-build/publicodes-entreprise-innovation.model.json'
-import { calculateEligibilityV3 } from '@shallowred/survey-publicodes'
-import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/survey-schema'
+import { calculateEligibilityV3 } from '@shallowred/formulaires-publicodes'
+import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/formulaires-schema'
 import { computed, provide, ref } from 'vue'
 import ResultatsIntermediaires from './ResultatsIntermediaires.vue'
 
@@ -121,12 +121,12 @@ Le paquet du formulaire donne le questionnaire, le schéma de ses réponses et l
 Le formulaire contient une page de résultats intermédiaires. JSON Forms l'affiche par le composant déclaré pour `IntermediaryResults` avec un rang supérieur, ici `ResultatsIntermediaires.vue`, qui lit `eligibilityOf` par `inject`. Au clic sur « Terminer », le formulaire émet l'événement DOM `categorization-complete`, que le site hôte écoute sur un élément parent pour afficher les résultats finaux.
 
 - Avantage : le site hôte maîtrise l'habillage, les pages autour du simulateur et l'affichage des résultats, sans iframe.
-- Limite : le site hôte emploie Vue 3, JSON Forms et vue-dsfr, aux versions que demande `@shallowred/jsonforms-vue-dsfr`.
+- Limite : le site hôte emploie Vue 3, JSON Forms et vue-dsfr, aux versions que demande `@shallowred/formulaires-vue-dsfr`.
 
 ## Qui maintient quoi
 
 - Le [modèle publicodes](https://github.com/betagouv/publicodes-entreprise-innovation) écrit le droit : barèmes, plafonds, conditions. Quand la réglementation change, seul ce modèle change ; les personnes qui connaissent les dispositifs le maintiennent dans son dépôt, avec ses cas de tests.
 - Le formulaire JSON décrit la saisie : ordre des champs, formulations, conditions d'affichage. On le modifie sans compétence de développement particulière.
-- Les composants de rendu ne contiennent rien de propre aux aides à l'innovation. Des tests comparent, sur les 78 champs du formulaire réel, les champs, les pages et les réponses requises qu'affiche JSON Forms à ceux du formulaire d'aides-simplifiées (`packages/survey-schema/tests/v3-equivalence.spec.ts`).
+- Les composants de rendu ne contiennent rien de propre aux aides à l'innovation. Des tests comparent, sur les 78 champs du formulaire réel, les champs, les pages et les réponses requises qu'affiche JSON Forms à ceux du formulaire d'aides-simplifiées (`packages/formulaires-schema/tests/v3-equivalence.spec.ts`).
 
 Tout le code est sous licence MIT. Le calcul s'exécute dans le navigateur de l'usager, quelle que soit la façon d'intégrer le simulateur.

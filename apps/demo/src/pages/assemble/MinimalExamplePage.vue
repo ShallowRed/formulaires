@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { calculateEligibilityV3 } from '@shallowred/survey-publicodes'
-import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/survey-schema'
+import { calculateEligibilityV3 } from '@shallowred/formulaires-publicodes'
+import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/formulaires-schema'
 import CodeBlock from '../../components/CodeBlock.vue'
 import EligibilityResults from '../../components/EligibilityResults.vue'
 import SchemaPreview from '../../components/SchemaPreview.vue'

@@ -1,4 +1,4 @@
-import type { SurveySchema } from '@shallowred/survey-schema'
+import type { SurveySchema } from '@shallowred/formulaires-schema'
 import formSchema from '@shallowred/form-entreprise-innovation/entreprise-innovation.json'
 import { describe, expect, it } from 'vitest'
 import { useSurvey } from '../src/composables/use-survey.js'

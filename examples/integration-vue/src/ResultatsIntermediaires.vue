@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { UISchemaElement } from '@jsonforms/core'
-import type { EligibilityResults } from '@shallowred/survey-publicodes'
+import type { EligibilityResults } from '@shallowred/formulaires-publicodes'
 import { rendererProps, useJsonForms } from '@jsonforms/vue'
 import { computed, inject } from 'vue'
 import ResultatsSimulation from './ResultatsSimulation.vue'

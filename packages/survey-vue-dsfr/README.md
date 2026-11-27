@@ -1,7 +1,7 @@
 # @shallowred/survey-vue-dsfr
 
 Rendu Vue 3 + [DSFR](https://www.systeme-de-design.gouv.fr/) des formulaires
-[survey-schema](../survey-schema).
+[formulaires-schema](../formulaires-schema).
 
 > Extraction du runtime de production d'[aides-simplifiées](https://github.com/betagouv/aides-simplifiees-app)
 > (`inertia/composables/surveys/*` et `inertia/components/survey/*`), découplée de

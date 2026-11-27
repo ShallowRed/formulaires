@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core'
-import type { EligibilityResults as EligibilityResultsData } from '@shallowred/survey-publicodes'
+import type { EligibilityResults as EligibilityResultsData } from '@shallowred/formulaires-publicodes'
 import { rankWith, uiTypeIs } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
 import { dataSchema, dispositifs, questionnaire } from '@shallowred/form-entreprise-innovation'
-import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
+import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/formulaires-vue-dsfr'
 // The npm package entry uses `assert { type: 'json' }` (removed from Node >= 22): import the compiled rules directly
 import rules from '@shallowred/publicodes-entreprise-innovation/publicodes-build/publicodes-entreprise-innovation.model.json'
-import { calculateEligibilityV3 } from '@shallowred/survey-publicodes'
-import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/survey-schema'
+import { calculateEligibilityV3 } from '@shallowred/formulaires-publicodes'
+import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/formulaires-schema'
 import { computed, provide, ref } from 'vue'
 import EligibilityResults from '../../components/EligibilityResults.vue'
 import EligibilityResultsRenderer from '../../components/EligibilityResultsRenderer.vue'
