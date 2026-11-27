@@ -41,21 +41,21 @@ JSON Forms crée par défaut une instance Ajv draft-07, qui refuse un schéma 20
 
 Pour ajouter ses propres composants, l'application gèle sa liste comme `dsfrRenderers`, ainsi que le [README de `@jsonforms/vue`](https://github.com/eclipsesource/jsonforms/blob/master/packages/vue/README.md) le recommande : `Object.freeze([...dsfrRenderers, { renderer, tester }])`.
 
-## Ce que lisent les composants
+## Effets du schéma et du uischema
 
 Dans le JSON Schema :
 
-- `x-legal-basis`, `{ title, url }` => lien « Base légale » sous le libellé ;
-- `x-source`, `{ provider, data }` => badge « Donnée certifiable » et nom du fournisseur ;
-- `minItems` et `maxItems` d'une liste => boutons d'ajout et de suppression désactivés aux bornes.
+- `x-legal-basis`, de forme `{ title, url }`, ajoute sous le libellé un lien « Base légale ».
+- `x-source`, de forme `{ provider, data }`, ajoute le badge « Donnée certifiable » et le nom du fournisseur.
+- `minItems` et `maxItems` d'une liste désactivent les boutons d'ajout et de suppression quand la liste atteint ces bornes.
 
 Dans les options du uischema :
 
-- `format`, `radio` ou `select` => forme d'un choix, qui vaut par défaut des boutons radio jusqu'à cinq options et une liste déroulante au-delà ;
-- `tooltip`, texte ou `{ content }` => aide sous le libellé ;
-- `choices`, objet indexé par la valeur de chaque option => `tooltip`, bouton d'infobulle du DSFR après le libellé de l'option, nommé par son `buttonLabel` ; `exclusive`, case qui décoche les autres. Un choix dont une option a une infobulle s'affiche en boutons radio, sauf avec `format: 'select'`, puisqu'une liste déroulante ne peut pas montrer d'infobulle ;
-- `placeholder` => texte indicatif d'un champ de saisie ;
-- `required` => champ requis sous condition. JSON Forms déduit le caractère requis du `required` statique du schéma.
+- `format`, `radio` ou `select`, fixe la forme d'un choix. Par défaut, un choix s'affiche en boutons radio jusqu'à cinq options et en liste déroulante au-delà.
+- `tooltip`, texte ou `{ content }`, ajoute une aide sous le libellé.
+- `choices` est un objet indexé par la valeur de chaque option. Son `tooltip` ajoute après le libellé de l'option un bouton d'infobulle du DSFR, nommé par son `buttonLabel`. Son `exclusive` fait de l'option une case qui décoche les autres. Un choix dont une option a une infobulle s'affiche en boutons radio, sauf avec `format: 'select'`, puisqu'une liste déroulante ne peut pas montrer d'infobulle.
+- `placeholder` donne le texte indicatif d'un champ de saisie.
+- `required` rend un champ requis sous condition, car JSON Forms déduit le caractère requis du seul `required` statique du schéma.
 
 Les composants n'affichent pas les options `notion`, `additionalNotions` et `autocomplete`, que le compilateur de survey-schema v3 écrit aussi.
 
