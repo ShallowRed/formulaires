@@ -2,13 +2,6 @@ import type { RouteLocationNormalized } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import SectionLayout from './components/SectionLayout.vue'
 import HomePage from './pages/HomePage.vue'
-import InstallPage from './pages/integrate/InstallPage.vue'
-import IntegrationExamplePage from './pages/integrate/IntegrationExamplePage.vue'
-import AssemblyPage from './pages/assemble/AssemblyPage.vue'
-import MinimalExamplePage from './pages/assemble/MinimalExamplePage.vue'
-import OverviewPage from './pages/assemble/OverviewPage.vue'
-import SimulatorPage from './pages/assemble/SimulatorPage.vue'
-import EditorPage from './pages/write/EditorPage.vue'
 import { sections } from './sections'
 
 const [integrate, write, assemble] = sections
@@ -28,25 +21,25 @@ export const router = createRouter({
       component: SectionLayout,
       props: { section: integrate },
       children: [
-        { path: '', component: InstallPage },
-        { path: ':slug', component: IntegrationExamplePage },
+        { path: '', component: () => import('./pages/integrate/InstallPage.vue') },
+        { path: ':slug', component: () => import('./pages/integrate/IntegrationExamplePage.vue') },
       ],
     },
     {
       path: '/ecrire',
       component: SectionLayout,
       props: { section: write },
-      children: [{ path: '', component: EditorPage }],
+      children: [{ path: '', component: () => import('./pages/write/EditorPage.vue') }],
     },
     {
       path: '/assembler',
       component: SectionLayout,
       props: { section: assemble },
       children: [
-        { path: '', component: OverviewPage },
-        { path: 'exemple-minimal', component: MinimalExamplePage },
-        { path: 'aides-innovation', component: SimulatorPage },
-        { path: 'code', component: AssemblyPage },
+        { path: '', component: () => import('./pages/assemble/OverviewPage.vue') },
+        { path: 'exemple-minimal', component: () => import('./pages/assemble/MinimalExamplePage.vue') },
+        { path: 'aides-innovation', component: () => import('./pages/assemble/SimulatorPage.vue') },
+        { path: 'code', component: () => import('./pages/assemble/AssemblyPage.vue') },
       ],
     },
     { path: '/simulateur', redirect: moved('/assembler/aides-innovation') },
