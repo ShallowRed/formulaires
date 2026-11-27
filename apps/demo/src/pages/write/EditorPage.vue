@@ -25,10 +25,10 @@ function parse<T>(source: string): Parsed<T> {
 
 type ValidationError = NonNullable<SchemaValidationResult['rawErrors']>[number]
 
-// The branches of a oneOf report the same error several times
+// Ajv reports a failed `then` or `else` a second time under `if`, and the branches of a oneOf the same error several times
 function messagesOf(errors: ValidationError[]): string[] {
   localizeFr(errors)
-  return [...new Set(errors.map((error) => {
+  return [...new Set(errors.filter(error => error.keyword !== 'if').map((error) => {
     const property = error.keyword === 'additionalProperties' ? ` (${error.params.additionalProperty})` : ''
     return `${error.instancePath || '/'} : ${error.message}${property}`
   }))]

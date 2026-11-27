@@ -68,79 +68,84 @@
       }
     },
     "page": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "id",
-            "questions"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "questions": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/$defs/question"
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "required": [
-            "id",
-            "type",
-            "outputs"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "type": {
-              "const": "intermediary-results"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "outputs": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "required": [
-                  "id",
-                  "title"
-                ],
-                "additionalProperties": false,
-                "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
+      "$comment": "The key `type` selects the kind of page, so that a validator reports the errors of that kind alone",
+      "if": {
+        "type": "object",
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "outputs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "const": "intermediary-results"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "title"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
                 }
               }
             }
           }
         }
-      ]
+      },
+      "else": {
+        "type": "object",
+        "required": [
+          "id",
+          "questions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/question"
+            }
+          }
+        }
+      }
     },
     "question": {
       "type": "object",
@@ -246,41 +251,37 @@
       }
     },
     "condition": {
-      "oneOf": [
-        {
-          "description": "Holds when the answer designated by scope exists and is valid against schema.",
-          "type": "object",
-          "required": [
-            "scope",
-            "schema"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "scope": {
-              "$ref": "#/$defs/pointer"
-            },
-            "schema": {
-              "$ref": "https://json-schema.org/draft/2020-12/schema"
+      "$comment": "The key of a condition selects its kind, so that a validator reports the errors of that kind alone",
+      "if": {
+        "type": "object",
+        "required": [
+          "allOf"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "allOf"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "allOf": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/condition"
             }
           }
-        },
-        {
+        }
+      },
+      "else": {
+        "if": {
           "type": "object",
           "required": [
-            "allOf"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "allOf": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/$defs/condition"
-              }
-            }
-          }
+            "anyOf"
+          ]
         },
-        {
+        "then": {
           "type": "object",
           "required": [
             "anyOf"
@@ -296,19 +297,44 @@
             }
           }
         },
-        {
-          "type": "object",
-          "required": [
-            "not"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "not": {
-              "$ref": "#/$defs/condition"
+        "else": {
+          "if": {
+            "type": "object",
+            "required": [
+              "not"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "required": [
+              "not"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "not": {
+                "$ref": "#/$defs/condition"
+              }
+            }
+          },
+          "else": {
+            "description": "Holds when the answer designated by scope exists and is valid against schema.",
+            "type": "object",
+            "required": [
+              "scope",
+              "schema"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "scope": {
+                "$ref": "#/$defs/pointer"
+              },
+              "schema": {
+                "$ref": "https://json-schema.org/draft/2020-12/schema"
+              }
             }
           }
         }
-      ]
+      }
     }
   }
 }

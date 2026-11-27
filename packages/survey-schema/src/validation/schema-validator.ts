@@ -222,10 +222,11 @@ export class SchemaValidator {
   }
 
   /**
-   * Format Ajv errors into a more user-friendly format
+   * Format Ajv errors into a more user-friendly format, without the `if` error that
+   * repeats a failed `then` or `else`
    */
   private formatErrors(ajvErrors: ErrorObject[]): SchemaValidationError[] {
-    return ajvErrors.map((error) => ({
+    return ajvErrors.filter(error => error.keyword !== 'if').map((error) => ({
       path: error.instancePath || '/',
       message: error.message || 'Validation error',
       keyword: error.keyword,
