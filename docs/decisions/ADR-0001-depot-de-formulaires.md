@@ -3,7 +3,7 @@ status: proposed
 date: 2026-11-27
 decision-makers: Lucas Poulain
 ---
-# Publier les briques de formulaire sous le scope `@betagouv`, dans un dépôt générique
+# Placer les briques de formulaire dans un dépôt générique, `formulaires`
 
 ## Contexte et problème
 
@@ -18,7 +18,7 @@ Le catalogue algos.data.gouv.fr active « montrer les entrées » et « essayer 
 
 ## Décision
 
-On place les briques de formulaire dans un dépôt générique nommé `formulaires`, le dépôt de formulaires, distinct du dépôt du catalogue. On publie ses paquets sous le scope npm `@betagouv`, avec le préfixe `formulaires-` (`@betagouv/formulaires-schema`, `@betagouv/formulaires-vue-dsfr`, `@betagouv/formulaires-publicodes`). Le catalogue installe chaque brique à une version fixée.
+On place les briques de formulaire dans un dépôt générique nommé `formulaires`, le dépôt de formulaires, distinct du dépôt du catalogue. Le nom de ses paquets commence par `formulaires-` (`formulaires-schema`, `formulaires-vue-dsfr`, `formulaires-publicodes`). On les publie en archives attachées aux releases du dépôt de formulaires, comme le catalogue le fait pour les siens, tant que l'équipe n'a pas le droit de publier sur npm sous le scope `@betagouv` ou `@datagouv`. Le catalogue installe chaque brique à une version fixée.
 
 Les briques de formulaire sont les paquets aujourd'hui nommés `survey-schema`, `jsonforms-vue-dsfr`, `survey-publicodes` et `survey-vue-dsfr`. L'élément `rule-form` et le composant `UiRuleForm`, qui prennent une règle et un service de calcul du catalogue, restent dans le dépôt du catalogue.
 
@@ -26,7 +26,7 @@ Le dépôt de formulaires garde, marqués comme dépréciés, le format v2 d'aid
 
 ### Conséquences
 
-- Une équipe hors du catalogue trouve le format et les composants sous un nom propre aux formulaires, et les installe depuis npm.
+- Une équipe hors du catalogue trouve le format et les composants sous un nom propre aux formulaires.
 - Chaque brique a sa propre version, indépendante des releases du catalogue.
 - Le catalogue suit les releases du dépôt de formulaires : une correction de formulaire demandée par le catalogue passe par une release du dépôt de formulaires, puis par la montée de version dans le catalogue.
 - Tant que le format v2 reste dans le dépôt de formulaires, l'API garde des noms qui distinguent les versions du format.
@@ -43,11 +43,11 @@ On revient au dépôt du catalogue si, à une date de revue fixée après la pre
 
 On retire le format v2 quand plus aucun projet ne l'utilise ; les noms de l'API perdent alors la version du format. On le sépare dans un dépôt d'héritage si un projet qui l'utilise encore freine l'évolution du format v3.
 
-Si l'équipe n'obtient pas le droit de publier sous `@betagouv`, on publie les paquets en archives attachées aux releases du dépôt de formulaires, comme le catalogue le fait pour les siens.
+Quand l'équipe obtient le droit de publier sous `@betagouv` ou `@datagouv`, on publie les paquets sur npm sous ce scope, et le catalogue les installe depuis npm. On peut alors transférer le dépôt de formulaires dans l'organisation GitHub du même nom.
 
 ## Questions ouvertes
 
 - L'organisation GitHub du dépôt de formulaires.
-- Le droit de publier sous le scope npm `@betagouv`.
+- Le scope npm des paquets, `@betagouv` ou `@datagouv`, selon le droit de publier que l'équipe obtient.
 - La place du formulaire des aides à l'innovation (`form-entreprise-innovation`) : exemple de la démo ou héritage d'aides-simplifiées.
 - La date de la première revue.
