@@ -1,24 +1,23 @@
-import{C as i}from"./CodeBlock-DasucQP2.js";import{d as t,c as o,a as s,e as a,p as l,F as m,o as u}from"./index-CugbjuVg.js";const c=`<script lang="ts" setup>
+import{C as i}from"./CodeBlock-U1l_ITuY.js";import{d as t,c as o,a as s,e as a,p as l,F as m,o as u}from"./index-DTE91lkB.js";const c=`<script lang="ts" setup>
 import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core'
 import type { EligibilityResults as EligibilityResultsData } from '@shallowred/survey-publicodes'
 import { rankWith, uiTypeIs } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
-import formSchema from '@shallowred/form-entreprise-innovation'
+import { dataSchema, dispositifs, questionnaire } from '@shallowred/form-entreprise-innovation'
 import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
 // The npm package entry uses \`assert { type: 'json' }\` (removed from Node >= 22): import the compiled rules directly
 import rules from '@shallowred/publicodes-entreprise-innovation/publicodes-build/publicodes-entreprise-innovation.model.json'
 import { calculateEligibilityV3 } from '@shallowred/survey-publicodes'
-import { compileV3ToJsonForms, migrateV2ToV3, visibleAnswers } from '@shallowred/survey-schema'
+import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/survey-schema'
 import { computed, provide, ref } from 'vue'
 import EligibilityResults from '../../components/EligibilityResults.vue'
 import EligibilityResultsRenderer from '../../components/EligibilityResultsRenderer.vue'
 import FormFrame from '../../components/FormFrame.vue'
 
-const { questionnaire, dataSchema } = migrateV2ToV3(formSchema)
 const { schema, uischema } = compileV3ToJsonForms(questionnaire, dataSchema)
 
 function eligibilityOf(answers: Record<string, unknown>): EligibilityResultsData {
-  return calculateEligibilityV3(rules, dataSchema, visibleAnswers(questionnaire, answers), formSchema.dispositifs)
+  return calculateEligibilityV3(rules, dataSchema, visibleAnswers(questionnaire, answers), dispositifs)
 }
 provide('eligibilityOf', eligibilityOf)
 
@@ -81,4 +80,4 @@ function restart() {
     </template>
   </div>
 </template>
-`,g=t({__name:"AssemblyPage",setup(d){var n;const r=((n=c.match(/<script[^>]*>\n([\s\S]*?)<\/script>/))==null?void 0:n[1].trimEnd())??"";return(p,e)=>(u(),o(m,null,[e[0]||(e[0]=s("h2",{class:"fr-h3"}," Code du simulateur ",-1)),e[1]||(e[1]=s("p",{class:"fr-mb-3w"}," Voici le script de la page « Simulateur des aides à l'innovation ». ",-1)),a(i,{code:l(r),language:"typescript"},null,8,["code"])],64))}});export{g as default};
+`,v=t({__name:"AssemblyPage",setup(d){var n;const r=((n=c.match(/<script[^>]*>\n([\s\S]*?)<\/script>/))==null?void 0:n[1].trimEnd())??"";return(p,e)=>(u(),o(m,null,[e[0]||(e[0]=s("h2",{class:"fr-h3"}," Code du simulateur ",-1)),e[1]||(e[1]=s("p",{class:"fr-mb-3w"}," Voici le script de la page « Simulateur des aides à l'innovation ». ",-1)),a(i,{code:l(r),language:"typescript"},null,8,["code"])],64))}});export{v as default};
