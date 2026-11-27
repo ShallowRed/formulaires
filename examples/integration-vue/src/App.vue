@@ -3,20 +3,19 @@ import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core'
 import type { EligibilityResults } from '@shallowred/survey-publicodes'
 import { rankWith, uiTypeIs } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
-import formSchema from '@shallowred/form-entreprise-innovation'
+import { dataSchema, dispositifs, questionnaire } from '@shallowred/form-entreprise-innovation'
 import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
 import rules from '@shallowred/publicodes-entreprise-innovation/publicodes-build/publicodes-entreprise-innovation.model.json'
 import { calculateEligibilityV3 } from '@shallowred/survey-publicodes'
-import { compileV3ToJsonForms, migrateV2ToV3, visibleAnswers } from '@shallowred/survey-schema'
+import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/survey-schema'
 import { computed, provide, ref } from 'vue'
 import ResultatsIntermediaires from './ResultatsIntermediaires.vue'
 import ResultatsSimulation from './ResultatsSimulation.vue'
 
-const { questionnaire, dataSchema } = migrateV2ToV3(formSchema)
 const { schema, uischema } = compileV3ToJsonForms(questionnaire, dataSchema)
 
 function eligibilityOf(answers: Record<string, unknown>): EligibilityResults {
-  return calculateEligibilityV3(rules, dataSchema, visibleAnswers(questionnaire, answers), formSchema.dispositifs)
+  return calculateEligibilityV3(rules, dataSchema, visibleAnswers(questionnaire, answers), dispositifs)
 }
 provide('eligibilityOf', eligibilityOf)
 
