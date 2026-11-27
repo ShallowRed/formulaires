@@ -1,4 +1,4 @@
-import{C as i}from"./CodeBlock-BsOm8zSR.js";import{d as t,c as o,a as s,e as a,p as l,F as m,o as u}from"./index-DvtFmx6i.js";const c=`<script lang="ts" setup>
+import{C as i}from"./CodeBlock-CDTiUsRW.js";import{d as t,c as o,a as s,e as a,p as l,F as m,o as u}from"./index-UloXXHbr.js";const c=`<script lang="ts" setup>
 import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core'
 import type { EligibilityResults as EligibilityResultsData } from '@shallowred/formulaires-publicodes'
 import { rankWith, uiTypeIs } from '@jsonforms/core'
