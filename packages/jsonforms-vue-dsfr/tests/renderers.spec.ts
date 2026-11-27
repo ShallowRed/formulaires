@@ -2,7 +2,7 @@ import type { JsonSchema, UISchemaElement } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import { compileV3ToJsonForms, migrateV2ToV3 } from '@shallowred/survey-schema'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAjv2020, dsfrI18n, dsfrRenderers } from '../src/index'
 
 async function render(schema: JsonSchema, data: Record<string, unknown> = {}, uischema?: UISchemaElement) {
@@ -115,6 +115,17 @@ describe('a choice', () => {
     expect(asSelect.find('select').exists()).toBe(true)
   })
 
+  it('frames each option of a rich choice, radio buttons, yes or no question or checkboxes', async () => {
+    const radio: JsonSchema = { type: 'object', properties: { secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b'] } } }
+    const checkbox: JsonSchema = { type: 'object', properties: { secteur: { type: 'array', title: 'Secteur', uniqueItems: true, items: { type: 'string', enum: ['a', 'b'] } } } }
+    const yesNo: JsonSchema = { type: 'object', properties: { secteur: { type: 'boolean', title: 'Secteur' } } }
+    const rich = { type: 'Control', scope: '#/properties/secteur', options: { rich: true } } as UISchemaElement
+    expect((await render(radio, {}, rich)).findAll('.fr-radio-group.fr-radio-rich')).toHaveLength(2)
+    expect((await render(yesNo, {}, rich)).findAll('.fr-fieldset__element--inline .fr-radio-rich')).toHaveLength(2)
+    expect((await render(checkbox, {}, rich)).findAll('.fr-checkbox-group.jsonforms-dsfr-checkbox-rich')).toHaveLength(2)
+    expect((await render(radio)).find('.fr-radio-rich').exists()).toBe(false)
+  })
+
   it('follows the format option of the uischema', async () => {
     expect((await choice(2, 'select')).find('select').exists()).toBe(true)
     expect((await choice(8, 'radio')).findAll('input[type="radio"]')).toHaveLength(8)
@@ -219,6 +230,18 @@ describe('a questionnaire in steps', () => {
     ],
   } as UISchemaElement
 
+  // jsdom implements neither scrolling nor media queries
+  const scrollIntoView = vi.fn()
+  beforeEach(() => {
+    Element.prototype.scrollIntoView = scrollIntoView
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query === '(prefers-reduced-motion: reduce)' }))
+  })
+  afterEach(() => {
+    delete (Element.prototype as Partial<Element>).scrollIntoView
+    scrollIntoView.mockReset()
+    vi.unstubAllGlobals()
+  })
+
   it('keeps the page while an answer is missing, then completes the questionnaire', async () => {
     const wrapper = await render(schema, {}, uischema)
     const completed: unknown[] = []
@@ -239,6 +262,22 @@ describe('a questionnaire in steps', () => {
     await flushPromises()
     await button(wrapper, 'Terminer').trigger('click')
     expect(completed).toEqual([{ nom: 'Camille', age: 30 }])
+  })
+
+  it('brings the stepper to the top of the screen and focuses the new page', async () => {
+    const wrapper = mount(JsonForms, {
+      props: { schema, uischema, data: { nom: 'Camille' }, renderers: dsfrRenderers, ajv: createAjv2020(), i18n: dsfrI18n },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    await button(wrapper, 'Suivant').trigger('click')
+    await flushPromises()
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start', behavior: 'auto' })
+    expect(scrollIntoView.mock.instances[0]).toBe(wrapper.find('.fr-stepper').element.parentElement)
+    expect(document.activeElement).toBe(wrapper.find('.page').element)
+    expect(wrapper.find('p.fr-sr-only[aria-live]').text()).toBe('Page 2 sur 2 : Situation')
+    wrapper.unmount()
   })
 })
 

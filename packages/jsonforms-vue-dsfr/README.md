@@ -54,12 +54,13 @@ Dans les options du uischema :
 - `format`, `radio` ou `select`, fixe la forme d'un choix. Par défaut, un choix s'affiche en boutons radio jusqu'à cinq options et en liste déroulante au-delà.
 - `tooltip`, texte ou `{ content }`, ajoute une aide sous le libellé.
 - `choices` est un objet indexé par la valeur de chaque option. Son `tooltip` ajoute après le libellé de l'option un bouton d'infobulle du DSFR, nommé par son `buttonLabel`. Son `exclusive` fait de l'option une case qui décoche les autres. Un choix dont une option a une infobulle s'affiche en boutons radio, sauf avec `format: 'select'`, puisqu'une liste déroulante ne peut pas montrer d'infobulle.
+- `rich` affiche chaque option d'un choix, d'une question oui ou non ou d'une liste de cases à cocher dans un cadre cliquable, celui du bouton radio riche du DSFR. Le bouton d'infobulle d'une option se place à côté de son cadre.
 - `placeholder` donne le texte indicatif d'un champ de saisie.
 - `required` rend un champ requis sous condition, car JSON Forms déduit le caractère requis du seul `required` statique du schéma.
 
 Les composants n'affichent pas les options `notion`, `additionalNotions` et `autocomplete`, que le compilateur de survey-schema v3 écrit aussi.
 
-Le composant d'un uischema `Categorization` affiche ses catégories en étapes. Au clic sur « Terminer », sur la dernière page, il émet l'événement DOM `categorization-complete`, avec `bubbles: true` et les réponses dans `detail` : l'application l'écoute sur un élément parent du formulaire. Le composant d'un élément `IntermediaryResults` liste les résultats qu'un moteur calculera : pour afficher les valeurs, l'application déclare son propre composant avec un rang supérieur.
+Le composant d'un uischema `Categorization` affiche ses catégories en étapes. À chaque changement d'étape, il fait défiler le formulaire jusqu'en haut de l'écran, place le focus sur la page et l'annonce aux lecteurs d'écran. Au clic sur « Terminer », sur la dernière page, il émet l'événement DOM `categorization-complete`, avec `bubbles: true` et les réponses dans `detail` : l'application l'écoute sur un élément parent du formulaire. Le composant d'un élément `IntermediaryResults` liste les résultats qu'un moteur calculera : pour afficher les valeurs, l'application déclare son propre composant avec un rang supérieur.
 
 Sans uischema, un objet affiche les champs de ses `properties`. Les conditions d'un `allOf`, comme les `if`/`then` du format v3, s'appliquent à ces champs, mais le libellé d'un champ obligatoire sous condition garde « (optionnel) » : pour l'éviter, on passe un uischema dont le contrôle de ce champ a l'option `required`, comme celui que produit le compilateur de survey-schema v3. Un champ déclaré dans une branche de `anyOf` ou de `oneOf` n'est pas affiché.
 

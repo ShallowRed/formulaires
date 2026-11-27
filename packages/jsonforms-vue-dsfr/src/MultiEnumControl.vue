@@ -5,7 +5,7 @@ import { DsfrCheckboxSet, DsfrTooltip } from '@gouvminint/vue-dsfr'
 import { rendererProps, useDispatch, useJsonFormsMultiEnumControl } from '@jsonforms/vue'
 import { computed } from 'vue'
 import FieldHint from './FieldHint.vue'
-import { choicesOf, choiceTooltip, fieldLabel } from './labels'
+import { alignsWithTooltips, choicesOf, choiceTooltip, fieldLabel, isRich } from './labels'
 
 const props = defineProps(rendererProps<ControlElement>())
 const { control } = useJsonFormsMultiEnumControl(props)
@@ -18,6 +18,7 @@ const options = computed(() => control.value.options.map(option => ({
   label: option.label,
   tooltip: choiceTooltip(control.value.uischema.options, option.value, option.label),
 })))
+const rich = computed(() => isRich(control.value))
 const selection = computed<string[]>(() => control.value.data ?? [])
 
 // An exclusive choice, such as "none of these", clears the others, and any other choice clears it.
@@ -54,7 +55,7 @@ function update(next: string[]) {
     >
       <div
         class="fr-checkbox-group"
-        :class="{ 'jsonforms-dsfr-choice': option.tooltip }"
+        :class="{ 'jsonforms-dsfr-checkbox-rich': rich, 'jsonforms-dsfr-choice': option.tooltip, 'jsonforms-dsfr-choice--aligned': alignsWithTooltips(rich, options, option) }"
       >
         <input
           :id="option.id"

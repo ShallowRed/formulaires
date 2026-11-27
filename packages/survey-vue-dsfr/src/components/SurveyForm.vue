@@ -34,8 +34,9 @@ const surveyPageChangeAnnouncer = ref<HTMLElement | null>(null)
  */
 function focusRenderedSurveyPage() {
   nextTick(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     formContainer.value?.scrollIntoView({
-      behavior: 'smooth',
+      behavior: reducedMotion ? 'auto' : 'smooth',
       block: 'start',
     })
     pageContainer.value?.focus()
