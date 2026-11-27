@@ -18,7 +18,7 @@ Le catalogue algos.data.gouv.fr active « montrer les entrées » et « essayer 
 
 ## Décision
 
-On place les briques de formulaire dans un dépôt générique, le dépôt de formulaires, distinct du dépôt du catalogue, et on les publie sous le scope npm `@betagouv`. Le catalogue installe chaque brique à une version fixée.
+On place les briques de formulaire dans un dépôt générique nommé `formulaires`, le dépôt de formulaires, distinct du dépôt du catalogue. On publie ses paquets sous le scope npm `@betagouv`, avec le préfixe `formulaires-` (`@betagouv/formulaires-schema`, `@betagouv/formulaires-vue-dsfr`, `@betagouv/formulaires-publicodes`). Le catalogue installe chaque brique à une version fixée.
 
 Les briques de formulaire sont les paquets aujourd'hui nommés `survey-schema`, `jsonforms-vue-dsfr`, `survey-publicodes` et `survey-vue-dsfr`. L'élément `rule-form` et le composant `UiRuleForm`, qui prennent une règle et un service de calcul du catalogue, restent dans le dépôt du catalogue.
 
@@ -47,7 +47,6 @@ Si l'équipe n'obtient pas le droit de publier sous `@betagouv`, on publie les p
 
 ## Questions ouvertes
 
-- Le nom du dépôt de formulaires et des paquets.
 - L'organisation GitHub du dépôt de formulaires.
 - Le droit de publier sous le scope npm `@betagouv`.
 - La place du formulaire des aides à l'innovation (`form-entreprise-innovation`) : exemple de la démo ou héritage d'aides-simplifiées.
