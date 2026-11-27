@@ -27,6 +27,67 @@
   white-space: pre-line;
 }
 
+/* With a rich choice, the tooltip button sits beside the box of its option */
+.fr-radio-rich.jsonforms-dsfr-choice,
+.jsonforms-dsfr-checkbox-rich.jsonforms-dsfr-choice {
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* The box of an option without tooltip ends where the boxes beside a tooltip button end: 2rem of button and the gap */
+.jsonforms-dsfr-choice--aligned {
+  padding-right: 2.5rem;
+}
+
+/* The DSFR has no rich checkbox: this one takes the box of the DSFR rich radio, as the MultiSelectQuestion of survey-vue-dsfr does */
+.jsonforms-dsfr-checkbox-rich {
+  display: flex;
+}
+
+.jsonforms-dsfr-checkbox-rich input[type=checkbox] {
+  left: 1rem;
+  top: calc(50% - 0.75rem);
+}
+
+.jsonforms-dsfr-checkbox-rich input[type=checkbox] + label {
+  flex: 1;
+  margin-left: 0;
+  padding: 0.75rem 1rem 0.75rem 3.5rem;
+  background-color: var(--background-default-grey);
+  background-image: linear-gradient(0deg, var(--border-default-grey), var(--border-default-grey)), linear-gradient(0deg, var(--border-default-grey), var(--border-default-grey)), linear-gradient(0deg, var(--border-default-grey), var(--border-default-grey)), linear-gradient(0deg, var(--border-default-grey), var(--border-default-grey));
+  background-position: 0 0, 100% 0, 0 100%, 0 0;
+  background-repeat: no-repeat;
+  background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+}
+
+.jsonforms-dsfr-checkbox-rich input[type=checkbox] + label::before {
+  top: calc(50% - 0.75rem);
+  left: 1rem;
+}
+
+.jsonforms-dsfr-checkbox-rich input[type=checkbox]:not(:disabled) + label:hover {
+  background-color: var(--background-default-grey-hover);
+}
+
+.jsonforms-dsfr-checkbox-rich input[type=checkbox]:not(:disabled) + label:active {
+  background-color: var(--background-default-grey-active);
+}
+
+.jsonforms-dsfr-checkbox-rich input[type=checkbox]:checked + label {
+  background-image: linear-gradient(0deg, var(--border-active-blue-france), var(--border-active-blue-france)), linear-gradient(0deg, var(--border-active-blue-france), var(--border-active-blue-france)), linear-gradient(0deg, var(--border-active-blue-france), var(--border-active-blue-france)), linear-gradient(0deg, var(--border-active-blue-france), var(--border-active-blue-france));
+}
+
+.jsonforms-dsfr-checkbox-rich input[type=checkbox]:disabled + label {
+  background-image: linear-gradient(0deg, var(--border-disabled-grey), var(--border-disabled-grey)), linear-gradient(0deg, var(--border-disabled-grey), var(--border-disabled-grey)), linear-gradient(0deg, var(--border-disabled-grey), var(--border-disabled-grey)), linear-gradient(0deg, var(--border-disabled-grey), var(--border-disabled-grey));
+}
+
+/* Forced colors drop background images: the box keeps an outline, as the DSFR rich radio does */
+@media (forced-colors: active) {
+  .jsonforms-dsfr-checkbox-rich input[type=checkbox] + label {
+    outline: 1px solid;
+  }
+}
+
 /* A step change scrolls the stepper to the top of the screen, with the spacing of a DSFR form block above it */
 .jsonforms-dsfr-steps {
   scroll-margin-top: 1.5rem;

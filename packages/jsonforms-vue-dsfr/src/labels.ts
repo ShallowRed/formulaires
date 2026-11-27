@@ -24,6 +24,16 @@ export function isRequired(control: Omit<LabelledControl, 'label'>): boolean {
   return control.required === true || control.uischema?.options?.required === true
 }
 
+// The `rich` option frames each option of a choice like the DSFR rich radio
+export function isRich(control: { uischema?: { options?: Record<string, unknown> } }): boolean {
+  return control.uischema?.options?.rich === true
+}
+
+// A rich option without tooltip keeps the width of the options beside a tooltip button
+export function alignsWithTooltips(rich: boolean, options: { tooltip?: unknown }[], option: { tooltip?: unknown }): boolean {
+  return rich && !option.tooltip && options.some(other => other.tooltip)
+}
+
 // DSFR fields are required by default: only optional fields carry a mention
 export function fieldLabel(control: LabelledControl): string {
   return isRequired(control) ? control.label : `${control.label} (optionnel)`

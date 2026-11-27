@@ -4,7 +4,7 @@ import { DsfrSelect } from '@gouvminint/vue-dsfr'
 import { computed } from 'vue'
 import FieldHint from './FieldHint.vue'
 import RadioField from './RadioField.vue'
-import { choicesOf, choiceTooltip, fieldLabel, isRequired } from './labels'
+import { choicesOf, choiceTooltip, fieldLabel, isRequired, isRich } from './labels'
 
 // Up to this number of choices, the DSFR recommends radio buttons over a select
 const RADIO_LIMIT = 5
@@ -28,6 +28,7 @@ const asRadio = computed(() => {
     v-if="asRadio"
     :control="control"
     :options="control.options.map(option => ({ label: option.label, value: option.value as string, tooltip: choiceTooltip(control.uischema.options, option.value, option.label) }))"
+    :rich="isRich(control)"
     @change="value => emit('change', value)"
   />
   <DsfrSelect

@@ -115,6 +115,17 @@ describe('a choice', () => {
     expect(asSelect.find('select').exists()).toBe(true)
   })
 
+  it('frames each option of a rich choice, radio buttons, yes or no question or checkboxes', async () => {
+    const radio: JsonSchema = { type: 'object', properties: { secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b'] } } }
+    const checkbox: JsonSchema = { type: 'object', properties: { secteur: { type: 'array', title: 'Secteur', uniqueItems: true, items: { type: 'string', enum: ['a', 'b'] } } } }
+    const yesNo: JsonSchema = { type: 'object', properties: { secteur: { type: 'boolean', title: 'Secteur' } } }
+    const rich = { type: 'Control', scope: '#/properties/secteur', options: { rich: true } } as UISchemaElement
+    expect((await render(radio, {}, rich)).findAll('.fr-radio-group.fr-radio-rich')).toHaveLength(2)
+    expect((await render(yesNo, {}, rich)).findAll('.fr-fieldset__element--inline .fr-radio-rich')).toHaveLength(2)
+    expect((await render(checkbox, {}, rich)).findAll('.fr-checkbox-group.jsonforms-dsfr-checkbox-rich')).toHaveLength(2)
+    expect((await render(radio)).find('.fr-radio-rich').exists()).toBe(false)
+  })
+
   it('follows the format option of the uischema', async () => {
     expect((await choice(2, 'select')).find('select').exists()).toBe(true)
     expect((await choice(8, 'radio')).findAll('input[type="radio"]')).toHaveLength(8)

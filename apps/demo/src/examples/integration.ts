@@ -90,6 +90,7 @@ export const integrationExamples: IntegrationExample[] = [
       'Un champ de `type: array` avec `uniqueItems` s\'affiche en cases à cocher.',
       'L\'option `choices.<valeur>.tooltip` du uischema ajoute un bouton d\'infobulle après le libellé de l\'option.',
       'Une option marquée `choices.<valeur>.exclusive` décoche les autres cases quand on la coche.',
+      'L\'option `rich` du uischema affiche chaque option dans un cadre cliquable, comme le bouton radio riche du DSFR : ici, les cases à cocher des aides.',
     ],
     schema: {
       type: 'object',
@@ -151,6 +152,7 @@ export const integrationExamples: IntegrationExample[] = [
           type: 'Control',
           scope: '#/properties/aides',
           options: {
+            rich: true,
             choices: {
               aucune: { exclusive: true },
             },

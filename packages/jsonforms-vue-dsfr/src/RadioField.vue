@@ -2,12 +2,13 @@
 import type { FieldControl } from './labels'
 import { DsfrRadioButtonSet, DsfrTooltip } from '@gouvminint/vue-dsfr'
 import FieldHint from './FieldHint.vue'
-import { fieldLabel, isRequired } from './labels'
+import { alignsWithTooltips, fieldLabel, isRequired } from './labels'
 
 defineProps<{
   control: FieldControl
   options: { label: string, value: string | number | boolean, tooltip?: { content: string, buttonLabel: string } }[]
   inline?: boolean
+  rich?: boolean
 }>()
 
 const emit = defineEmits<{ (e: 'change', value: unknown): void }>()
@@ -33,7 +34,7 @@ const emit = defineEmits<{ (e: 'change', value: unknown): void }>()
     >
       <div
         class="fr-radio-group"
-        :class="{ 'jsonforms-dsfr-choice': option.tooltip }"
+        :class="{ 'fr-radio-rich': rich, 'jsonforms-dsfr-choice': option.tooltip, 'jsonforms-dsfr-choice--aligned': alignsWithTooltips(rich, options, option) }"
       >
         <input
           :id="`${control.id}-${index}`"

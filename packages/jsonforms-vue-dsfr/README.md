@@ -54,6 +54,7 @@ Dans les options du uischema :
 - `format`, `radio` ou `select`, fixe la forme d'un choix. Par défaut, un choix s'affiche en boutons radio jusqu'à cinq options et en liste déroulante au-delà.
 - `tooltip`, texte ou `{ content }`, ajoute une aide sous le libellé.
 - `choices` est un objet indexé par la valeur de chaque option. Son `tooltip` ajoute après le libellé de l'option un bouton d'infobulle du DSFR, nommé par son `buttonLabel`. Son `exclusive` fait de l'option une case qui décoche les autres. Un choix dont une option a une infobulle s'affiche en boutons radio, sauf avec `format: 'select'`, puisqu'une liste déroulante ne peut pas montrer d'infobulle.
+- `rich` affiche chaque option d'un choix, d'une question oui ou non ou d'une liste de cases à cocher dans un cadre cliquable, celui du bouton radio riche du DSFR. Le bouton d'infobulle d'une option se place à côté de son cadre.
 - `placeholder` donne le texte indicatif d'un champ de saisie.
 - `required` rend un champ requis sous condition, car JSON Forms déduit le caractère requis du seul `required` statique du schéma.
 
