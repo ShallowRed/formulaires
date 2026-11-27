@@ -1,19 +1,19 @@
 <script lang="ts" setup>
+import { FocusTrap } from 'focus-trap-vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import SiteNavigation from './components/SiteNavigation.vue'
 import { useEmbedded } from './embedded'
-import { sections } from './sections'
 
 const route = useRoute()
 const isEmbedded = useEmbedded()
 
-const navItems = [
-  { to: '/', text: 'Accueil' },
-  ...sections.map(section => ({ to: section.to, text: section.title })),
-]
-
-function isCurrent(to: string): boolean {
-  return to === '/' ? route.path === '/' : route.path === to || route.path.startsWith(`${to}/`)
-}
+// Below the large breakpoint, the DSFR shows the navigation in a modal opened by the menu button
+const menuOpen = ref(false)
+const closeButton = ref<HTMLButtonElement>()
+watch(() => route.fullPath, () => {
+  menuOpen.value = false
+})
 </script>
 
 <template>
@@ -32,6 +32,20 @@ function isCurrent(to: string): boolean {
                   République<br>Française
                 </p>
               </div>
+              <div class="fr-header__navbar">
+                <button
+                  id="demo-menu-button"
+                  class="fr-btn--menu fr-btn"
+                  type="button"
+                  aria-controls="demo-menu"
+                  aria-haspopup="dialog"
+                  :data-fr-opened="menuOpen"
+                  title="Menu"
+                  @click="menuOpen = true"
+                >
+                  Menu
+                </button>
+              </div>
             </div>
             <div class="fr-header__service">
               <RouterLink to="/">
@@ -48,29 +62,43 @@ function isCurrent(to: string): boolean {
         </div>
       </div>
     </div>
-    <div class="fr-header__menu">
+    <!-- A modal rendered open is visible at once, as focus-trap requires when it activates;
+    toggling the DSFR class would keep it hidden during its transition -->
+    <FocusTrap
+      v-if="menuOpen"
+      active
+      :initial-focus="() => closeButton!"
+      @update:active="menuOpen = $event"
+    >
+      <div
+        id="demo-menu"
+        class="fr-header__menu fr-modal fr-modal--opened"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="demo-menu-button"
+      >
+        <div class="fr-container demo-container">
+          <button
+            ref="closeButton"
+            class="fr-btn--close fr-btn"
+            type="button"
+            aria-controls="demo-menu"
+            title="Fermer"
+            @click="menuOpen = false"
+          >
+            Fermer
+          </button>
+          <SiteNavigation />
+        </div>
+      </div>
+    </FocusTrap>
+    <div
+      v-else
+      id="demo-menu"
+      class="fr-header__menu fr-modal"
+    >
       <div class="fr-container demo-container">
-        <nav
-          class="fr-nav"
-          role="navigation"
-          aria-label="Menu principal"
-        >
-          <ul class="fr-nav__list">
-            <li
-              v-for="item in navItems"
-              :key="item.to"
-              class="fr-nav__item"
-            >
-              <RouterLink
-                class="fr-nav__link"
-                :to="item.to"
-                :aria-current="isCurrent(item.to) ? 'page' : undefined"
-              >
-                {{ item.text }}
-              </RouterLink>
-            </li>
-          </ul>
-        </nav>
+        <SiteNavigation />
       </div>
     </div>
   </header>
