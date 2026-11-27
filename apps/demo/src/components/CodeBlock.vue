@@ -24,6 +24,6 @@ const html = computed(() => highlight(props.code, props.language))
   font-size: 0.75rem;
   line-height: 1.5;
   overflow: auto;
-  max-height: 32rem;
+  max-height: var(--demo-panel-max-height);
 }
 </style>
