@@ -70,6 +70,7 @@
     "page": {
       "$comment": "The key `type` selects the kind of page, so that a validator reports the errors of that kind alone",
       "if": {
+        "type": "object",
         "required": [
           "type"
         ]
@@ -252,6 +253,7 @@
     "condition": {
       "$comment": "The key of a condition selects its kind, so that a validator reports the errors of that kind alone",
       "if": {
+        "type": "object",
         "required": [
           "allOf"
         ]
@@ -274,6 +276,7 @@
       },
       "else": {
         "if": {
+          "type": "object",
           "required": [
             "anyOf"
           ]
@@ -296,6 +299,7 @@
         },
         "else": {
           "if": {
+            "type": "object",
             "required": [
               "not"
             ]
