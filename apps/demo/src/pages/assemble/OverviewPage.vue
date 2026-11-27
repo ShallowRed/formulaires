@@ -8,14 +8,14 @@ const parts = [
   {
     title: 'Formulaire',
     description: 'On écrit le schéma des réponses et les étapes du formulaire en JSON, sans toucher au code.',
-    links: [{ href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-schema', text: '@shallowred/formulaires-schema' }],
+    links: [{ href: 'https://github.com/ShallowRed/formulaires/tree/main/packages/formulaires-schema', text: '@shallowred/formulaires-schema' }],
   },
   {
     title: 'Rendu et calcul',
     description: 'JSON Forms affiche le formulaire avec le DSFR, puis les réponses passent au modèle de calcul.',
     links: [
-      { href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-vue-dsfr', text: '@shallowred/formulaires-vue-dsfr' },
-      { href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-publicodes', text: '@shallowred/formulaires-publicodes' },
+      { href: 'https://github.com/ShallowRed/formulaires/tree/main/packages/formulaires-vue-dsfr', text: '@shallowred/formulaires-vue-dsfr' },
+      { href: 'https://github.com/ShallowRed/formulaires/tree/main/packages/formulaires-publicodes', text: '@shallowred/formulaires-publicodes' },
     ],
   },
 ]
@@ -60,7 +60,7 @@ const parts = [
   <p class="fr-mt-4w">
     Le
     <a
-      href="https://github.com/ShallowRed/survey-kit/blob/main/docs/integration.md"
+      href="https://github.com/ShallowRed/formulaires/blob/main/docs/integration.md"
       target="_blank"
       rel="noopener"
     >guide d'intégration</a> décrit l'installation sur un site existant.

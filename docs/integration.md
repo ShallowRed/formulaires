@@ -8,7 +8,7 @@ aides-simplifiées propose d'intégrer ses simulateurs par une iframe. On intèg
 
 ```html
 <iframe
-  src="https://shallowred.github.io/survey-kit/#/assembler/aides-innovation?embed"
+  src="https://shallowred.github.io/formulaires/#/assembler/aides-innovation?embed"
   title="Simulateur d'aides à l'innovation"
   style="width: 100%; min-height: 900px; border: 0;"
 ></iframe>
@@ -24,8 +24,8 @@ Le paramètre `?embed` retire l'en-tête, les menus, la bande de titre et le pie
 Le site de démonstration est un build statique : le calcul s'exécute dans le navigateur de l'usager, sans serveur applicatif.
 
 ```bash
-git clone https://github.com/ShallowRed/survey-kit
-cd survey-kit
+git clone https://github.com/ShallowRed/formulaires
+cd formulaires
 pnpm install
 pnpm --filter demo build
 # copier apps/demo/dist/ sur l'hébergement, à la racine ou sous un sous-chemin

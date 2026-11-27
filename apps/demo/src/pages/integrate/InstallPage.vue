@@ -3,7 +3,7 @@ import { version } from '../../../../../packages/formulaires-vue-dsfr/package.js
 import CodeBlock from '../../components/CodeBlock.vue'
 
 // The release workflow tags each version `formulaires-vue-dsfr-v<version>` and attaches its archive
-const installCode = `pnpm add https://github.com/ShallowRed/survey-kit/releases/download/formulaires-vue-dsfr-v${version}/shallowred-formulaires-vue-dsfr-${version}.tgz`
+const installCode = `pnpm add https://github.com/ShallowRed/formulaires/releases/download/formulaires-vue-dsfr-v${version}/shallowred-formulaires-vue-dsfr-${version}.tgz`
 
 const usageCode = `<script setup lang="ts">
 import { JsonForms } from '@jsonforms/vue'
@@ -44,7 +44,7 @@ const ajv = createAjv2020()
     Archive
   </h3>
   <p>
-    Chaque version est publiée en archive dans une release de survey-kit :
+    Chaque version est publiée en archive dans une release du dépôt formulaires :
   </p>
   <CodeBlock :code="installCode" language="shellscript" />
   <p class="fr-mt-2w">
@@ -58,7 +58,7 @@ const ajv = createAjv2020()
   <p class="fr-mt-2w">
     <code>createAjv2020</code> valide les schémas 2020-12, que l'instance d'Ajv par défaut de JSON Forms refuse. <code>dsfrI18n</code> traduit les messages d'erreur. Le
     <a
-      href="https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-vue-dsfr#readme"
+      href="https://github.com/ShallowRed/formulaires/tree/main/packages/formulaires-vue-dsfr#readme"
       target="_blank"
       rel="noopener"
     >README du paquet</a> décrit l'effet de chaque mot-clé sur le formulaire.

@@ -12,7 +12,7 @@
   "author": "Lucas Poulain",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShallowRed/survey-kit.git",
+    "url": "https://github.com/ShallowRed/formulaires.git",
     "directory": "packages/formulaires-publicodes"
   },
   "type": "module",

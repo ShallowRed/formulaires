@@ -14,7 +14,7 @@
   "author": "Lucas Poulain",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShallowRed/survey-kit.git",
+    "url": "https://github.com/ShallowRed/formulaires.git",
     "directory": "packages/formulaires-vue-dsfr"
   },
   "type": "module",

@@ -50,7 +50,7 @@ watch(() => route.fullPath, () => {
             <div class="fr-header__service">
               <RouterLink to="/">
                 <p class="fr-header__service-title">
-                  survey-kit
+                  formulaires
                   <span class="fr-badge fr-badge--sm fr-badge--green-emeraude">Démo</span>
                 </p>
               </RouterLink>
@@ -118,10 +118,10 @@ watch(() => route.fullPath, () => {
           <li class="fr-footer__bottom-item">
             <a
               class="fr-footer__bottom-link"
-              href="https://github.com/ShallowRed/survey-kit"
+              href="https://github.com/ShallowRed/formulaires"
               target="_blank"
               rel="noopener"
-            >Code source (survey-kit)</a>
+            >Code source (formulaires)</a>
           </li>
           <li class="fr-footer__bottom-item">
             <a

@@ -77,7 +77,7 @@ const previewKey = computed(() => JSON.stringify(compiled.value))
   <p class="fr-mb-4w">
     Un formulaire se compose de deux documents JSON : le schéma des réponses (type, libellé, choix, base légale <code>x-legal-basis</code>, source <code>x-source</code>) et les étapes, qui répartissent les champs en pages et contiennent les textes et les conditions d'affichage. La
     <a
-      href="https://github.com/ShallowRed/survey-kit/blob/main/packages/formulaires-schema/docs/SPEC-v3.md"
+      href="https://github.com/ShallowRed/formulaires/blob/main/packages/formulaires-schema/docs/SPEC-v3.md"
       target="_blank"
       rel="noopener"
     >spécification du format</a> décrit chaque propriété de ces documents.
