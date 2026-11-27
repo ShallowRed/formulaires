@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EligibilityResults } from '@shallowred/survey-publicodes'
+import type { EligibilityResults } from '@shallowred/formulaires-publicodes'
 
 defineProps<{
   results: EligibilityResults

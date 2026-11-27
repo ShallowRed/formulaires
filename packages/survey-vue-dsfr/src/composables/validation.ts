@@ -5,7 +5,7 @@
  * (inertia/services/validation_service.ts).
  */
 
-import type { SurveyAnswerValue, SurveyQuestionData } from '@shallowred/survey-schema'
+import type { SurveyAnswerValue, SurveyQuestionData } from '@shallowred/formulaires-schema'
 
 export function isAnswerValid(question: SurveyQuestionData, answer: SurveyAnswerValue): boolean {
   if (!question) {

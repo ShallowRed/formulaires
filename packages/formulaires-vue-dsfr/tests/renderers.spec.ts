@@ -1,0 +1,450 @@
+import type { JsonSchema, UISchemaElement } from '@jsonforms/core'
+import { JsonForms } from '@jsonforms/vue'
+import { flushPromises, mount } from '@vue/test-utils'
+import { compileV3ToJsonForms, migrateV2ToV3 } from '@shallowred/formulaires-schema'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createAjv2020, dsfrI18n, dsfrRenderers } from '../src/index'
+
+async function render(schema: JsonSchema, data: Record<string, unknown> = {}, uischema?: UISchemaElement) {
+  const wrapper = mount(JsonForms, { props: { schema, uischema, data, renderers: dsfrRenderers, ajv: createAjv2020(), i18n: dsfrI18n } })
+  await flushPromises()
+  return wrapper
+}
+
+function button(wrapper: Awaited<ReturnType<typeof render>>, label: string) {
+  const found = wrapper.findAll('button').find(element => element.text().startsWith(label))
+  if (!found) {
+    throw new Error(`No button starts with « ${label} »`)
+  }
+  return found
+}
+
+describe('a repeatable list', () => {
+  const schema: JsonSchema = {
+    type: 'object',
+    properties: {
+      foyers: {
+        type: 'array',
+        title: 'Foyers fiscaux',
+        minItems: 1,
+        maxItems: 2,
+        items: { type: 'object', title: 'Foyer', properties: { personnes: { type: 'integer', title: 'Nombre de personnes' } } },
+      },
+    },
+  }
+
+  it('keeps between minItems and maxItems items', async () => {
+    const wrapper = await render(schema, { foyers: [{}] })
+    expect(button(wrapper, 'Supprimer « Foyer 1 »').attributes('disabled')).toBeDefined()
+
+    await button(wrapper, 'Ajouter').trigger('click')
+    await flushPromises()
+    expect(wrapper.text()).toContain('Foyer 2')
+    expect(button(wrapper, 'Ajouter').attributes('disabled')).toBeDefined()
+    expect(button(wrapper, 'Supprimer « Foyer 1 »').attributes('disabled')).toBeUndefined()
+  })
+
+  it('moves the keyboard focus to the new item, then to the add button once an item is removed', async () => {
+    const wrapper = mount(JsonForms, {
+      props: { schema, data: { foyers: [{}] }, renderers: dsfrRenderers, ajv: createAjv2020(), i18n: dsfrI18n },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    await button(wrapper, 'Ajouter').trigger('click')
+    await flushPromises()
+    expect(document.activeElement).toBe(wrapper.findAll('.array-item')[1].find('input').element)
+
+    await button(wrapper, 'Supprimer « Foyer 2 »').trigger('click')
+    await flushPromises()
+    expect(document.activeElement).toBe(button(wrapper, 'Ajouter').element)
+    wrapper.unmount()
+  })
+
+  it('shows the annotations of the list', async () => {
+    const foyers = (schema as { properties: Record<string, object> }).properties.foyers
+    const annotated = { ...schema, properties: { foyers: { ...foyers, 'x-legal-basis': { title: 'Note de service, page 8' } } } } as JsonSchema
+    expect((await render(annotated, { foyers: [{}] })).find('legend').text()).toContain('Base légale : Note de service, page 8')
+  })
+})
+
+describe('a choice', () => {
+  function choice(options: number, format?: string) {
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: { secteur: { type: 'string', title: 'Secteur', enum: Array.from({ length: options }, (_, index) => `s${index}`) } },
+    }
+    const uischema = { type: 'Control', scope: '#/properties/secteur', options: { format } } as UISchemaElement
+    return render(schema, {}, uischema)
+  }
+
+  it('shows radio buttons up to five options and a select beyond', async () => {
+    expect((await choice(5)).findAll('input[type="radio"]')).toHaveLength(5)
+    expect((await choice(6)).find('select').exists()).toBe(true)
+  })
+
+  it('answers with the value of the radio button chosen', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { isole: { type: 'boolean', title: 'Parent isolé' } } }
+    const wrapper = await render(schema)
+    await wrapper.findAll('input[type="radio"]')[1].setValue(true)
+    await flushPromises()
+    const changes = wrapper.emitted('change') as [{ data: Record<string, unknown> }][]
+    expect(changes.at(-1)![0].data).toEqual({ isole: false })
+    expect((wrapper.findAll('input[type="radio"]')[1].element as HTMLInputElement).checked).toBe(true)
+  })
+
+  it('shows the tooltip of a choice in a button after its label', async () => {
+    const choices = { a: { tooltip: 'Une activité industrielle transforme des matières.' } }
+    const radio: JsonSchema = { type: 'object', properties: { secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b'] } } }
+    const checkbox: JsonSchema = { type: 'object', properties: { secteur: { type: 'array', title: 'Secteur', uniqueItems: true, items: { type: 'string', enum: ['a', 'b'] } } } }
+    for (const schema of [radio, checkbox]) {
+      const uischema = { type: 'Control', scope: '#/properties/secteur', options: { choices } } as UISchemaElement
+      const wrapper = await render(schema, {}, uischema)
+      const tooltips = wrapper.findAll('button[aria-label]')
+      expect(tooltips.map(tooltip => tooltip.attributes('aria-label'))).toEqual(['Information sur « a »'])
+      expect(wrapper.find('[role="tooltip"]').text()).toBe('Une activité industrielle transforme des matières.')
+    }
+  })
+
+  it('keeps radio buttons for choices with tooltips, and names the button by its buttonLabel', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b', 'c', 'd', 'e', 'f'] } } }
+    const choices = { a: { tooltip: { buttonLabel: 'Définition de a', content: 'Une définition.' } } }
+    const withTooltips = await render(schema, {}, { type: 'Control', scope: '#/properties/secteur', options: { choices } } as UISchemaElement)
+    expect(withTooltips.findAll('input[type="radio"]')).toHaveLength(6)
+    expect(withTooltips.find('button[aria-label]').attributes('aria-label')).toBe('Définition de a')
+    const asSelect = await render(schema, {}, { type: 'Control', scope: '#/properties/secteur', options: { choices, format: 'select' } } as UISchemaElement)
+    expect(asSelect.find('select').exists()).toBe(true)
+  })
+
+  it('frames each option of a rich choice, radio buttons, yes or no question or checkboxes', async () => {
+    const radio: JsonSchema = { type: 'object', properties: { secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b'] } } }
+    const checkbox: JsonSchema = { type: 'object', properties: { secteur: { type: 'array', title: 'Secteur', uniqueItems: true, items: { type: 'string', enum: ['a', 'b'] } } } }
+    const yesNo: JsonSchema = { type: 'object', properties: { secteur: { type: 'boolean', title: 'Secteur' } } }
+    const rich = { type: 'Control', scope: '#/properties/secteur', options: { rich: true } } as UISchemaElement
+    expect((await render(radio, {}, rich)).findAll('.fr-radio-group.fr-radio-rich')).toHaveLength(2)
+    expect((await render(yesNo, {}, rich)).findAll('.fr-fieldset__element--inline .fr-radio-rich')).toHaveLength(2)
+    expect((await render(checkbox, {}, rich)).findAll('.fr-checkbox-group.jsonforms-dsfr-checkbox-rich')).toHaveLength(2)
+    expect((await render(radio)).find('.fr-radio-rich').exists()).toBe(false)
+  })
+
+  it('follows the format option of the uischema', async () => {
+    expect((await choice(2, 'select')).find('select').exists()).toBe(true)
+    expect((await choice(8, 'radio')).findAll('input[type="radio"]')).toHaveLength(8)
+  })
+})
+
+describe('the label of a field', () => {
+  const schema: JsonSchema = { type: 'object', properties: { nom: { type: 'string', title: 'Nom' } } }
+
+  it('mentions an optional field, unless the uischema requires it under a condition', async () => {
+    expect((await render(schema)).find('label').text()).toContain('Nom (optionnel)')
+
+    const required = { type: 'Control', scope: '#/properties/nom', options: { required: true } } as UISchemaElement
+    expect((await render(schema, {}, required)).find('label').text()).not.toContain('(optionnel)')
+  })
+
+  it('marks each required field with the required attribute, without an asterisk', async () => {
+    const fields: Record<string, JsonSchema> = {
+      nom: { type: 'string', title: 'Nom' },
+      personnes: { type: 'integer', title: 'Personnes' },
+      secteur: { type: 'string', title: 'Secteur', enum: ['a', 'b', 'c', 'd', 'e', 'f'] },
+      statut: { type: 'string', title: 'Statut', enum: ['salarie', 'independant'] },
+      isole: { type: 'boolean', title: 'Parent isolé' },
+    }
+    const required = await render({ type: 'object', required: Object.keys(fields), properties: fields })
+    const fieldsOf = (wrapper: typeof required) => wrapper.findAll('input, select')
+    expect(fieldsOf(required).map(field => field.attributes('required'))).toEqual(Array.from({ length: 7 }, () => ''))
+    expect(required.text()).not.toContain('*')
+    expect(required.findAll('[required]').every(field => ['INPUT', 'SELECT'].includes(field.element.tagName))).toBe(true)
+
+    const optional = await render({ type: 'object', properties: fields })
+    expect(fieldsOf(optional).every(field => field.attributes('required') === undefined)).toBe(true)
+  })
+
+  it('ties the error message to the field', async () => {
+    const required = { ...schema, required: ['nom'] } as JsonSchema
+    const wrapper = await render(required)
+    const error = wrapper.find('.fr-error-text')
+    expect(error.exists()).toBe(true)
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(error.attributes('id'))
+  })
+
+  it('shows the certifiable source and the legal basis of the entry', async () => {
+    const annotated = {
+      type: 'object',
+      properties: {
+        naissance: {
+          'type': 'string',
+          'title': 'Date de naissance',
+          'x-source': { provider: 'FranceConnect', data: 'birthdate' },
+          'x-legal-basis': { title: 'Code électoral, article L.2', url: 'https://example.org/code-electoral/L2' },
+        },
+      },
+    } as JsonSchema
+    const wrapper = await render(annotated)
+    expect(wrapper.text()).toContain('Donnée certifiable')
+    expect(wrapper.text()).toContain('FranceConnect peut fournir cette donnée (birthdate)')
+    expect(wrapper.find('a').attributes('href')).toBe('https://example.org/code-electoral/L2')
+  })
+})
+
+describe('a set of checkboxes', () => {
+  const schema: JsonSchema = {
+    type: 'object',
+    required: ['services'],
+    properties: { services: { type: 'array', title: 'Services', uniqueItems: true, items: { type: 'string', enum: ['a', 'b', 'aucun'] } } },
+  }
+  const uischema = { type: 'Control', scope: '#/properties/services', options: { choices: { aucun: { exclusive: true } } } } as UISchemaElement
+
+  async function check(wrapper: Awaited<ReturnType<typeof render>>, value: string, checked = true) {
+    await wrapper.find(`input[type="checkbox"][value="${value}"]`).setValue(checked)
+    await flushPromises()
+    const changes = wrapper.emitted('change') as [{ data: Record<string, unknown> }][]
+    return changes.at(-1)![0].data.services
+  }
+
+  it('leaves the question unanswered when every box is unchecked', async () => {
+    const wrapper = await render(schema, {}, uischema)
+    expect(await check(wrapper, 'a')).toEqual(['a'])
+    expect(await check(wrapper, 'a', false)).toBeUndefined()
+  })
+
+  it('clears the other choices when an exclusive choice is checked, and the reverse', async () => {
+    const wrapper = await render(schema, {}, uischema)
+    await check(wrapper, 'a')
+    expect(await check(wrapper, 'aucun')).toEqual(['aucun'])
+    expect(await check(wrapper, 'b')).toEqual(['b'])
+  })
+})
+
+describe('a questionnaire in steps', () => {
+  const schema: JsonSchema = {
+    type: 'object',
+    required: ['nom', 'age'],
+    properties: { nom: { type: 'string', title: 'Nom' }, age: { type: 'integer', title: 'Âge' } },
+  }
+  const uischema = {
+    type: 'Categorization',
+    elements: [
+      { type: 'Category', label: 'Identité', elements: [{ type: 'Control', scope: '#/properties/nom' }] },
+      { type: 'Category', label: 'Situation', elements: [{ type: 'Control', scope: '#/properties/age' }] },
+    ],
+  } as UISchemaElement
+
+  // jsdom implements neither scrolling nor media queries
+  const scrollIntoView = vi.fn()
+  beforeEach(() => {
+    Element.prototype.scrollIntoView = scrollIntoView
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query === '(prefers-reduced-motion: reduce)' }))
+  })
+  afterEach(() => {
+    delete (Element.prototype as Partial<Element>).scrollIntoView
+    scrollIntoView.mockReset()
+    vi.unstubAllGlobals()
+  })
+
+  it('keeps the page while an answer is missing, then completes the questionnaire', async () => {
+    const wrapper = await render(schema, {}, uischema)
+    const completed: unknown[] = []
+    wrapper.element.addEventListener('categorization-complete', event => completed.push((event as CustomEvent).detail))
+
+    expect(wrapper.text()).toContain('Sauf mention contraire, tous les champs sont obligatoires.')
+    await button(wrapper, 'Suivant').trigger('click')
+    expect(wrapper.text()).toContain('Il manque des réponses sur cette page')
+    expect(wrapper.find('h3').text()).toBe('Identité')
+
+    await wrapper.find('input').setValue('Camille')
+    await flushPromises()
+    await button(wrapper, 'Suivant').trigger('click')
+    await flushPromises()
+    expect(wrapper.find('h3').text()).toBe('Situation')
+
+    await wrapper.find('input').setValue('30')
+    await flushPromises()
+    await button(wrapper, 'Terminer').trigger('click')
+    expect(completed).toEqual([{ nom: 'Camille', age: 30 }])
+  })
+
+  it('brings the stepper to the top of the screen and focuses the new page', async () => {
+    const wrapper = mount(JsonForms, {
+      props: { schema, uischema, data: { nom: 'Camille' }, renderers: dsfrRenderers, ajv: createAjv2020(), i18n: dsfrI18n },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    await button(wrapper, 'Suivant').trigger('click')
+    await flushPromises()
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start', behavior: 'auto' })
+    expect(scrollIntoView.mock.instances[0]).toBe(wrapper.find('.fr-stepper').element.parentElement)
+    expect(document.activeElement).toBe(wrapper.find('.page').element)
+    expect(wrapper.find('p.fr-sr-only[aria-live]').text()).toBe('Page 2 sur 2 : Situation')
+    wrapper.unmount()
+  })
+})
+
+describe('an error message', () => {
+  it('asks for a missing answer, required or under a condition, and for one exclusive choice', async () => {
+    const { questionnaire, dataSchema } = migrateV2ToV3({
+      id: 'statut',
+      version: '1.0.0',
+      title: 'Statut',
+      description: '',
+      engine: 'publicodes',
+      forceRefresh: false,
+      dispositifs: [],
+      steps: [{ id: 'step', title: 'Étape', pages: [{ id: 'page', questions: [
+        { id: 'statut', title: 'Statut', type: 'radio', choices: [{ id: 'salarie', title: 'Salarié' }, { id: 'independant', title: 'Indépendant' }] },
+        { id: 'revenus', title: 'Revenus', type: 'radio', choices: [{ id: 'bic', title: 'BIC' }, { id: 'bnc', title: 'BNC' }], visibleWhen: 'statut.includes(\'independant\')' },
+        { id: 'aides', title: 'Aides', type: 'checkbox', choices: [{ id: 'cir', title: 'CIR' }, { id: 'aucune', title: 'Aucune', exclusive: true }] },
+      ] }] }],
+    })
+    const { schema, uischema } = compileV3ToJsonForms(questionnaire, dataSchema)
+    const messages = async (data: Record<string, unknown>) =>
+      (await render(schema as JsonSchema, data, uischema as UISchemaElement)).findAll('.fr-message--error, .fr-error-text').map(message => message.text())
+
+    expect(await messages({})).toEqual(['Répondez à cette question.', 'Répondez à cette question.'])
+    expect(await messages({ statut: 'independant', aides: ['cir', 'aucune'] })).toEqual(['Répondez à cette question.', 'Choisissez au plus 1 réponse.'])
+  })
+
+  it('gives the expected value of a number, a date or a list', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: {
+        personnes: { type: 'integer', title: 'Personnes', minimum: 1 },
+        naissance: { type: 'string', title: 'Naissance', format: 'date' },
+        foyers: { type: 'array', title: 'Foyers', minItems: 2, items: { type: 'object', properties: {} } },
+      },
+    }
+    const text = (await render(schema, { personnes: 0, naissance: 'demain', foyers: [{}] })).text()
+    expect(text).toContain('Saisissez un nombre supérieur ou égal à 1.')
+    expect(text).toContain('Saisissez une date valide, par exemple 14/07/2024.')
+    expect(text).toContain('Ajoutez au moins 2 éléments.')
+  })
+
+  it('stays in French for a keyword without its own message', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { pas: { type: 'number', title: 'Pas', multipleOf: 5 } } }
+    expect((await render(schema, { pas: 3 })).text()).toContain('Cette réponse n\'est pas valide.')
+  })
+})
+
+describe('a required group of fields', () => {
+  it('asks for each missing answer of the group in a blank form', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      required: ['menage'],
+      properties: {
+        menage: { type: 'object', title: 'Ménage', required: ['isole'], properties: { isole: { type: 'boolean', title: 'Parent isolé' } } },
+      },
+    }
+    const wrapper = await render(schema)
+    expect(wrapper.find('fieldset').text()).toContain('Répondez à cette question.')
+    const changes = wrapper.emitted('change') as [{ data: Record<string, unknown> }][]
+    expect(changes.at(-1)![0].data).toEqual({ menage: {} })
+  })
+
+  it('starts a required group only inside a group that holds an answer', async () => {
+    const adresse = { type: 'object', title: 'Adresse', required: ['ville'], properties: { ville: { type: 'string', title: 'Ville' } } }
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: { menage: { type: 'object', title: 'Ménage', required: ['adresse'], properties: { nom: { type: 'string', title: 'Nom' }, adresse } } },
+    }
+    const dataOf = async (data: Record<string, unknown>) => {
+      const changes = (await render(schema, data)).emitted('change') as [{ data: Record<string, unknown> }][]
+      return changes.at(-1)![0].data
+    }
+    expect(await dataOf({})).toEqual({})
+    expect(await dataOf({ menage: {} })).toEqual({})
+    expect(await dataOf({ menage: { nom: 'Dupont' } })).toEqual({ menage: { nom: 'Dupont', adresse: {} } })
+  })
+
+  it('removes an empty group once it is hidden', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: {
+        isole: { type: 'boolean', title: 'Parent isolé' },
+        enfants: { type: 'object', title: 'Enfants', required: ['nombre'], properties: { nombre: { type: 'integer', title: 'Nombre' } } },
+      },
+    }
+    const uischema = {
+      type: 'VerticalLayout',
+      elements: [
+        { type: 'Control', scope: '#/properties/isole' },
+        { type: 'Control', scope: '#/properties/enfants', options: { required: true }, rule: { effect: 'SHOW', condition: { scope: '#/properties/isole', schema: { const: true } } } },
+      ],
+    } as UISchemaElement
+    const wrapper = await render(schema, { isole: true }, uischema)
+    const lastData = () => (wrapper.emitted('change') as [{ data: Record<string, unknown> }][]).at(-1)![0].data
+    expect(lastData()).toEqual({ isole: true, enfants: {} })
+    await wrapper.setProps({ data: { isole: false, enfants: {} } })
+    await flushPromises()
+    expect(lastData()).toEqual({ isole: false })
+  })
+
+  it('leaves an optional group absent', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      properties: {
+        menage: { type: 'object', title: 'Ménage', required: ['isole'], properties: { isole: { type: 'boolean', title: 'Parent isolé' } } },
+      },
+    }
+    const changes = (await render(schema)).emitted('change') as [{ data: Record<string, unknown> }][]
+    expect(changes.at(-1)![0].data).toEqual({})
+  })
+})
+
+describe('a schema with conditions', () => {
+  it('renders its fields when no uischema comes with it', async () => {
+    const schema: JsonSchema = {
+      type: 'object',
+      required: ['statut'],
+      properties: { statut: { type: 'string', title: 'Statut', enum: ['salarie', 'independant'] }, revenus: { type: 'string', title: 'Revenus' } },
+      allOf: [{ if: { required: ['statut'], properties: { statut: { const: 'independant' } } }, then: { required: ['revenus'] } }],
+    }
+    const text = (await render(schema, { statut: 'independant' })).text()
+    expect(text).toContain('Statut')
+    expect(text).toContain('Revenus')
+  })
+})
+
+describe('the notice of the required fields', () => {
+  const notice = 'Sauf mention contraire, tous les champs sont obligatoires.'
+
+  it('opens the form once, whatever layouts it nests', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { nom: { type: 'string', title: 'Nom' }, age: { type: 'integer', title: 'Âge' } } }
+    const uischema = {
+      type: 'VerticalLayout',
+      elements: [
+        { type: 'VerticalLayout', elements: [{ type: 'Control', scope: '#/properties/nom' }] },
+        { type: 'Control', scope: '#/properties/age' },
+      ],
+    } as UISchemaElement
+    const text = (await render(schema, {}, uischema)).text()
+    expect(text.startsWith(notice)).toBe(true)
+    expect(text.split(notice)).toHaveLength(2)
+  })
+
+  it('opens a form whose root is a group, or steps inside a layout, once', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { nom: { type: 'string', title: 'Nom' } } }
+    const control = { type: 'Control', scope: '#/properties/nom' }
+    const group = { type: 'Group', label: 'Identité', elements: [control] } as UISchemaElement
+    const steps = { type: 'VerticalLayout', elements: [{ type: 'Categorization', elements: [{ type: 'Category', label: 'Identité', elements: [control] }] }] } as UISchemaElement
+    for (const uischema of [group, steps]) {
+      expect((await render(schema, {}, uischema)).text().split(notice)).toHaveLength(2)
+    }
+  })
+
+  it('leaves out a page or a form without any visible field', async () => {
+    const schema: JsonSchema = { type: 'object', properties: { nom: { type: 'string', title: 'Nom' } } }
+    const hidden = { type: 'Control', scope: '#/properties/nom', rule: { effect: 'SHOW', condition: { scope: '#/properties/nom', schema: { const: 'jamais' } } } }
+    const pages = [
+      [{ type: 'Label', text: 'Vos résultats' }],
+      [hidden],
+    ]
+    for (const elements of pages) {
+      const steps = { type: 'Categorization', elements: [{ type: 'Category', label: 'Page', elements }] } as UISchemaElement
+      const layout = { type: 'VerticalLayout', elements } as UISchemaElement
+      for (const uischema of [steps, layout]) {
+        expect((await render(schema, {}, uischema)).text()).not.toContain(notice)
+      }
+    }
+  })
+})

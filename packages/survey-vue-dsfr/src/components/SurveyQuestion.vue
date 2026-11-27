@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SurveyQuestionData } from '@shallowred/survey-schema'
+import type { SurveyQuestionData } from '@shallowred/formulaires-schema'
 import type { Survey } from '../composables/use-survey.js'
 import { DsfrTooltip } from '@gouvminint/vue-dsfr'
 import { computed, customRef, onMounted } from 'vue'

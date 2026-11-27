@@ -28,18 +28,18 @@ importers:
       '@shallowred/form-entreprise-innovation':
         specifier: workspace:*
         version: link:../../packages/form-entreprise-innovation
-      '@shallowred/jsonforms-vue-dsfr':
+      '@shallowred/formulaires-publicodes':
         specifier: workspace:*
-        version: link:../../packages/jsonforms-vue-dsfr
+        version: link:../../packages/formulaires-publicodes
+      '@shallowred/formulaires-schema':
+        specifier: workspace:*
+        version: link:../../packages/formulaires-schema
+      '@shallowred/formulaires-vue-dsfr':
+        specifier: workspace:*
+        version: link:../../packages/formulaires-vue-dsfr
       '@shallowred/publicodes-entreprise-innovation':
         specifier: ^1.0.0
         version: 1.0.0(publicodes@1.10.1)
-      '@shallowred/survey-publicodes':
-        specifier: workspace:*
-        version: link:../../packages/survey-publicodes
-      '@shallowred/survey-schema':
-        specifier: workspace:*
-        version: link:../../packages/survey-schema
       ajv-i18n:
         specifier: 4.2.0
         version: 4.2.0(ajv@8.20.0)
@@ -89,18 +89,18 @@ importers:
       '@shallowred/form-entreprise-innovation':
         specifier: workspace:*
         version: link:../../packages/form-entreprise-innovation
-      '@shallowred/jsonforms-vue-dsfr':
+      '@shallowred/formulaires-publicodes':
         specifier: workspace:*
-        version: link:../../packages/jsonforms-vue-dsfr
+        version: link:../../packages/formulaires-publicodes
+      '@shallowred/formulaires-schema':
+        specifier: workspace:*
+        version: link:../../packages/formulaires-schema
+      '@shallowred/formulaires-vue-dsfr':
+        specifier: workspace:*
+        version: link:../../packages/formulaires-vue-dsfr
       '@shallowred/publicodes-entreprise-innovation':
         specifier: ^1.0.0
         version: 1.0.0(publicodes@1.10.1)
-      '@shallowred/survey-publicodes':
-        specifier: workspace:*
-        version: link:../../packages/survey-publicodes
-      '@shallowred/survey-schema':
-        specifier: workspace:*
-        version: link:../../packages/survey-schema
       publicodes:
         specifier: ^1.9.1
         version: 1.10.1
@@ -120,61 +120,15 @@ importers:
 
   packages/form-entreprise-innovation:
     dependencies:
-      '@shallowred/survey-schema':
+      '@shallowred/formulaires-schema':
         specifier: workspace:*
-        version: link:../survey-schema
+        version: link:../formulaires-schema
 
-  packages/jsonforms-vue-dsfr:
+  packages/formulaires-publicodes:
     dependencies:
-      ajv:
-        specifier: ^8.17.1
-        version: 8.20.0
-      ajv-formats:
-        specifier: ^3.0.1
-        version: 3.0.1(ajv@8.20.0)
-    devDependencies:
-      '@gouvminint/vue-dsfr':
-        specifier: 8.11.0
-        version: 8.11.0(@iconify/vue@4.3.0(vue@3.5.40(typescript@5.9.3)))(vue-router@4.6.4(vue@3.5.40(typescript@5.9.3)))(vue@3.5.40(typescript@5.9.3))
-      '@jsonforms/core':
-        specifier: 3.8.0
-        version: 3.8.0
-      '@jsonforms/vue':
-        specifier: 3.8.0
-        version: 3.8.0(@jsonforms/core@3.8.0)(vue@3.5.40(typescript@5.9.3))
-      '@shallowred/survey-schema':
+      '@shallowred/formulaires-schema':
         specifier: workspace:*
-        version: link:../survey-schema
-      '@vitejs/plugin-vue':
-        specifier: ^5.2.4
-        version: 5.2.4(vite@5.4.21(@types/node@20.19.43))(vue@3.5.40(typescript@5.9.3))
-      '@vue/test-utils':
-        specifier: ^2.5.1
-        version: 2.5.1(@vue/compiler-dom@3.5.40)(@vue/server-renderer@3.5.40)(vue@3.5.40(typescript@5.9.3))
-      happy-dom:
-        specifier: ^20.14.6
-        version: 20.14.6
-      typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
-      vite:
-        specifier: ^5.4.21
-        version: 5.4.21(@types/node@20.19.43)
-      vitest:
-        specifier: ^1.6.1
-        version: 1.6.1(@types/node@20.19.43)(happy-dom@20.14.6)
-      vue:
-        specifier: ^3.5.18
-        version: 3.5.40(typescript@5.9.3)
-      vue-tsc:
-        specifier: ^3.3.14
-        version: 3.3.14(typescript@5.9.3)
-
-  packages/survey-publicodes:
-    dependencies:
-      '@shallowred/survey-schema':
-        specifier: workspace:*
-        version: link:../survey-schema
+        version: link:../formulaires-schema
     devDependencies:
       '@shallowred/publicodes-entreprise-innovation':
         specifier: ^1.0.0
@@ -195,7 +149,7 @@ importers:
         specifier: ^1.0.4
         version: 1.6.1(@types/node@20.19.43)(happy-dom@20.14.6)
 
-  packages/survey-schema:
+  packages/formulaires-schema:
     dependencies:
       ajv:
         specifier: ^8.12.0
@@ -229,11 +183,57 @@ importers:
         specifier: ^1.0.4
         version: 1.6.1(@types/node@20.19.43)(happy-dom@20.14.6)
 
+  packages/formulaires-vue-dsfr:
+    dependencies:
+      ajv:
+        specifier: ^8.17.1
+        version: 8.20.0
+      ajv-formats:
+        specifier: ^3.0.1
+        version: 3.0.1(ajv@8.20.0)
+    devDependencies:
+      '@gouvminint/vue-dsfr':
+        specifier: 8.11.0
+        version: 8.11.0(@iconify/vue@4.3.0(vue@3.5.40(typescript@5.9.3)))(vue-router@4.6.4(vue@3.5.40(typescript@5.9.3)))(vue@3.5.40(typescript@5.9.3))
+      '@jsonforms/core':
+        specifier: 3.8.0
+        version: 3.8.0
+      '@jsonforms/vue':
+        specifier: 3.8.0
+        version: 3.8.0(@jsonforms/core@3.8.0)(vue@3.5.40(typescript@5.9.3))
+      '@shallowred/formulaires-schema':
+        specifier: workspace:*
+        version: link:../formulaires-schema
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.4
+        version: 5.2.4(vite@5.4.21(@types/node@20.19.43))(vue@3.5.40(typescript@5.9.3))
+      '@vue/test-utils':
+        specifier: ^2.5.1
+        version: 2.5.1(@vue/compiler-dom@3.5.40)(@vue/server-renderer@3.5.40)(vue@3.5.40(typescript@5.9.3))
+      happy-dom:
+        specifier: ^20.14.6
+        version: 20.14.6
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.21
+        version: 5.4.21(@types/node@20.19.43)
+      vitest:
+        specifier: ^1.6.1
+        version: 1.6.1(@types/node@20.19.43)(happy-dom@20.14.6)
+      vue:
+        specifier: ^3.5.18
+        version: 3.5.40(typescript@5.9.3)
+      vue-tsc:
+        specifier: ^3.3.14
+        version: 3.3.14(typescript@5.9.3)
+
   packages/survey-vue-dsfr:
     dependencies:
-      '@shallowred/survey-schema':
+      '@shallowred/formulaires-schema':
         specifier: workspace:*
-        version: link:../survey-schema
+        version: link:../formulaires-schema
     devDependencies:
       '@gouvminint/vue-dsfr':
         specifier: 8.11.0

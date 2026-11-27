@@ -1,4 +1,4 @@
-import type { PublicodesDispositif, PublicodesSurveySchema, SurveySchemaV3 } from '@shallowred/survey-schema'
+import type { PublicodesDispositif, PublicodesSurveySchema, SurveySchemaV3 } from '@shallowred/formulaires-schema'
 
 declare const schema: PublicodesSurveySchema
 

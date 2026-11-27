@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SurveyChoice, SurveyQuestionData } from '@shallowred/survey-schema'
+import type { SurveyChoice, SurveyQuestionData } from '@shallowred/formulaires-schema'
 import { DsfrRadioButtonSet, DsfrTooltip } from '@gouvminint/vue-dsfr'
 import { onMounted, useTemplateRef } from 'vue'
 

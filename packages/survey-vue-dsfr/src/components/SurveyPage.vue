@@ -2,7 +2,7 @@
 import type {
   SurveyQuestionsPageData,
   SurveyResultsPageData,
-} from '@shallowred/survey-schema'
+} from '@shallowred/formulaires-schema'
 import type { Survey } from '../composables/use-survey.js'
 import { computed } from 'vue'
 import SurveyQuestion from './SurveyQuestion.vue'

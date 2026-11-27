@@ -14,11 +14,11 @@ Démo en ligne : <https://shallowred.github.io/survey-kit/>
 
 | Package | Rôle | Provenance |
 |---|---|---|
-| [`@shallowred/survey-schema`](packages/survey-schema) | Cœur agnostique : types, normalisation, conditions de visibilité, validation | branche `feature/survey-schema-package` d'aides-simplifiées, alignée sur le comportement de production |
+| [`@shallowred/formulaires-schema`](packages/formulaires-schema) | Cœur agnostique : types, normalisation, conditions de visibilité, validation | branche `feature/survey-schema-package` d'aides-simplifiées, alignée sur le comportement de production |
 | [`@shallowred/survey-vue-dsfr`](packages/survey-vue-dsfr) | Composable headless `useSurvey` + composants DSFR | runtime de production d'aides-simplifiées, découplé de l'application |
-| [`@shallowred/survey-publicodes`](packages/survey-publicodes) | Projection réponses → situation publicodes, calcul d'éligibilité et de montants | service de production d'aides-simplifiées |
+| [`@shallowred/formulaires-publicodes`](packages/formulaires-publicodes) | Projection réponses → situation publicodes, calcul d'éligibilité et de montants | service de production d'aides-simplifiées |
 | [`@shallowred/form-entreprise-innovation`](packages/form-entreprise-innovation) | Le formulaire déclaratif (78 questions, 65 conditions), copie conforme de la production | `public/forms/entreprise-innovation.json` |
-| [`@shallowred/jsonforms-vue-dsfr`](packages/jsonforms-vue-dsfr) | Composants DSFR pour JSON Forms : champs, listes répétables, étapes, base légale et donnée certifiable | écrit pour le format v3 de survey-schema, sur le cœur de JSON Forms |
+| [`@shallowred/formulaires-vue-dsfr`](packages/formulaires-vue-dsfr) | Composants DSFR pour JSON Forms : champs, listes répétables, étapes, base légale et donnée certifiable | écrit pour le format v3 de formulaires-schema, sur le cœur de JSON Forms |
 | [`apps/demo`](apps/demo) | Site de démonstration | ce dépôt |
 | [`examples/integration-vue`](examples/integration-vue) | Exemple d'intégration du simulateur dans une application Vue existante | ce dépôt |
 
@@ -39,4 +39,4 @@ Autres commandes : `pnpm build` (packages), `pnpm test` (tous les tests), `pnpm 
 
 ## Statut et limites
 
-Démonstration technique. Les questions `combobox`/autocomplétion et les boutons « notion » de l'application d'origine ne sont pas portés (non utilisés par ce formulaire). Deux points d'attention sur le package npm du modèle sont documentés dans [packages/survey-publicodes](packages/survey-publicodes) (dépendance de build cassée, syntaxe d'import JSON retirée de Node ≥ 22).
+Démonstration technique. Les questions `combobox`/autocomplétion et les boutons « notion » de l'application d'origine ne sont pas portés (non utilisés par ce formulaire). Deux points d'attention sur le package npm du modèle sont documentés dans [packages/formulaires-publicodes](packages/formulaires-publicodes) (dépendance de build cassée, syntaxe d'import JSON retirée de Node ≥ 22).

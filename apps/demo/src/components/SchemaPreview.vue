@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { JsonFormsRendererRegistryEntry, UISchemaElement, ValidationMode } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
-import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
+import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/formulaires-vue-dsfr'
 import { computed, ref } from 'vue'
 import CodeBlock from './CodeBlock.vue'
 import FormFrame from './FormFrame.vue'

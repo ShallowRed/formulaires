@@ -1,7 +1,7 @@
 {
   "name": "@shallowred/form-entreprise-innovation",
   "version": "1.0.2",
-  "description": "Formulaire declaratif des aides a l'innovation pour les entreprises (format survey-schema), extrait d'aides-simplifiees",
+  "description": "Formulaire declaratif des aides a l'innovation pour les entreprises (format formulaires-schema), extrait d'aides-simplifiees",
   "keywords": [
     "survey",
     "form",
@@ -33,6 +33,6 @@
     "README.md"
   ],
   "dependencies": {
-    "@shallowred/survey-schema": "workspace:*"
+    "@shallowred/formulaires-schema": "workspace:*"
   }
 }

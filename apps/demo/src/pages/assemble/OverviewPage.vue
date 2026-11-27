@@ -8,14 +8,14 @@ const parts = [
   {
     title: 'Formulaire',
     description: 'On écrit le schéma des réponses et les étapes du formulaire en JSON, sans toucher au code.',
-    links: [{ href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/survey-schema', text: '@shallowred/survey-schema' }],
+    links: [{ href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-schema', text: '@shallowred/formulaires-schema' }],
   },
   {
     title: 'Rendu et calcul',
     description: 'JSON Forms affiche le formulaire avec le DSFR, puis les réponses passent au modèle de calcul.',
     links: [
-      { href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/jsonforms-vue-dsfr', text: '@shallowred/jsonforms-vue-dsfr' },
-      { href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/survey-publicodes', text: '@shallowred/survey-publicodes' },
+      { href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-vue-dsfr', text: '@shallowred/formulaires-vue-dsfr' },
+      { href: 'https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-publicodes', text: '@shallowred/formulaires-publicodes' },
     ],
   },
 ]

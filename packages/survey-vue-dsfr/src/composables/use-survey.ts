@@ -16,8 +16,8 @@ import type {
   SurveyQuestionsPageData,
   SurveyResultsPageData,
   SurveySchema,
-} from '@shallowred/survey-schema'
-import { ConditionEvaluator, SchemaNormalizer } from '@shallowred/survey-schema'
+} from '@shallowred/formulaires-schema'
+import { ConditionEvaluator, SchemaNormalizer } from '@shallowred/formulaires-schema'
 import { ref } from 'vue'
 import { isAnswerValid } from './validation.js'
 
