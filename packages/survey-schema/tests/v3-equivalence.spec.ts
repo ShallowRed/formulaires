@@ -67,6 +67,13 @@ describe('survey-schema v3 on entreprise-innovation.json', () => {
     ])
   })
 
+  // `vitest -u` writes the questionnaire and the answers schema of form-entreprise-innovation
+  it('matches the questionnaire and answers schema stored in form-entreprise-innovation', async () => {
+    const folder = '../../form-entreprise-innovation/src'
+    await expect(`${JSON.stringify(questionnaire, null, 2)}\n`).toMatchFileSnapshot(`${folder}/entreprise-innovation.questionnaire.json`)
+    await expect(`${JSON.stringify(dataSchema, null, 2)}\n`).toMatchFileSnapshot(`${folder}/entreprise-innovation.data.schema.json`)
+  })
+
   it(`draws ${2 * SETS_PER_MODE} answer sets valid against the answers schema, which hide and show every conditional question`, () => {
     const validate = createConditionsAjv().compile(dataSchema)
     expect(sets.filter(s => !validate(s.answers))).toHaveLength(0)

@@ -23,6 +23,16 @@ ce package ne porte que la couche formulaire, volontairement découplée du mote
 
 ## Usage
 
+Pour JSON Forms, le paquet exporte le questionnaire et le schéma de ses réponses, que `compileV3ToJsonForms` de survey-schema traduit, ainsi que la liste des dispositifs à évaluer :
+
+```ts
+import { dataSchema, dispositifs, questionnaire } from '@shallowred/form-entreprise-innovation'
+```
+
+`entreprise-innovation.questionnaire.json` et `entreprise-innovation.data.schema.json` sont produits par `migrateV2ToV3` à partir du formulaire d'aides-simplifiées. Après une mise à jour de ce formulaire, on les régénère par `pnpm --filter @shallowred/survey-schema exec vitest run -u tests/v3-equivalence.spec.ts`.
+
+Le formulaire d'aides-simplifiées est l'export par défaut :
+
 ```ts
 import schema from '@shallowred/form-entreprise-innovation'
 // ou le JSON brut :

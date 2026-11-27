@@ -1,0 +1,1729 @@
+{
+  "schemaVersion": "3.0.0",
+  "id": "entreprise-innovation",
+  "version": "1.0.2",
+  "title": "Dispositifs d'innovation et de recherche",
+  "description": "Répondez à ces questions pour découvrir les dispositifs d'innovation et de recherche auxquels votre entreprise pourrait être éligible (CIR, CII, CICo, JEI, JEU, JEC)",
+  "data": "entreprise-innovation.data.schema.json",
+  "steps": [
+    {
+      "id": "information-generale",
+      "title": "Informations générales sur l'entreprise",
+      "pages": [
+        {
+          "id": "statut-juridique",
+          "questions": [
+            {
+              "scope": "#/properties/date-de-creation"
+            },
+            {
+              "scope": "#/properties/nature-activite",
+              "choices": {
+                "industrielle": {
+                  "tooltip": "Une activité de nature industrielle correspond à une activité artisanale qui s'est développé de façon importante. Cela correspond à une production ou à une transformation grâce à l'utilisation d'outils industriels, extraction, industries minières, manutention, magasinage et stockage (construction aéronautique, automobile, métallurgie, etc.)."
+                },
+                "commerciale": {
+                  "tooltip": "Votre activité est considérée comme commerciale si vous :\n\n- Achetez des biens ou des marchandises pour les revendre dans un but lucratif.\n- Proposez des services dans divers secteurs (hôtellerie, restauration, transport, spectacles, sécurité, informatique, design, etc.).\n- Louez des biens, marchandises ou services\n\nA noter : les biens que vous vendez ou louez doivent être des biens meubles (bien qui peut être déplacé). Il peut s'agir d'un bien corporel (objet, mobilier ou marchandise par exemple) ou d'un bien incorporel (par exemple droits d'auteur, parts sociales, etc.).\n\nDiplôme requis :\n\nAucun diplôme ou savoir-faire spécifique n'est nécessaire pour exercer une activité commerciale.\n\nActivités autorisées et exclues :\n\n- Autorisées : restauration rapide, food truck, livraison, développement informatique, design, photographie, DJ, distribution musicale, etc.\n- Exclues : agent immobilier, coiffeur, opticien, pharmacien, topographe, bureau de tabac."
+                },
+                "agricole": {
+                  "tooltip": "Une activité est agricole si elle dépend du cycle biologique végétal ou animal dans le cadre d'une exploitation ou d'une production.\n\nCe critère est déterminant et s'applique quelle que soit la forme juridique de votre exploitation (entreprise individuelle, société, groupement agricole). Il peut s'agir également d'une activité qui prolonge l'activité de production agricole.\n\nAinsi les activités suivantes sont considérées comme agricoles :\n\n- Activités de \"tourisme à la ferme\" (gîtes, chambres d'hôtes, tables d'hôtes, fermes auberges, etc.) ayant pour support l'exploitation agricole\n- Activités de préparation et d'entraînement des chevaux et ponies domestiques en vue de leur exploitation : courses, concours, cours, etc.\n- Production et commercialisation de biogaz, d'électricité et de chaleur par la méthanisation, lorsqu'elle est issue en majorité de matières provenant d'exploitations agricoles\n- Transformation et vente directe des produits issus de l'exploitation (fromages, beurre, confiture, crème glacée, viande, etc.)\n\nÀ noter : la pension de chevaux ou leur exploitation pour des spectacles ne sont pas des activités agricoles. Ce sont des activités commerciales."
+                },
+                "artisanale": {
+                  "tooltip": "Pour être artisan, vous devez répondre aux 3 critères suivants :\n- Votre activité doit faire partie de la liste officielle des métiers de l'artisanat ou de la liste officielle des métiers d'artisanat d'art\n- Votre entreprise doit compter moins de 11 salariés à sa création\n- Vous devez détenir un savoir-faire spécifique et le prouver par un diplôme (CAP, BEP, etc.) ou une qualification professionnelle. Exemples d'activités artisanales : taxi et VTC, coiffeur, esthéticienne, toiletteur pour chiens, métiers de bouche (fromager, chocolatier, pâtissier, glacier, etc.), métiers techniques manuels (plombier, vitrier, ramoneur, prothésiste-dentaire, réparateur de matériel agricole, réparateur de vélos, cordonnier, déménageur), ambulancier, contrôleur technique automobile."
+                },
+                "liberale": {
+                  "tooltip": "Les professions libérales exercent une activité indépendante de prestations intellectuelles, techniques ou de soins. Elles peuvent être réglementées ou non réglementées. Les professions réglementées sont soumises à des conditions d'accès (diplôme, expérience) et/ou à des conditions d'exploitation (aptitude physique, obligation de formation continue)."
+                },
+                "autre-activite": {
+                  "exclusive": true
+                }
+              }
+            },
+            {
+              "scope": "#/properties/situation-geographique"
+            },
+            {
+              "scope": "#/properties/entreprise-en-difficulte"
+            }
+          ]
+        },
+        {
+          "id": "imposition",
+          "questions": [
+            {
+              "scope": "#/properties/type-imposition"
+            },
+            {
+              "scope": "#/properties/type-de-revenus",
+              "visibleWhen": {
+                "scope": "#/properties/nature-activite",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "artisanale"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/regime-fiscal"
+            },
+            {
+              "scope": "#/properties/categorie-exoneration",
+              "visibleWhen": {
+                "scope": "#/properties/type-imposition",
+                "schema": {
+                  "const": "exonere"
+                }
+              },
+              "choices": {
+                "aucune": {
+                  "exclusive": true
+                }
+              }
+            },
+            {
+              "scope": "#/properties/categorie-exoneration-zone-specifique",
+              "visibleWhen": {
+                "scope": "#/properties/categorie-exoneration",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "zone-specifique"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "caracteristiques-entreprise",
+      "title": "Caractéristiques de l'entreprise",
+      "pages": [
+        {
+          "id": "activite-nouvelle",
+          "title": "Activité nouvelle",
+          "questions": [
+            {
+              "scope": "#/properties/activite-nouvelle"
+            },
+            {
+              "scope": "#/properties/dirigeants-ou-actionnaires-universitaire",
+              "visibleWhen": {
+                "scope": "#/properties/activite-nouvelle",
+                "schema": {
+                  "const": true
+                }
+              },
+              "choices": {
+                "aucune": {
+                  "exclusive": true
+                }
+              }
+            },
+            {
+              "scope": "#/properties/valorisation-recherche",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/activite-nouvelle",
+                    "schema": {
+                      "const": true
+                    }
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "scope": "#/properties/dirigeants-ou-actionnaires-universitaire",
+                        "schema": {
+                          "type": "array",
+                          "contains": {
+                            "const": "etudiant"
+                          }
+                        }
+                      },
+                      {
+                        "scope": "#/properties/dirigeants-ou-actionnaires-universitaire",
+                        "schema": {
+                          "type": "array",
+                          "contains": {
+                            "const": "diplome-doctorat"
+                          }
+                        }
+                      },
+                      {
+                        "scope": "#/properties/dirigeants-ou-actionnaires-universitaire",
+                        "schema": {
+                          "type": "array",
+                          "contains": {
+                            "const": "diplome-master"
+                          }
+                        }
+                      },
+                      {
+                        "scope": "#/properties/dirigeants-ou-actionnaires-universitaire",
+                        "schema": {
+                          "type": "array",
+                          "contains": {
+                            "const": "enseignant"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/contrat-valorisation",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/activite-nouvelle",
+                    "schema": {
+                      "const": true
+                    }
+                  },
+                  {
+                    "scope": "#/properties/valorisation-recherche",
+                    "schema": {
+                      "const": true
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/capital-detenu",
+              "visibleWhen": {
+                "scope": "#/properties/activite-nouvelle",
+                "schema": {
+                  "const": true
+                }
+              },
+              "choices": {
+                "aucune": {
+                  "exclusive": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "chiffre-affaires",
+          "questions": [
+            {
+              "scope": "#/properties/chiffre-affaires-selector",
+              "choices": {
+                "no_bilan": {
+                  "exclusive": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "infos-annee-N",
+          "title": "Situation de l'entreprise année N",
+          "questions": [
+            {
+              "scope": "#/properties/chiffre-affaires-N",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/bilan-total-N",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/effectif-total-N",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "infos-annee-N1",
+          "title": "Situation de l'entreprise année N-1",
+          "questions": [
+            {
+              "scope": "#/properties/chiffre-affaires-N1",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N1"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/bilan-total-N1",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N1"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/effectif-total-N1",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N1"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "infos-annee-N2",
+          "title": "Situation de l'entreprise année N-2",
+          "questions": [
+            {
+              "scope": "#/properties/chiffre-affaires-N2",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N2"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/bilan-total-N2",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N2"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/effectif-total-N2",
+              "visibleWhen": {
+                "scope": "#/properties/chiffre-affaires-selector",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "year_N2"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "page-croissance",
+          "title": "Croissance des effectifs et des dépenses de recherche",
+          "questions": [
+            {
+              "scope": "#/properties/effectif-augmente"
+            },
+            {
+              "scope": "#/properties/depenses-stables"
+            }
+          ]
+        },
+        {
+          "id": "page-pourcentage-rd",
+          "questions": [
+            {
+              "scope": "#/properties/pourcentage-rd"
+            }
+          ]
+        },
+        {
+          "id": "prototype-page",
+          "title": "Conception d'un prototype ou d'une installation pilote",
+          "questions": [
+            {
+              "scope": "#/properties/i-have-a-prototype"
+            },
+            {
+              "scope": "#/properties/prototype-destination",
+              "visibleWhen": {
+                "scope": "#/properties/i-have-a-prototype",
+                "schema": {
+                  "const": true
+                }
+              }
+            },
+            {
+              "scope": "#/properties/produit-mis-marche",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/i-have-a-prototype",
+                    "schema": {
+                      "const": true
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/performances-superieures",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/i-have-a-prototype",
+                    "schema": {
+                      "const": true
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  }
+                ]
+              },
+              "choices": {
+                "performances-superieures-aucune": {
+                  "exclusive": true
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "resultats-intermediaires",
+      "title": "Eligibilité des dispositifs",
+      "pages": [
+        {
+          "id": "resultats-intermediaires-page",
+          "type": "intermediary-results",
+          "title": "Résultats intermédiaires",
+          "description": "Voici une évaluation actualisée de votre éligibilité aux dispositifs d'aide.",
+          "outputs": [
+            {
+              "id": "cir",
+              "title": "Crédit d'Impôt Recherche (CIR)",
+              "description": "Le CIR permet de financer vos activités de recherche et développement."
+            },
+            {
+              "id": "cii",
+              "title": "Crédit d'Impôt Innovation (CII)",
+              "description": "Le CII soutient les PME qui mènent des projets d'innovation."
+            },
+            {
+              "id": "cico",
+              "title": "Crédit d'Impôt Recherche et Innovation (CICo)",
+              "description": "Le CICo permet de financer vos activités de recherche et développement."
+            },
+            {
+              "id": "jei",
+              "title": "Jeune Entreprise Innovante (JEI)",
+              "description": "Le statut JEI offre des exonérations fiscales et sociales aux jeunes entreprises innovantes."
+            },
+            {
+              "id": "jeu",
+              "title": "Jeune Entreprise Universitaire (JEU)",
+              "description": "Le statut JEU offre des avantages aux entreprises créées par des étudiants ou chercheurs."
+            },
+            {
+              "id": "jec",
+              "title": "Jeune Entreprise de Croissance (JEC)",
+              "description": "La JEC offre des avantages fiscaux pour les entreprises en forte croissance."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eligibilite-depenses",
+      "title": "Eligibilité des dépenses de l'entreprise",
+      "pages": [
+        {
+          "id": "type-depenses-page",
+          "questions": [
+            {
+              "scope": "#/properties/type-depenses",
+              "choices": {
+                "rd": {
+                  "tooltip": "Inutile de sélectionner cette option si vous avez établi à l'étape précédente que vous n'étiez éligible ni au CIR, ni au CICo, JEI ou JEC"
+                },
+                "normalisation": {
+                  "tooltip": "Inutile de sélectionner cette option si vous avez établi à l'étape précédente que vous n'étiez pas éligible au CIR"
+                },
+                "prototype": {
+                  "tooltip": "Inutile de sélectionner cette option si vous avez établi à l'étape précédente que vous n'étiez pas éligible au CII"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "rd-page",
+          "title": "Détail par nature des dépenses éligibles",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-rd-amortissement-biens",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              },
+              "tooltip": {
+                "buttonLabel": "En savoir plus",
+                "content": "Ils doivent être utilisés dans la réalisation d'opérations de recherche scientifique et technique. Ils peuvent également être utilisés dans la réalisation d'opérations de conception de prototypes ou d'installations pilotes"
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-amortissement-biens-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-indemnisation-assurance",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              },
+              "tooltip": "En cas de perte ou dommages sur un bien ou un bâtiment"
+            },
+            {
+              "scope": "#/properties/depenses-rd-indemnisation-assurance-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "rd-personnel",
+          "title": "Dépenses de personnel éligibles",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-rd-chercheurs-techniciens",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-chercheurs-techniciens-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-remuneration-invention",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-remuneration-invention-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "rd-depenses-prestataires",
+          "title": "Dépenses afférentes aux opérations de R&D dont la réalisation est confiée à des organismes et experts scientifiques ou techniques agréés dans les conditions ci-dessous",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-rd-recherche-liens-dependance",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-recherche-liens-dependance-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-recherche-sans-liens-dependance",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-recherche-sans-liens-dependance-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "rd-depenses-ordc",
+          "title": "Dépenses afférentes aux projets de R&D menés en collaboration avec un organisme de recherche et de diffusion des connaissances (ORDC) agréé. ",
+          "questions": [
+            {
+              "scope": "#/properties/contrat-ordc",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/respecte-criteres-ordc",
+              "visibleWhen": {
+                "scope": "#/properties/contrat-ordc",
+                "schema": {
+                  "const": true
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-ordc",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/contrat-ordc",
+                    "schema": {
+                      "const": true
+                    }
+                  },
+                  {
+                    "scope": "#/properties/respecte-criteres-ordc",
+                    "schema": {
+                      "const": true
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/subventions-ordc",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/contrat-ordc",
+                    "schema": {
+                      "const": true
+                    }
+                  },
+                  {
+                    "scope": "#/properties/respecte-criteres-ordc",
+                    "schema": {
+                      "const": true
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/remboursements-subventions-ordc",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              },
+              "tooltip": "Remboursements des subventions publiques qui ont été déduites de l'assiette du crédit d'impôt au titre d'années antérieures"
+            }
+          ]
+        },
+        {
+          "id": "rd-deductions",
+          "title": "Détail des sommes à déduire de l'assiette du crédit d'impôt",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-rd-subventions-publiques",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-depenses-conseil",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-rd-depenses-tiers-cir",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "rd"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "normalisation-page",
+          "title": "Dépenses relatives aux activités de normalisation afférentes aux produits de l'entreprise (CIR)",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-normalisation-salaires",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "normalisation"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-normalisation-salaires-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "normalisation"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-normalisation-dirigeant",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "normalisation"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-normalisation-dirigeant-dom",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "normalisation"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-normalisation-remboursements-subventions",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "normalisation"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-normalisation-subventions",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "normalisation"
+                  }
+                }
+              }
+            },
+            {
+              "scope": "#/properties/depenses-normalisation-conseil",
+              "visibleWhen": {
+                "scope": "#/properties/type-depenses",
+                "schema": {
+                  "type": "array",
+                  "contains": {
+                    "const": "normalisation"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "prototype-immobilisations",
+          "title": "Détail par nature de dépenses éligibles",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-prototype-amortissements-immobilisations",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-amortissements-immobilisations-dom",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-amortissements-immobilisations-corse",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prototype-personnel",
+          "title": "Dépenses de personnel",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-prototype-chercheurs-techniciens",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-chercheurs-techniciens-dom",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-chercheurs-techniciens-corse",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prototype-brevet",
+          "title": "Dotations aux amortissements des brevets",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-prototype-amortissements-brevets",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-amortissements-brevets-dom",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-amortissements-brevets-corse",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prototype-dessins",
+          "title": "Frais de dépôt et de défense des dessins et modèles",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-prototype-frais-depot-dessins",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-frais-depot-dessins-dom",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-frais-depot-dessins-corse",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prototype-sous-traitance",
+          "title": "Dépenses de sous-traitance",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-prototype-depenses-sous-traitance",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-depenses-sous-traitance-dom",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-depenses-sous-traitance-corse",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prototype-remboursements-page",
+          "title": "Remboursements à rajouter à l'assiette du crédit d'impôt",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-prototype-remboursements-subventions",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prototype-subventions-page",
+          "title": "Détail des sommes à déduire de l'assiette du crédit d'impôt",
+          "questions": [
+            {
+              "scope": "#/properties/depenses-prototype-subventions-publiques",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-depenses-conseil",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "scope": "#/properties/depenses-prototype-depenses-tiers-cii",
+              "visibleWhen": {
+                "allOf": [
+                  {
+                    "scope": "#/properties/type-depenses",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "const": "prototype"
+                      }
+                    }
+                  },
+                  {
+                    "scope": "#/properties/prototype-destination",
+                    "schema": {
+                      "const": "modele"
+                    }
+                  },
+                  {
+                    "scope": "#/properties/produit-mis-marche",
+                    "schema": {
+                      "const": false
+                    }
+                  },
+                  {
+                    "scope": "#/properties/performances-superieures",
+                    "schema": {
+                      "type": "array",
+                      "contains": {
+                        "enum": [
+                          "techniques",
+                          "eco",
+                          "ergonomiques",
+                          "fonctionnalites"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

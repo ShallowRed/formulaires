@@ -73,19 +73,18 @@ Dans ce dépôt, le workspace résout `@shallowred/jsonforms-vue-dsfr` vers ses 
 import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core'
 import { rankWith, uiTypeIs } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
-import formSchema from '@shallowred/form-entreprise-innovation'
+import { dataSchema, dispositifs, questionnaire } from '@shallowred/form-entreprise-innovation'
 import { createAjv2020, dsfrI18n, dsfrRenderers } from '@shallowred/jsonforms-vue-dsfr'
 import rules from '@shallowred/publicodes-entreprise-innovation/publicodes-build/publicodes-entreprise-innovation.model.json'
 import { calculateEligibilityV3 } from '@shallowred/survey-publicodes'
-import { compileV3ToJsonForms, migrateV2ToV3, visibleAnswers } from '@shallowred/survey-schema'
+import { compileV3ToJsonForms, visibleAnswers } from '@shallowred/survey-schema'
 import { computed, provide, ref } from 'vue'
 import ResultatsIntermediaires from './ResultatsIntermediaires.vue'
 
-const { questionnaire, dataSchema } = migrateV2ToV3(formSchema)
 const { schema, uischema } = compileV3ToJsonForms(questionnaire, dataSchema)
 
 function eligibilityOf(answers: Record<string, unknown>) {
-  return calculateEligibilityV3(rules, dataSchema, visibleAnswers(questionnaire, answers), formSchema.dispositifs)
+  return calculateEligibilityV3(rules, dataSchema, visibleAnswers(questionnaire, answers), dispositifs)
 }
 provide('eligibilityOf', eligibilityOf)
 
@@ -113,7 +112,7 @@ const results = computed(() => eligibilityOf(answers.value))
 </template>
 ```
 
-`migrateV2ToV3` convertit le formulaire d'aides-simplifiées en deux documents : le schéma des réponses et les étapes. `compileV3ToJsonForms` les traduit pour JSON Forms. `visibleAnswers` retire les réponses des champs masqués, et `calculateEligibilityV3` transmet les autres au modèle publicodes.
+Le paquet du formulaire donne le questionnaire, le schéma de ses réponses et les dispositifs à évaluer. `compileV3ToJsonForms` traduit le questionnaire et le schéma pour JSON Forms. `visibleAnswers` retire les réponses des champs masqués, et `calculateEligibilityV3` transmet les autres au modèle publicodes.
 
 ### Afficher les résultats
 
