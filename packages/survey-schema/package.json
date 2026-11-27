@@ -46,7 +46,7 @@
     "test:coverage": "vitest --coverage",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
-    "validate-schemas": "ajv compile -s 'src/validation/schemas/*.json'",
+    "validate-schemas": "ajv compile --spec=draft7 -c ajv-formats -s src/validation/schemas/v2.0.0.schema.json && ajv compile --spec=draft2020 -c ajv-formats -s src/validation/schemas/v3.0.0.schema.json",
     "test:run": "vitest run",
     "pack:dist": "pnpm run build && pnpm pack --pack-destination ../../dist"
   },
