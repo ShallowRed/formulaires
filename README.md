@@ -1,8 +1,8 @@
-# survey-kit
+# formulaires
 
 Un format de formulaire, des composants [DSFR](https://www.systeme-de-design.gouv.fr/) pour [JSON Forms](https://jsonforms.io/) et un adaptateur pour le moteur de calcul [publicodes](https://publi.codes). Le format et l'adaptateur viennent d'[aides-simplifiées](https://github.com/betagouv/aides-simplifiees-app).
 
-Démo en ligne : <https://shallowred.github.io/survey-kit/>
+Démo en ligne : <https://shallowred.github.io/formulaires/>
 
 ## Site de démonstration
 
@@ -29,8 +29,8 @@ Le comportement du formulaire est vérifié par des tests automatisés, rejoués
 ## Démarrer
 
 ```bash
-git clone https://github.com/ShallowRed/survey-kit
-cd survey-kit
+git clone https://github.com/ShallowRed/formulaires
+cd formulaires
 pnpm install
 pnpm --filter demo dev
 ```

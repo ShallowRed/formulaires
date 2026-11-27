@@ -4,10 +4,10 @@ Composants Vue 3 du [DSFR](https://www.systeme-de-design.gouv.fr/) pour [JSON Fo
 
 ## Installation
 
-L'archive de chaque version est attachée à une release de survey-kit, sous l'étiquette `formulaires-vue-dsfr-v<version>` :
+L'archive de chaque version est attachée à une release du dépôt formulaires, sous l'étiquette `formulaires-vue-dsfr-v<version>` :
 
 ```bash
-pnpm add https://github.com/ShallowRed/survey-kit/releases/download/formulaires-vue-dsfr-v0.1.0/shallowred-formulaires-vue-dsfr-0.1.0.tgz
+pnpm add https://github.com/ShallowRed/formulaires/releases/download/formulaires-vue-dsfr-v0.1.0/shallowred-formulaires-vue-dsfr-0.1.0.tgz
 ```
 
 L'application installe aussi `vue`, `@jsonforms/core` et `@jsonforms/vue` en version 3.8, `@gouvminint/vue-dsfr` 8 à partir de la 8.11, et charge les feuilles de style du DSFR.

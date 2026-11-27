@@ -17,10 +17,10 @@ A framework-agnostic library for defining and managing survey schemas with condi
 
 ## Installation
 
-The archive of each version is attached to a survey-kit release, under the tag `formulaires-schema-v<version>`:
+The archive of each version is attached to a release of the formulaires repository, under the tag `formulaires-schema-v<version>`:
 
 ```bash
-pnpm add https://github.com/ShallowRed/survey-kit/releases/download/formulaires-schema-v<version>/shallowred-formulaires-schema-<version>.tgz
+pnpm add https://github.com/ShallowRed/formulaires/releases/download/formulaires-schema-v<version>/shallowred-formulaires-schema-<version>.tgz
 ```
 
 ## Quick Start
@@ -192,5 +192,5 @@ MIT © BetaGouv
 
 ## Support
 
-- [Documentation](https://github.com/ShallowRed/survey-kit/tree/main/packages/formulaires-schema)
-- [Issues](https://github.com/ShallowRed/survey-kit/issues)
+- [Documentation](https://github.com/ShallowRed/formulaires/tree/main/packages/formulaires-schema)
+- [Issues](https://github.com/ShallowRed/formulaires/issues)
