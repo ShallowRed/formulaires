@@ -58,6 +58,7 @@ const pageErrors = computed(() => {
 })
 
 const showErrors = ref(false)
+const root = ref<HTMLElement | null>(null)
 const pageContainer = ref<HTMLElement | null>(null)
 const announcement = ref('')
 
@@ -65,7 +66,10 @@ function goTo(index: number) {
   currentIndex.value = index
   showErrors.value = false
   nextTick(() => {
-    pageContainer.value?.focus()
+    // The stepper and the first question of the new page show at the top of the screen
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    root.value?.scrollIntoView({ block: 'start', behavior: reducedMotion ? 'auto' : 'smooth' })
+    pageContainer.value?.focus({ preventScroll: true })
     announcement.value = `Page ${currentIndex.value + 1} sur ${visiblePages.value.length} : ${current.value?.category.label || current.value?.step}`
   })
 }
@@ -84,7 +88,11 @@ function next() {
 </script>
 
 <template>
-  <div v-if="layout.visible && current">
+  <div
+    v-if="layout.visible && current"
+    ref="root"
+    class="jsonforms-dsfr-steps"
+  >
     <DsfrStepper
       v-if="steps.length > 1"
       :steps="steps"

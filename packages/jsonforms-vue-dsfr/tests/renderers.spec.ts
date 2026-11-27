@@ -2,7 +2,7 @@ import type { JsonSchema, UISchemaElement } from '@jsonforms/core'
 import { JsonForms } from '@jsonforms/vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import { compileV3ToJsonForms, migrateV2ToV3 } from '@shallowred/survey-schema'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAjv2020, dsfrI18n, dsfrRenderers } from '../src/index'
 
 async function render(schema: JsonSchema, data: Record<string, unknown> = {}, uischema?: UISchemaElement) {
@@ -219,6 +219,18 @@ describe('a questionnaire in steps', () => {
     ],
   } as UISchemaElement
 
+  // jsdom implements neither scrolling nor media queries
+  const scrollIntoView = vi.fn()
+  beforeEach(() => {
+    Element.prototype.scrollIntoView = scrollIntoView
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query === '(prefers-reduced-motion: reduce)' }))
+  })
+  afterEach(() => {
+    delete (Element.prototype as Partial<Element>).scrollIntoView
+    scrollIntoView.mockReset()
+    vi.unstubAllGlobals()
+  })
+
   it('keeps the page while an answer is missing, then completes the questionnaire', async () => {
     const wrapper = await render(schema, {}, uischema)
     const completed: unknown[] = []
@@ -239,6 +251,22 @@ describe('a questionnaire in steps', () => {
     await flushPromises()
     await button(wrapper, 'Terminer').trigger('click')
     expect(completed).toEqual([{ nom: 'Camille', age: 30 }])
+  })
+
+  it('brings the stepper to the top of the screen and focuses the new page', async () => {
+    const wrapper = mount(JsonForms, {
+      props: { schema, uischema, data: { nom: 'Camille' }, renderers: dsfrRenderers, ajv: createAjv2020(), i18n: dsfrI18n },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    await button(wrapper, 'Suivant').trigger('click')
+    await flushPromises()
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start', behavior: 'auto' })
+    expect(scrollIntoView.mock.instances[0]).toBe(wrapper.find('.fr-stepper').element.parentElement)
+    expect(document.activeElement).toBe(wrapper.find('.page').element)
+    expect(wrapper.find('p.fr-sr-only[aria-live]').text()).toBe('Page 2 sur 2 : Situation')
+    wrapper.unmount()
   })
 })
 

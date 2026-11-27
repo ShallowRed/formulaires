@@ -26,3 +26,8 @@
 .jsonforms-dsfr-choice .fr-tooltip {
   white-space: pre-line;
 }
+
+/* A step change scrolls the stepper to the top of the screen, with the spacing of a DSFR form block above it */
+.jsonforms-dsfr-steps {
+  scroll-margin-top: 1.5rem;
+}
