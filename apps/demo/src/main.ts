@@ -10,6 +10,9 @@ import '@gouvfr/dsfr/dist/scheme/scheme.min.css'
 import '@gouvminint/vue-dsfr/styles'
 import './styles.css'
 
+// GitHub Pages serves the chunks of the latest build only: a page loaded from an earlier build reloads
+window.addEventListener('vite:preloadError', () => window.location.reload())
+
 createApp(App)
   .use(router)
   .use(VueDsfr)
