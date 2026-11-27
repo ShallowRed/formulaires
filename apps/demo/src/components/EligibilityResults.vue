@@ -40,10 +40,7 @@ function formatMontant(dispositifId: string): string | null {
           :key="aide.id"
         >
           <p class="fr-text--md">
-            {{ aide.title }}
-            <template v-if="withMontants && formatMontant(aide.id)">
-              — montant estimé : <strong>{{ formatMontant(aide.id) }}</strong>
-            </template>
+            {{ aide.title }}<template v-if="withMontants && formatMontant(aide.id)">, montant estimé : <strong>{{ formatMontant(aide.id) }}</strong></template>
           </p>
         </li>
       </ul>

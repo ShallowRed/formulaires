@@ -12,7 +12,7 @@ Rendu Vue 3 + [DSFR](https://www.systeme-de-design.gouv.fr/) des formulaires
 - **`useSurvey(schema)`** : composable headless (sans rendu). Normalise le schéma, tient
   les réponses, calcule la visibilité conditionnelle (via le `ConditionEvaluator` du cœur),
   la navigation entre pages visibles, la validation et la progression.
-- **`<SurveyForm :survey="survey" @complete="..." />`** : rendu DSFR complet — stepper,
+- **`<SurveyForm :survey="survey" @complete="..." />`** : rendu DSFR complet avec stepper,
   pages, questions (radio, cases à cocher, booléen, nombre, date), navigation. La page de
   résultats intermédiaires est un slot `#results-page` : l'affichage des résultats moteur
   reste la responsabilité de l'application hôte, le rendu ne connaît aucun moteur.
