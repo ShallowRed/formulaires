@@ -9,7 +9,7 @@ Runner d'éligibilité publicodes pour les formulaires [survey-schema](../survey
 ## Ce que fait le runner
 
 1. **`mapAnswersToSituation(engine, schema, answers)`** : projette les réponses du formulaire
-   vers une situation publicodes — identifiants kebab-case convertis en camelCase, réponses
+   vers une situation publicodes : identifiants kebab-case convertis en camelCase, réponses
    sans règle correspondante écartées, cases à cocher dépliées en sous-règles booléennes
    (`natureActivite . industrielle: 'oui'`), booléens en `oui`/`non`, dates au format
    `JJ/MM/AAAA`, chaînes entre guillemets.
@@ -31,7 +31,7 @@ const results = calculateEligibility(rules, schema, answers)
 ```
 
 > Note : l'entrée principale du package npm du modèle utilise `assert { type: 'json' }`,
-> syntaxe retirée de Node >= 22 — importer le JSON compilé directement (comme ci-dessus)
+> syntaxe retirée de Node >= 22. Importer le JSON compilé directement (comme ci-dessus)
 > contourne le problème. Sa dépendance `@publicodes/tools` (outillage de build déclaré en
 > dépendance runtime) est neutralisée par un override pnpm à la racine du monorepo.
 

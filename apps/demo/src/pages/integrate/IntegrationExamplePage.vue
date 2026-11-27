@@ -21,11 +21,11 @@ const example = computed(() => integrationExamples.find(item => item.slug === ro
       <InlineCode :text="paragraph" />
     </p>
     <h3 class="fr-h6 fr-mb-1w">
-      Ce que lisent les composants
+      Effets du schéma sur le formulaire
     </h3>
     <ul class="fr-mb-4w">
       <li
-        v-for="(item, index) in example.reads"
+        v-for="(item, index) in example.effects"
         :key="index"
       >
         <InlineCode :text="item" />

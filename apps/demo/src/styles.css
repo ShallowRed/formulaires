@@ -4,6 +4,7 @@
   --demo-container-max-width: 100rem;
   --demo-prose-max-width: 48rem;
   --demo-form-max-width: 52rem;
+  --demo-panel-max-height: 32rem;
 }
 
 .fr-container.demo-container {

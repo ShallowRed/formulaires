@@ -47,7 +47,7 @@ const answersJson = computed(() => JSON.stringify(answers.value, null, 2))
       <h3 class="fr-h6 fr-mb-1w">
         Formulaire
       </h3>
-      <FormFrame>
+      <FormFrame scrollable>
         <form
           novalidate
           @submit.prevent

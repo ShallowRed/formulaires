@@ -9,8 +9,8 @@ export interface IntegrationExample {
   title: string
   /** Paragraphs; text between backticks is code */
   description: string[]
-  /** What the renderers read, one item per keyword */
-  reads: string[]
+  /** What the schema changes in the form, one sentence per keyword; text between backticks is code */
+  effects: string[]
   schema: Record<string, unknown>
   uischema?: UISchemaElement
   data?: Record<string, unknown>
@@ -24,10 +24,10 @@ export const integrationExamples: IntegrationExample[] = [
     description: [
       'Ce schéma décrit les entrées de la règle du quotient familial des agents du ministère de l\'Agriculture. Il est copié depuis datapi.',
     ],
-    reads: [
-      '`x-legal-basis` du groupe « Ménage de l\'agent » => lien « Base légale » vers la note de service',
-      '`x-source` du revenu fiscal de référence => badge « Donnée certifiable » et nom du fournisseur',
-      '`minItems` de la liste des foyers fiscaux => bouton de suppression désactivé tant qu\'il reste un seul foyer',
+    effects: [
+      'Le groupe « Ménage de l\'agent » affiche un lien « Base légale » vers la note de service que cite son `x-legal-basis`.',
+      'Le revenu fiscal de référence affiche le badge « Donnée certifiable » et le nom du fournisseur que donne son `x-source`.',
+      'Le bouton de suppression d\'un foyer fiscal est désactivé quand la liste compte un seul foyer, le minimum fixé par son `minItems`.',
     ],
     schema: quotientFamilial,
     data: { menage: { membres_du_foyer: [{}] } },
@@ -38,10 +38,10 @@ export const integrationExamples: IntegrationExample[] = [
     description: [
       'Ce schéma décrit les entrées de la règle du droit de vote. Il est copié depuis datapi, et chaque condition cite son article du code électoral ou de la Constitution.',
     ],
-    reads: [
-      '`x-legal-basis` de chaque champ => lien « Base légale » sous son libellé',
-      '`x-source` de l\'âge => badge « Donnée certifiable » et FranceConnect comme fournisseur',
-      '`required` du schéma => « (optionnel) » à la fin du libellé des autres champs',
+    effects: [
+      'Chaque champ affiche sous son libellé un lien « Base légale » vers l\'article que cite son `x-legal-basis`.',
+      'L\'âge affiche le badge « Donnée certifiable » et FranceConnect comme fournisseur, d\'après son `x-source`.',
+      'Le libellé d\'un champ absent du `required` du schéma se termine par « (optionnel) ».',
     ],
     schema: droitDeVote,
   },
@@ -51,9 +51,9 @@ export const integrationExamples: IntegrationExample[] = [
     description: [
       'Chaque élément du tableau s\'affiche en groupe de champs, que la personne ajoute ou retire. Le focus clavier reste dans la liste.',
     ],
-    reads: [
-      '`items` => un groupe de champs par élément, titré par le `title` de `items`',
-      '`minItems` et `maxItems` => boutons d\'ajout et de suppression désactivés aux bornes',
+    effects: [
+      'Chaque élément de la liste s\'affiche en groupe de champs, avec le `title` de `items` pour titre.',
+      'Les boutons d\'ajout et de suppression sont désactivés quand la liste atteint son `maxItems` ou son `minItems`.',
     ],
     schema: {
       type: 'object',
@@ -84,12 +84,12 @@ export const integrationExamples: IntegrationExample[] = [
     description: [
       'Un choix s\'affiche en boutons radio jusqu\'à cinq options, en liste déroulante au-delà, et en cases à cocher quand la personne peut en cocher plusieurs.',
     ],
-    reads: [
-      '`oneOf` de `const` et `title` => libellé de chaque option',
-      '`format` des options du uischema, `radio` ou `select` => forme du choix, quel que soit le nombre d\'options',
-      '`type: array` et `uniqueItems` => cases à cocher',
-      '`choices.<valeur>.tooltip` des options du uischema => bouton d\'infobulle après le libellé de l\'option',
-      '`choices.<valeur>.exclusive` => case qui décoche les autres',
+    effects: [
+      'Le libellé de chaque option est le `title` de son entrée dans `oneOf`, et sa valeur est le `const`.',
+      'L\'option `format` du uischema, `radio` ou `select`, fixe la forme du choix quel que soit le nombre d\'options.',
+      'Un champ de `type: array` avec `uniqueItems` s\'affiche en cases à cocher.',
+      'L\'option `choices.<valeur>.tooltip` du uischema ajoute un bouton d\'infobulle après le libellé de l\'option.',
+      'Une option marquée `choices.<valeur>.exclusive` décoche les autres cases quand on la coche.',
     ],
     schema: {
       type: 'object',
@@ -165,10 +165,10 @@ export const integrationExamples: IntegrationExample[] = [
     description: [
       'Un champ s\'affiche selon une réponse précédente, et il est obligatoire seulement quand il est affiché.',
     ],
-    reads: [
-      '`rule` d\'un contrôle du uischema, d\'effet `SHOW` => champ affiché quand la réponse désignée par `scope` est valide contre `schema`',
-      '`if` et `then` du schéma => réponse obligatoire sous condition, que JSON Forms valide',
-      '`required` des options du contrôle => libellé sans « (optionnel) », puisque JSON Forms ne lit que le `required` statique du schéma',
+    effects: [
+      'Une `rule` d\'effet `SHOW` sur un contrôle du uischema affiche le champ quand la réponse désignée par son `scope` est valide contre son `schema`.',
+      'Les mots-clés `if` et `then` du schéma rendent une réponse obligatoire sous condition, et JSON Forms applique cette condition à la validation.',
+      'L\'option `required` du contrôle retire « (optionnel) » du libellé, car JSON Forms lit seulement le `required` statique du schéma.',
     ],
     schema: {
       type: 'object',
@@ -206,10 +206,10 @@ export const integrationExamples: IntegrationExample[] = [
     description: [
       'Les réponses de cet exemple sont fausses dès l\'ouverture. Les messages sont en français, et ceux d\'un nombre, d\'une date ou d\'une adresse électronique donnent un exemple de valeur attendue.',
     ],
-    reads: [
-      '`dsfrI18n` passé à JSON Forms => messages en français',
-      '`format` (`email`, `date`), `minimum`, `maximum` => message qui cite la contrainte',
-      '`required` => attribut `required` sur le champ et mention des champs obligatoires en tête du formulaire',
+    effects: [
+      'Les messages sont en français grâce à `dsfrI18n`, passé à JSON Forms.',
+      'Les messages d\'un `format` (`email`, `date`), d\'un `minimum` ou d\'un `maximum` citent la contrainte.',
+      'Un champ listé dans `required` reçoit l\'attribut `required`, et le formulaire indique en tête quels champs sont obligatoires.',
     ],
     schema: {
       type: 'object',

@@ -61,6 +61,6 @@ const ajv = createAjv2020()
       href="https://github.com/ShallowRed/survey-kit/tree/main/packages/jsonforms-vue-dsfr#readme"
       target="_blank"
       rel="noopener"
-    >README du paquet</a> décrit les mots-clés que lisent les composants.
+    >README du paquet</a> décrit l'effet de chaque mot-clé sur le formulaire.
   </p>
 </template>
